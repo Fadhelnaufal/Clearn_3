@@ -17,6 +17,21 @@ Route::get('/course', function () {
 Route::get('/course_detail', function () {
     return view('course_detail');
 });
+Route::get('/dashboard_guru', function () {
+    return view('guru.dashboard_guru');
+});
+Route::get('/course_guru', function () {
+    return view('guru.course_guru');
+});
+Route::get('/course_detail_guru', function () {
+    return view('guru.course_detail_guru');
+});
+Route::get('/card', function () {
+    return view('component-cards-basic');
+});
+Route::get('/component-carousels', function () {
+    return view('component-carousels');
+});
 Route::get('/charts-chartjs', function () {
     return view('charts-chartjs');
 });

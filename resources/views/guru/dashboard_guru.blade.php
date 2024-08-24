@@ -3,12 +3,12 @@
     Dashboard
 @endsection
 @section('content')
-    <x-page-title title="Dashboard" subtitle="Dashboard" />
+    <x-page-title title="Dashboard" subtitle="Dashboard Guru" />
 
     <!-- Modal -->
 
     <!-- Modal -->
-     {{-- <div class="modal fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel"
+    {{-- <div class="modal fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -96,7 +96,7 @@
     </div> --}}
 
     <div class="row">
-        <div class="col-xxl-8 d-flex align-items-stretch">
+        <div class="col-xxl-8   align-items-stretch">
             <div class="card w-100 overflow-hidden rounded-4">
                 <div class="card-body position-relative p-4">
                     <div class="row">
@@ -111,14 +111,14 @@
                             </div>
                             <div class="d-flex align-items-center gap-5">
                                 <div class="">
-                                    <p class="mb-3">Level</p>
+                                    <p class="mb-3">Kelas</p>
                                     <h4 class="mb-1 fw-semibold d-flex align-content-center">1<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
 
                                 </div>
                                 <div class="">
-                                    <p class="mb-3">EXP Points</p>
+                                    <p class="mb-3">Siswa</p>
                                     <h4 class="mb-1 fw-semibold d-flex align-content-center">1180<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
@@ -126,17 +126,11 @@
                             </div>
                             <div class="d-flex align-items-center gap-5">
                                 <div class="">
-                                    <p class="mb-3">Misi</p>
+                                    <p class="mb-3">Materi</p>
                                     <h4 class="mb-1 fw-semibold d-flex align-content-center">4/15<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
 
-                                </div>
-                                <div class="">
-                                    <p class="mb-3">Kelas Diikuti</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">2/2<i
-                                            class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
-                                    </h4>
                                 </div>
                             </div>
                         </div>
@@ -149,140 +143,70 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-6 col-xxl-4 d-flex align-items-stretch">
-            <div class="card w-100 rounded-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex justify-content-center">
-                            <h5 class="mb-2 ">Lencana</h5>
-                        </div>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-toggle="popover"
-                                    title="Beginner" data-bs-content="Anda Telah Mencapai 1000 EXP"
-                                    data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/beginner.png') }}" width="50"
-                                        alt="">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-toggle="popover"
-                                    title="Intermediate" data-bs-content="Anda belum Mencapai 2000 EXP"
-                                    data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/intermediate_lock.png') }}" width="50"
-                                        alt="">
-
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-toggle="popover"
-                                    title="High" data-bs-content="Anda Belum Mencapai 3000 EXP"
-                                    data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/high_lock.png') }}" width="50"
-                                        alt="">
-                                </span>
+        <div class="col-xxl-4 d-flex  align-items-stretch">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Course</h5>
+                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-toggle="popover"
-                                    title="Platinum" data-bs-content="Anda Belum Mencapai 4000 EXP"
-                                    data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/platinum_lock.png') }}" width="50"
-                                        alt="">
-
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-toggle="popover"
-                                    title="Diamond" data-bs-content="Anda Belum Mencapai 5000 EXP"
-                                    data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/diamond_lock.png') }}" width="50"
-                                        alt="">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-toggle="popover"
-                                    title="Master" data-bs-content="Anda Belum Mencapai 6000 EXP"
-                                    data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/master_lock.png') }}" width="50"
-                                        alt="">
-                                </span>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Discussion</h5>
+                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
                             </div>
                         </div>
                     </div>
-                    <div class="text-center mt-4">
-                        <span class="text-success">Senior Frontend Developer</span>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Live Code</h5>
+                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">Game Edu</h5>
+                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="continue">
-            <div class="row">
-                <div class="col-md-12">
-                    <h4>
-                        Continue class
-                    </h4>
-                </div>
-            </div>
-        </div>
+    <div class="continue">
         <div class="row">
-            <div class="col-sm">
-                <div class="card">
-                    <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Stay at home</h5>
-                        <p class="card-text">Nam libero tempore, cum soluta nobis est
-                            eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis
-                            voluptas
-                            assumenda est, omnis dolor repellendus Temporibus autem
-                            quibusdam et aut officiis debitis aut rerum necessitatibus saepe.</p>
-                        <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
-                    </div>
-                </div>
+            <div class="col-md-12">
+                <h4>
+                    Kelas Terbaru
+                </h4>
             </div>
-            <div class="col-sm">
-                <div class="card">
-                    <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Stay at home</h5>
-                        <p class="card-text">Nam libero tempore, cum soluta nobis est
-                            eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis
-                            voluptas
-                            assumenda est, omnis dolor repellendus Temporibus autem
-                            quibusdam et aut officiis debitis aut rerum necessitatibus saepe.</p>
-                        <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="card">
-                    <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Stay at home</h5>
-                        <p class="card-text">Nam libero tempore, cum soluta nobis est
-                            eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis
-                            voluptas
-                            assumenda est, omnis dolor repellendus Temporibus autem
-                            quibusdam et aut officiis debitis aut rerum necessitatibus saepe.</p>
-                        <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
-                    </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="card">
+                <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Pemrograman Web</h5>
+                    <p class="card-text">Nam libero tempore, cum soluta nobis est
+                        eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+                        omnis.</p>
+                    <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 @push('script')
