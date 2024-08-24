@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class SiswaController extends Controller
+class MissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($categoryId)
     {
-        return view('dashboard.siswa');
+        $materials = Material::where('kategori_id', $categoryId)->get();
+
+        $category = Category::findOrFail($categoryId);
+
+        return view('missions.index', compact('materials', 'category'));
     }
 
     /**
@@ -19,7 +23,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        return view('dashboard.create');
+        //
     }
 
     /**
