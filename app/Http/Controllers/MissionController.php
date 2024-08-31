@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Materi;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class MissionController extends Controller
 {
@@ -11,7 +13,7 @@ class MissionController extends Controller
      */
     public function index($categoryId)
     {
-        $materials = Material::where('kategori_id', $categoryId)->get();
+        $materi = Materi::where('kategori_id', $categoryId)->get();
 
         $category = Category::findOrFail($categoryId);
 

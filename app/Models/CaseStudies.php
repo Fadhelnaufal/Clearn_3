@@ -9,7 +9,9 @@ class CaseStudies extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'kelas_id', 'title', 'description'
+        'kelas_id',
+        'title',
+        'description'
     ];
 
     public function kelas()
@@ -19,6 +21,6 @@ class CaseStudies extends Model
 
     public function submissions()
     {
-        return $this->hasMany(StudentSubmission::class, 'case_study_id');
+        return $this->hasMany(StudiesSubmission::class, 'case_study_id');
     }
 }

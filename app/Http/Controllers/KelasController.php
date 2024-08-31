@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class KelasController extends Controller
 {
@@ -31,7 +32,6 @@ class KelasController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'mapel' => 'required|max:255',
             'kelas' => 'required|max:255',
@@ -47,21 +47,21 @@ class KelasController extends Controller
 
         $data = $request->all();
         $data['guru_id'] = Auth::user()->id;
-        $data['token'] = Str::random(64); // Automatically generate a 64-character token
-    
+        $data['token'] = Str::random(5); // Automatically generate a 64-character token
+
         $kelas = Kelas::create($data);
-    
+
         return redirect()->route('kelas.show', $kelas->id)
             ->with('success', 'Kelas Berhasil dibuat dengan token: ' . $kelas->token);
     }
-    
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $kelas = Kelas::findOrFail($id);
+        return view('class.show', compact('kelas'));
     }
 
     /**
@@ -69,7 +69,8 @@ class KelasController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $kelas = Kelas::findOrFail($id);
+        return view('class.edit', compact('kelas'));
     }
 
     /**
@@ -77,7 +78,31 @@ class KelasController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'mapel' => 'required|max:255',
+            'kelas' => 'required|max:255',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:4098',
+        ]);
+
+        $kelas = Kelas::findOrFail($id);
+        $data = $request->all();
+
+        if ($request->hasFile('logo')) {
+            // Hapus file logo lama jika ada
+            if ($kelas->logo) {
+                Storage::disk('public')->delete($kelas->logo);
+            }
+
+            $file = $request->file('logo');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('images/logos', $fileName, 'public');
+            $data['logo'] = $filePath;
+        }
+
+        $kelas->update($data);
+
+        return redirect()->route('kelas.show', $kelas->id)
+            ->with('success', 'Kelas berhasil diperbarui');
     }
 
     /**
@@ -85,6 +110,16 @@ class KelasController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $kelas = Kelas::findOrFail($id);
+
+        // Hapus file logo jika ada
+        if ($kelas->logo) {
+            Storage::disk('public')->delete($kelas->logo);
+        }
+
+        $kelas->delete();
+
+        return redirect()->route('kelas.index')
+            ->with('success', 'Kelas berhasil dihapus');
     }
 }

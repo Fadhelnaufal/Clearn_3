@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Kelas extends Model
 {
@@ -11,7 +12,11 @@ class Kelas extends Model
 
 
     protected $fillable = [
-        'mapel', 'kelas', 'logo', 'user_id', 'token'
+        'mapel',
+        'kelas',
+        'logo',
+        'user_id',
+        'token'
     ];
 
     protected static function boot()
@@ -19,7 +24,7 @@ class Kelas extends Model
         parent::boot();
 
         static::creating(function ($kelas) {
-            $kelas->token = Str::random(64); 
+            $kelas->token = Str::random(5);
         });
     }
 
