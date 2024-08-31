@@ -33,18 +33,9 @@ class MateriController extends Controller
     {
         $this->validate($request, [
             'judul' => 'required|max:255',
-            'isi' => 'required',
-            'lampiran' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
         ]);
 
-        $data = $request->only(['judul', 'isi']);
-
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('files/materials', $fileName, 'public');
-            $data['lampiran'] = $filePath;
-        }
+        $data = $request->only(['judul']);
 
         $kelas = Kelas::findOrFail($request->kelas_id);
         $materi = $kelas->materi()->create($data);
@@ -69,25 +60,12 @@ class MateriController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'judul' => 'required|max:255',
-            'isi' => 'required',
-            'lampiran' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
+            'judul' => 'required|max:255'
         ]);
 
         $materi = Materi::findOrFail($id);
-        $data = $request->only(['judul', 'isi']);
+        $data = $request->only(['judul']);
 
-        if ($request->hasFile('lampiran')) {
-            // Hapus file lama jika ada
-            if ($materi->lampiran) {
-                Storage::disk('public')->delete($materi->lampiran);
-            }
-
-            $file = $request->file('lampiran');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('files/materials', $fileName, 'public');
-            $data['lampiran'] = $filePath;
-        }
 
         $materi->update($data);
 
@@ -101,11 +79,6 @@ class MateriController extends Controller
     public function destroy(string $id)
     {
         $materi = Materi::findOrFail($id);
-
-        // Hapus file lampiran jika ada
-        if ($materi->lampiran) {
-            Storage::disk('public')->delete($materi->lampiran);
-        }
 
         $materi->delete();
 

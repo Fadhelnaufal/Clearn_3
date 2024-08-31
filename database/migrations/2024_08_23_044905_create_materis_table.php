@@ -15,20 +15,18 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('kelas_id');
             $table->string('judul');
-            $table->string('lampiran')->nullable();
-            $table->text('isi');
-            $table->unsignedBigInteger('kategori_id'); 
+            $table->unsignedBigInteger('kategori_id');
             $table->timestamps();
 
             $table->foreign('kategori_id')
-            ->references('id')
-            ->on('categories')
-            ->onDelete('cascade');
+                ->references('id')
+                ->on('categories')
+                ->onDelete('cascade');
 
             $table->foreign('kelas_id')
-                  ->references('id')
-                  ->on('kelas')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('kelas')
+                ->onDelete('cascade');
         });
     }
 
