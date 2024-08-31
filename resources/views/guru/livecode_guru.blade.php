@@ -14,29 +14,35 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header border-bottom-0 py-2">
-                        <h5 class="modal-title">Tambah Kelas</h5>
+                        <h5 class="modal-title">Tambah Mission</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-body">
                             <form class="row g-3">
                                 <div class="col-md-12">
-                                    <label for="input5" class="form-label">Nama Mata Pelajaran</label>
+                                    <label for="input5" class="form-label">Nama Mission</label>
+                                    <input type="text" class="form-control" id="input5">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="input5" class="form-label">Deskripsi Mission</label>
                                     <input type="text" class="form-control" id="input5">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="input5" class="form-label">Kelas</label>
-                                    <input type="text" class="form-control" id="input5">
-                                </div>
-                                <div class="col-md-12 mb-4">
-                                    <label for="input5" class="form-label">Logo Kelas</label>
-                                    <input type="file" class="form-control" id="image_kelas" name="image_kelas" accept="image/png, image/jpeg">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          Kelas
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          <li><a class="dropdown-item" href="#">Kelas A</a></li>
+                                          <li><a class="dropdown-item" href="#">Kelas B</a></li>
+                                          <li><a class="dropdown-item" href="#">Kelas C</a></li>
+                                        </ul>
+                                      </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
-                                       <a href="{{ url('/course_detail_guru') }}">
                                         <button type="button" class="btn ripple btn-primary px-2">Tambah</button>
-                                    </a>
-
                                         <button type="button" class="btn ripple btn-secondary px-2"
                                             data-bs-dismiss="modal">Batal</button>
                                     </div>
@@ -49,32 +55,6 @@
         </div>
     </div>
 
-
-    <div class="row g-0">
-        <div class="col-md-4">
-            {{-- <a href=""> --}}
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-md-4 border-end">
-                            <div class="p-3">
-                                <img src="{{ URL::asset('build/images/laravel.png') }}" class="w-100 rounded-start" alt="...">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Pemrograman Web</h5>
-                                <p class="card-title">Kelas XI RPL</p>
-                                <p class="card-title">Token Kelas : a145wd</p>
-                                <button type="button" class="btn ripple btn-primary px-2 font-12">Lanjutkan Materi</button>
-                            </div>
-                        </div>
-                    </div>
-            {{-- </a> --}}
-            </div>
-        </div>
-        <div class="col-md-8">
-        </div>
-    </div>
 @endsection
 @push('script')
     <!--plugins-->

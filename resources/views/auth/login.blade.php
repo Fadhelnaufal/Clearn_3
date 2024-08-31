@@ -1,3 +1,4 @@
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 @extends('layouts.guest')
 @section('title')
     Login
@@ -8,19 +9,12 @@
             <div class="row g-0">
                 <div
                     class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex border-end bg-transparent">
-                    {{-- <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
-                    <spline-viewer url="https://prod.spline.design/v9QjyfMmByQvEhaN/scene.splinecode"></spline-viewer> --}}
-                    {{-- <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent bg-none">
-                        <div class="card-body">
-                            <img src="{{ URL::asset('build/images/auth/login1.png') }}" class="img-fluid auth-img-cover-login"
-                                width="650" alt="">
-                        </div>
-                    </div> --}}
+
+                    <dotlottie-player src="https://lottie.host/4630c9c9-070a-4c11-8ba9-c32635fa346c/oBvsRef3uw.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 
                 </div>
 
-                <div
-                    class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
+                <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
                     <div class="card rounded-0 m-3 mb-0 border-0 shadow-none bg-none">
                         <div class="card-body p-sm-5">
                             <img src="{{ URL::asset('build/images/logo1.png') }}" class="mb-4" width="145"

@@ -23,6 +23,12 @@ Route::get('/dashboard_guru', function () {
 Route::get('/course_guru', function () {
     return view('guru.course_guru');
 });
+Route::get('/livecode_guru', function () {
+    return view('guru.livecode_guru');
+});
+Route::get('/tambah_materi', function () {
+    return view('guru.tambah_materi');
+});
 Route::get('/course_detail_guru', function () {
     return view('guru.course_detail_guru');
 });

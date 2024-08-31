@@ -13,10 +13,12 @@
                             </i> HTML</h3>
                         <textarea name="html" id="html" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="on"
                             autocapitalize="off" spellcheck="false"></textarea>
-                        <button class="clear html">clear</button>
-                        <button class="copy-btn copy-html">
-                            Submit
-                        </button>
+                            <div class="col mt-2 mb-2 mx-2">
+                                <button class="copy-btn copy-html btn btn-primary">
+                                    Submit
+                            </button>
+                                <button class="clear html btn btn-secondary">clear</button>
+                            </div>
                     </div>
                 </form>
             </div>
@@ -28,10 +30,12 @@
                             </i>CSS</h3>
                         <textarea name="css" id="css" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="off"
                             autocapitalize="off" spellcheck="false"></textarea>
-                        <button class="clear css">clear</button>
-                        <button class="copy-btn copy-html">
-                            Submit
-                        </button>
+                        <div class="col mt-2 mb-2 mx-2">
+                            <button class="copy-btn copy-html btn btn-primary">
+                                Submit
+                            </button>
+                            <button class="clear css btn btn-secondary">clear</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -43,10 +47,12 @@
                             </i>JS</h3>
                         <textarea name="js" id="js" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="off"
                             autocapitalize="off" spellcheck="false"></textarea>
-                        <button class="clear js">clear</button>
-                        <button class="copy-btn copy-html">
-                            Submit
-                        </button>
+                            <div class="col mt-2 mb-2 mx-2">
+                                <button class="clear js btn btn-secondary">clear</button>
+                                <button class="copy-btn copy-html btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
                     </div>
                 </form>
             </div>
@@ -55,14 +61,8 @@
             <div class="col">
                 <div class="card">
                     <div class="outputContainer">
-                        <iframe
-                          id="output"
-                          title="output"
-                          frameborder="0"
-                          width="100%"
-                          height="100%"
-                        ></iframe>
-                      </div>
+                        <iframe id="output" title="output" frameborder="0" width="100%" height="100%"></iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,8 +114,9 @@
                 });
             });
         </script>
-        <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+            integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
         <!--plugins-->

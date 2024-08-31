@@ -32,13 +32,13 @@
                        </li>
                    </ul>
                </li>
-               <li>
+               {{-- <li>
                    <a href="{{ url('/live_code') }}">
                        <div class="parent-icon"><i class="material-icons-outlined">code</i>
                        </div>
                        <div class="menu-title">Live Code</div>
                    </a>
-               </li>
+               </li> --}}
                {{-- <li>
                    <a href="{{ url('/diskusi') }}">
                        <div class="parent-icon"><i class="material-icons-outlined">forum</i>

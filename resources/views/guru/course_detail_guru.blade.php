@@ -11,11 +11,21 @@
                     <ul class="nav nav-pills mb-0" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" data-bs-toggle="pill" href="#primary-pills-home" role="tab"
-                                aria-selected="true">
+                                aria-selected="true" target="1">
                                 <div class="d-flex align-items-center">
                                     <div class="tab-icon"><i class="bi bi-house-door me-1 fs-6"></i>
                                     </div>
                                     <div class="tab-title">Misi</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link " data-bs-toggle="pill" href="#primary-pills-home" role="tab"
+                                aria-selected="false" target="2">
+                                <div class="d-flex align-items-center">
+                                    <div class="tab-icon"><i class="bi bi-code-square me-2 fs-6"></i>
+                                    </div>
+                                    <div class="tab-title">Live Code</div>
                                 </div>
                             </a>
                         </li>
@@ -65,16 +75,44 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
-            <div class="parent-icon">
-                <button class="btn btn-primary">Tambah Materi <i class="fa-solid fa-plus ms-2"></i></button>
-            </div>
-        </div>
     </div>
     </div>
-    <div class="container">
+    <div class="container target" id="misi">
         <div class="row mx-1">
             <div class="col-md-7">
+                <div class="parent-icon mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-target="#FormModal" data-bs-toggle="modal">Tambah
+                        Materi <i class="fa-solid fa-plus ms-2"></i></button>
+                </div>
+                <div class="modal fade" id="FormModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom-0 py-2">
+                                <h5 class="modal-title">Tambah Materi</h5>
+                                <a href="javascript:;" class="primary-menu-close" data-bs-dismiss="modal">
+                                    <i class="material-icons-outlined">close</i>
+                                </a>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-body">
+                                    <form class="row g-3">
+                                        <div class="col-md-12">
+                                            <label for="input5" class="form-label">Nama Materi</label>
+                                            <input type="text" class="form-control" id="input5">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="d-md-flex d-grid align-items-center gap-3">
+                                                <button type="button" class="btn ripple btn-primary px-2">Tambah</button>
+                                                <button type="button" class="btn ripple btn-secondary px-2"
+                                                    data-bs-dismiss="modal">Batal</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end of modal -->
                 <div class="card mx-2">
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
@@ -86,7 +124,8 @@
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                                 data-bs-parent="#accordionExample">
-                                <div class="accordion-body"> <strong>This is the first item's accordion body.</strong> It is
+                                <div class="accordion-body"> <strong>This is the first item's accordion body.</strong> It
+                                    is
                                     hidden
                                     by default, until the collapse plugin adds the appropriate classes that we use to style
                                     each
@@ -190,6 +229,13 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="container" id="livecode">
+            <div class="col">
+                <h1>asas</h1>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('script')
     <!--plugins-->
@@ -200,6 +246,30 @@
     <script src="{{ URL::asset('build/plugins/peity/jquery.peity.min.js') }}"></script>
     <script src="{{ URL::asset('build/plugins/chartjs/js/chart.js') }}"></script>
     <script src="{{ URL::asset('build/plugins/chartjs/js/chartjs-custom.js') }}"></script>
+    <script>
+        jQuery(function() {
+            // Initially hide all target containers
+            jQuery('.target').hide();
+
+            // Show the first tab's content by default
+            jQuery('#misi').show();
+
+            // Handle nav-link clicks
+            jQuery('.nav-link').click(function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                jQuery('.target').hide(); // Hide all target containers
+
+                var targetId = $(this).attr('target');
+                if (targetId == "1") {
+                    jQuery('#misi').show();
+                } else if (targetId == "2") {
+                    jQuery('#livecode').show();
+                }
+                // Add more conditions for other targets if needed
+            });
+        });
+    </script>
+
     <script>
         $(".data-attributes span").peity("donut")
     </script>
