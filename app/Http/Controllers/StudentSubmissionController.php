@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\CaseStudies;
+use App\Models\StudiesSubmission;
+use Illuminate\Support\Facades\Auth;
 
 class StudentSubmissionController extends Controller
 {
     public function create($id)
     {
-        $caseStudy = CaseStudy::findOrFail($id);
+        $caseStudy = CaseStudies::findOrFail($id);
 
-        // Ensure the student is enrolled in the class
-        $studentClasses = auth()->user()->enrolledClasses()->pluck('id')->toArray();
-        if (!in_array($caseStudy->kelas_id, $studentClasses)) {
+        // Check if the student is enrolled using the relationship
+        if (!Auth::user()->kelas->contains('id', $caseStudy->kelas_id)) {
             return redirect()->back()->with('error', 'You are not enrolled in the class for this case study.');
         }
 
@@ -27,17 +29,16 @@ class StudentSubmissionController extends Controller
             'javascript' => 'nullable|string',
         ]);
 
-        $caseStudy = CaseStudy::findOrFail($caseStudyId);
+        $caseStudy = CaseStudies::findOrFail($caseStudyId);
 
         // Ensure the student is enrolled in the class
-        $studentClasses = auth()->user()->enrolledClasses()->pluck('id')->toArray();
-        if (!in_array($caseStudy->kelas_id, $studentClasses)) {
+        if (!Auth::user()->kelas->contains('id', $caseStudy->kelas_id)) {
             return redirect()->back()->with('error', 'You are not enrolled in the class for this case study.');
         }
 
-        StudentSubmission::create([
+        StudiesSubmission::create([
             'case_study_id' => $caseStudyId,
-            'student_id' => auth()->user()->id,
+            'student_id' => Auth::user()->id,
             'html' => $request->input('html'),
             'css' => $request->input('css'),
             'javascript' => $request->input('javascript'),

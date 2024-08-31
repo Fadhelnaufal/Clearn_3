@@ -22,7 +22,7 @@ class StudiesSubmission extends Model
 
     public function caseStudy()
     {
-        return $this->belongsTo(CaseStudy::class, 'case_study_id');
+        return $this->belongsTo(CaseStudies::class, 'case_study_id');
     }
 
     public function student()
