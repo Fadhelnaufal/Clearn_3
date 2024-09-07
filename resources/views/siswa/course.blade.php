@@ -15,29 +15,22 @@
                 <div class="modal-content">
                     <div class="modal-header border-bottom-0 py-2">
                         <h5 class="modal-title">Tambah Kelas</h5>
+                        <a href="javascript:;" class="primary-menu-close" data-bs-dismiss="modal">
+                            <i class="material-icons-outlined">close</i>
+                        </a>
                     </div>
                     <div class="modal-body">
                         <div class="form-body">
-                            <form class="row g-3" action="{{route('course.store')}}" method="POST" enctype="multipart/form-data">
+                            <form class="row g-3" method="POST" action="{{ route('siswa.course.join') }}">
                                 @csrf
-                                <div class="col-md-12">
-                                    <label for="mapel" class="form-label">Nama Mata Pelajaran</label>
-                                    <input type="text" class="form-control" id="mapel" name="mapel" required>
+                                <div class="mb-3">
+                                    <label for="token" class="form-label">Masukkan Token Kelas</label>
+                                    <input type="text" name="token" class="form-control" id="token" required>
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="kelas" class="form-label">Kelas</label>
-                                    <input type="text" class="form-control" id="kelas" name="kelas" required>
-                                </div>
-                                <div class="col-md-12 mb-4">
-                                    <label for="logo" class="form-label">Logo Kelas</label>
-                                    <input type="file" class="form-control" id="logo" name="logo" accept="image/png, image/jpeg" required>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="d-md-flex d-grid align-items-center gap-3">
-                                        <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
-                                        <button type="button" class="btn ripple btn-secondary px-2"
-                                            data-bs-dismiss="modal">Batal</button>
-                                    </div>
+                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                    <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
+                                    <button type="button" class="btn ripple btn-secondary px-2"
+                                        data-bs-dismiss="modal">Batal</button>
                                 </div>
                             </form>
                         </div>
@@ -60,8 +53,7 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">Pemrograman Web</h5>
-                                <p class="card-title">Kelas XI RPL</p>
-                                <p class="card-title">Token Kelas : a145wd</p>
+                                <p class="card-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore eligendi blanditiis facilis molestiae nemo praesentium rerum neque ab voluptas necessitatibus, natus suscipit laboriosam.</p>
                                 <button type="button" class="btn ripple btn-primary px-2 font-12">Lanjutkan Materi</button>
                             </div>
                         </div>
@@ -72,32 +64,57 @@
         </div>
     </div> --}}
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="row g-0">
-        @foreach ($kelas as $k)
-        <div class="col-md-4">
-            {{-- <a href=""> --}}
+        @foreach ($kelas as $course)
+            <div class="col-md-4">
                 <div class="card">
                     <div class="row g-0">
                         <div class="col-md-4 border-end">
                             <div class="p-3">
-                                <img src="{{ asset('storage/' .$k->logo) }}" class="w-100 rounded-start" alt="...">
+                                <img src="{{ URL::asset('build/images/laravel.png') }}" class="w-100 rounded-start"
+                                    alt="...">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">{{$k->mapel}}</h5>
-                                <p class="card-title">{{$k->kelas}}</p>
-                                <p class="card-title">Token Kelas :{{$k->token}}</p>
-                                <button type="button" class="btn ripple btn-primary px-2 font-12">Lanjutkan Materi</button>
+                                <h5 class="card-title">{{ $course->mapel }}</h5>
+                                <p class="card-title">{{ $course->kelas }}</p>
+                                <a href="{{ route('siswa.course.show', $course->id) }}" class="btn btn-primary">View
+                                    Details</a>
                             </div>
                         </div>
                     </div>
-            {{-- </a> --}}
+                </div>
             </div>
-        </div>
         @endforeach
-        <div class="col-md-8"></div>
+        <div class="col-md-8">
+        </div>
     </div>
+    {{-- <div class="row g-0">
+        @foreach ($kelas as $course)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $course->mapel }}</h5>
+                        <p class="card-text">{{ $course->kelas }}</p>
+                        <!-- Add more details or links as needed -->
+                        <a href="{{ route('course.show', $course->id) }}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div> --}}
 @endsection
 @push('script')
     <!--plugins-->

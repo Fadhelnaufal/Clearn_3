@@ -1,3 +1,4 @@
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 @extends('layouts.guest')
 @section('title')
     Register
@@ -7,17 +8,11 @@
         <div class="">
             <div class="row g-0">
                 <div
-                    class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex border-end bg-transparent">
+                class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex border-end bg-transparent">
 
-                    <spline-viewer url="https://prod.spline.design/v9QjyfMmByQvEhaN/scene.splinecode"></spline-viewer>
-                    {{-- <div class="card rounded-0 mb-0 border-0 shadow-none bg-transparent bg-none">
-                        <div class="card-body">
-                            <img src="{{ URL::asset('build/images/auth/register1.png') }}"
-                                class="img-fluid auth-img-cover-login" width="500" alt="">
-                        </div>
-                    </div> --}}
+                <dotlottie-player src="https://lottie.host/4630c9c9-070a-4c11-8ba9-c32635fa346c/oBvsRef3uw.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 
-                </div>
+            </div>
 
                 <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
                     <div class="card rounded-0 m-3 border-0 shadow-none bg-none">

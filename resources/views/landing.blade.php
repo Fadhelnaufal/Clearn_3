@@ -75,14 +75,48 @@
 
             <!--Login button Start-->
             <ul class="buy-button list-inline mb-0">
-                <li class="list-inline-item mb-0">
-                    <a href="{{ url('/login') }}">
-                        <div class="login-btn-primary"><span class="btn btn-icon btn-pills btn-soft-primary"><i
-                                    data-feather="log-in" class="fea icon-sm"></i></span></div>
-                        <div class="login-btn-light"><span class="btn btn-icon btn-pills btn-light"><i
-                                    data-feather="log-in" class="fea icon-sm"></i></span></div>
-                    </a>
-                </li>
+                @guest
+                    <li class="list-inline-item mb-0">
+                        <a href="{{ url('/login') }}">
+                            <div class="login-btn-primary">
+                                <span class="btn btn-icon btn-pills btn-soft-primary">
+                                    <i data-feather="log-in" class="fea icon-sm"></i>
+                                </span>
+                            </div>
+                            <div class="login-btn-light">
+                                <span class="btn btn-icon btn-pills btn-light">
+                                    <i data-feather="log-in" class="fea icon-sm"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                @else
+                    @php
+                        $user = Auth::user();
+                        $redirectUrl = '/dashboard'; // Default URL
+                        if ($user->hasRole('admin')) {
+                            $redirectUrl = '/admin/dashboard';
+                        } elseif ($user->hasRole('guru')) {
+                            $redirectUrl = '/guru/dashboard';
+                        } elseif ($user->hasRole('siswa')) {
+                            $redirectUrl = '/siswa/dashboard';
+                        }
+                    @endphp
+                    <li class="list-inline-item mb-0">
+                        <a href="{{ url($redirectUrl) }}">
+                            <div class="login-btn-primary">
+                                <span class="btn btn-icon btn-pills btn-soft-primary">
+                                    <i data-feather="home" class="fea icon-sm"></i>
+                                </span>
+                            </div>
+                            <div class="login-btn-light">
+                                <span class="btn btn-icon btn-pills btn-light">
+                                    <i data-feather="home" class="fea icon-sm"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                @endguest
             </ul>
             <!--Login button End-->
 

@@ -127,49 +127,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            // Make the questions modal static and then show it
-            $('#questions-modal').modal({
-                backdrop: 'static',
-                keyboard: false
-            }).modal('show'); // Automatically show the modal
-
-            $('#questions-form').on('submit', function(e) {
-                e.preventDefault();
-
-                // Show loader
-                $('#loader').show();
-
-                $.ajax({
-                    url: "{{ route('store.answers') }}",
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        // Hide loader
-                        $('#loader').hide();
-
-                        if (response.success) {
-                            $('#questions-modal').modal('hide');
-                            $('#user-category-name').text(response.user_type.name);
-                            $('#user-category-image').attr('src', response.user_type.image);
-                            $('#result-modal').modal('show');
-                        }
-                    },
-                    error: function() {
-                        $('#loader').hide();
-                        alert('An error occurred while processing your request.');
-                    }
-                });
-            });
-
-            $('#result-modal').on('hidden.bs.modal', function() {
-                window.location.reload();
-            });
-        });
-    </script>
-
-
     <!--plugins-->
     <script src="{{ URL::asset('build/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ URL::asset('build/plugins/metismenu/metisMenu.min.js') }}"></script>

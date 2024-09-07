@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentSubmissionController extends Controller
 {
+    public function index()
+    {
+        return view('livecode');
+    }
+
     public function create($id)
     {
         $caseStudy = CaseStudies::findOrFail($id);

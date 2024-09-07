@@ -8,25 +8,24 @@
     <!-- Modal -->
 
     <!-- Modal -->
-    {{-- <div class="modal fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    {{-- <div class="modal fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="questionsModalLabel">Quesioner Achievement Goals</h5>
+                    <h5 class="modal-title" id="questionsModalLabel">Questionnaire Achievement Goals</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body mx-3 mt-2">
-                    <p class="text-justify">
-                        Sebelum Memasuki Dashboard,anda harus mengisi quesioner dibawah ini untuk mengetahui tujuan belajar
-                        anda.
-                    </p>
-                    <form id="questions-form" action="{{ route('store.answers') }}" method="POST">
+                    <p class="text-justify">Before accessing the dashboard, you need to complete the questionnaire below to determine your learning goals.</p>
+                    <form id="questions-form" action="{{ route('siswa.store.answers') }}" method="POST">
                         @csrf
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="question-cell">Pernyataan</th>
+                                    <th>No.</th>
+                                    <th class="question-cell">Statement</th>
                                     <th class="options-cell">1</th>
                                     <th class="options-cell">2</th>
                                     <th class="options-cell">3</th>
@@ -34,51 +33,48 @@
                                     <th class="options-cell">5</th>
                                 </tr>
                             </thead>
-                            </thead>
                             <tbody>
                                 @foreach ($questions as $index => $question)
                                     <tr>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $question->text }}</td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]"
-                                                value="1" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]"
-                                                value="2" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]"
-                                                value="3" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]"
-                                                value="4" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]"
-                                                value="5" required></td>
-                                        <input type="hidden" name="answers[{{ $index }}][question_id]"
-                                            value="{{ $question->id }}">
+                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="1" required></td>
+                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="2" required></td>
+                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="3" required></td>
+                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="4" required></td>
+                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="5" required></td>
+                                        <input type="hidden" name="answers[{{ $index }}][question_id]" value="{{ $question->id }}">
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        <button type="submit" class="btn btn-primary">Submit Jawaban</button>
+                        <button type="submit" class="btn btn-primary">Submit Answers</button>
                     </form>
-                    <div id="loader" style="display:none;">Loading...</div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    <!-- Result Modal -->
-    <div class="modal fade" id="result-modal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resultModalLabel">Result</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Your type is: <span id="user-category"></span></p>
-                    <img id="user-category-image" src="{{ session('result.type_user_image') }}" alt="User Type Image"
-                        style="max-width: 100%;">
                 </div>
             </div>
         </div>
     </div>
+
+<!-- Result Modal -->
+<div class="modal fade" id="result-modal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultModalLabel">Your User Type</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="user-category-image" src="" alt="User Type Image" class="img-fluid">
+                <h4 id="user-category-name"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> --}}
 
     <div class="row">
         <div class="col-xxl-8 d-flex align-items-stretch">
@@ -242,8 +238,10 @@
 @push('script')
     <!-- JavaScript and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -253,36 +251,31 @@
                 keyboard: false
             }).modal('show'); // Automatically show the modal
 
-            $('#questions-form').on('submit', function(e) {
-                e.preventDefault();
-
-                // Show loader
-                $('#loader').show();
+            $('#questions-form').on('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
 
                 $.ajax({
-                    url: "{{ route('store.answers') }}",
+                    url: "{{ route('siswa.store.answers') }}",
                     method: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
-                        // Hide loader
-                        $('#loader').hide();
+                        console.log(response); // Log response for debugging
 
                         if (response.success) {
                             $('#questions-modal').modal('hide');
                             $('#user-category-name').text(response.user_type.name);
                             $('#user-category-image').attr('src', response.user_type.image);
                             $('#result-modal').modal('show');
+                        } else {
+                            alert('An error occurred: ' + response.message);
                         }
                     },
-                    error: function() {
+                    error: function(xhr) {
                         $('#loader').hide();
+                        console.error('AJAX Error:', xhr.responseText); // Log the error response text for debugging
                         alert('An error occurred while processing your request.');
                     }
                 });
-            });
-
-            $('#result-modal').on('hidden.bs.modal', function() {
-                window.location.reload();
             });
         });
     </script>

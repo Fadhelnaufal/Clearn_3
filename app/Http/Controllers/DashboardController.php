@@ -10,28 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function show()
+    public function index()
     {
+
+    }
+    public function show(){
         $questions = Question::all();
         // dd($question);
         return view('dashboard', compact('questions'));
     }
-    // public function show()
-    // {
-    //     $questions = Question::all();
-    //     // dd($question);
-    //     return view('test', compact('questions'));
-    // }
 
-    public function storeAnswers(Request $request)
-    {
+    public function storeAnswers(Request $request){
 
         $data = $request->validate([
             'answers.*.question_id' => 'required|exists:questions,id',
             'answers.*.answer_value' => 'required|integer',
         ]);
 
-        
+
         foreach ($data['answers'] as $answer) {
             UserAnswer::updateOrCreate(
                 ['user_id' => auth()->id(), 'question_id' => $answer['question_id']],
@@ -54,8 +50,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    private function calculateUserType()
-    {
+    private function calculateUserType(){
         $userAnswers = UserAnswer::where('user_id',auth()->id())->with('question')->get();
 
         $scores = [

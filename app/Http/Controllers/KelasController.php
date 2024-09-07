@@ -15,8 +15,18 @@ class KelasController extends Controller
      */
     public function index()
     {
-        // $kelas = Kelas::get()->all();
-        // return view('course', compact('kelas'));
+        $user = Auth::user();
+
+        if ($user->hasRole('siswa')) {
+            // Fetch classes the user has joined (assuming the relationship name is 'kelas')
+            $kelas = $user->kelas; // Ensure this relationship exists in your User model
+        } else {
+            // For 'guru' or other roles, fetch all classes
+            $kelas = Kelas::all();
+        }
+
+        $view = $user->hasRole('guru') ? 'guru.course_guru' : 'siswa.course';
+        return view($view, compact('kelas'));
     }
 
     /**
@@ -24,7 +34,7 @@ class KelasController extends Controller
      */
     public function create()
     {
-        return view('class.create');
+        return view('course.create');
     }
 
     /**
@@ -45,13 +55,22 @@ class KelasController extends Controller
             $request->merge(['logo' => $filePath]);
         }
 
-        $data = $request->all();
-        $data['guru_id'] = Auth::user()->id;
-        $data['token'] = Str::random(5); // Automatically generate a 64-character token
+        $kelas = new Kelas();
+        $kelas->mapel = $request->input('mapel');
+        $kelas->kelas = $request->input('kelas');
+        $kelas->logo = $filePath;
+        $kelas->user_id = Auth::id();
+        $kelas->token = Str::random(5); // Generate a random token
+        $kelas->save(); // Save the Kelas instance
 
-        $kelas = Kelas::create($data);
+        // $data = $request->all();
+        // $data['logo'] = $filePath;
+        // $data['user_id'] = Auth::user()->id;
+        // $data['token'] = Str::random(5); // Automatically generate a 64-character token
 
-        return redirect()->route('kelas.show', $kelas->id)
+        // $kelas = Kelas::create($data);
+
+        return redirect()->route('course.index', $kelas->id)
             ->with('success', 'Kelas Berhasil dibuat dengan token: ' . $kelas->token);
     }
 
@@ -61,7 +80,7 @@ class KelasController extends Controller
     public function show(string $id)
     {
         $kelas = Kelas::findOrFail($id);
-        return view('class.show', compact('kelas'));
+        return view('course.show', compact('kelas'));
     }
 
     /**
@@ -70,7 +89,7 @@ class KelasController extends Controller
     public function edit(string $id)
     {
         $kelas = Kelas::findOrFail($id);
-        return view('class.edit', compact('kelas'));
+        return view('course.edit', compact('kelas'));
     }
 
     /**
@@ -101,7 +120,7 @@ class KelasController extends Controller
 
         $kelas->update($data);
 
-        return redirect()->route('kelas.show', $kelas->id)
+        return redirect()->route('course.show', $kelas->id)
             ->with('success', 'Kelas berhasil diperbarui');
     }
 
@@ -119,7 +138,33 @@ class KelasController extends Controller
 
         $kelas->delete();
 
-        return redirect()->route('kelas.index')
+        return redirect()->route('course.index')
             ->with('success', 'Kelas berhasil dihapus');
     }
+
+    public function join(Request $request)
+    {
+        // Validate the request token
+        $this->validate($request, [
+            'token' => 'required|exists:kelas,token', // Validate that the token exists in the `kelas` table
+        ]);
+
+        // Retrieve the currently authenticated user
+        $user = Auth::user();
+
+        // Find the class using the token
+        $kelas = Kelas::where('token', $request->input('token'))->firstOrFail();
+
+        // Check if the user is already joined
+        if ($user->kelas->contains($kelas)) {
+            return redirect()->back()->with('error', 'Anda sudah bergabung dengan kelas ini.');
+        }
+
+        // Attach the class to the user
+        $user->kelas()->attach($kelas->id);
+
+        return redirect()->route('siswa.course.index')->with('success', 'Berhasil bergabung dengan kelas.');
+    }
+
+
 }
