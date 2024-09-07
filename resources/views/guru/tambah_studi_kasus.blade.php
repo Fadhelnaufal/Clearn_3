@@ -27,7 +27,7 @@
                     <button type="submit" class="btn btn-primary mt-4 p-2">Tambah</button>
                     <button type="submit" class="btn btn-secondary mt-4 p-2">Batal</button>
                 </div>
-            </form> 
+            </form>
         </div>
     </div>
 @endsection

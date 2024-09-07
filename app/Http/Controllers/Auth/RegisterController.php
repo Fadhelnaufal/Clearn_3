@@ -28,6 +28,10 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        // Assign the 'siswa' role to the new user
+        $user->assignRole('siswa');
+
+
 
         // Log the user in or return a response
         auth()->login($user);

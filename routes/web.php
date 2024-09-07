@@ -5,7 +5,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\GuruController;
+use App\Http\Controllers\SiswaController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -28,6 +32,15 @@ Route::get('/livecode_guru', function () {
 });
 Route::get('/tambah_materi', function () {
     return view('guru.tambah_materi');
+});
+Route::get('/tambah_studi_kasus', function () {
+    return view('guru.tambah_studi_kasus');
+});
+Route::get('/list_question', function () {
+    return view('guru.list_question');
+});
+Route::get('/discussion', function () {
+    return view('discussion');
 });
 Route::get('/course_detail_guru', function () {
     return view('guru.course_detail_guru');
@@ -53,19 +66,32 @@ Route::get('/component-accordions', function () {
 Route::get('/widget', function () {
     return view('widgets-data');
 });
+Route::get('/icon', function () {
+    return view('icons-boxicons');
+});
 Route::get('/login',[LoginController::class,'index'])->name('login');
 Route::get('/register',[RegisterController::class,'index'])->name('register');
 Route::post('/login',[LoginController::class,'authenticate']);
 Route::post('/register',[RegisterController::class,'create']);
-Route::middleware('auth')->group(function(){
-    Route::get('/dashboard',[DashboardController::class,'show']);
+
+Route::group(['middleware' => ['role:siswa']], function(){
+    Route::get('siswa/dashboard',[SiswaController::class,'index']);
     Route::post('/dashboard',[DashboardController::class,'storeAnswers'])->name('store.answers');
-    // Route::get('/course');
+    Route::get('course', [KelasController::class, 'index'])->name('kelas.index');
+});
+Route::group(['middleware' => ['role:guru']], function(){
+    Route::get('guru/dashboard',[GuruController::class,'index']);
+});
+Route::group(['middleware' => ['role:admin']], function(){
+    Route::get('admin/dashboard',[AdminController::class,'index']);
+});
+
+
+
+
     Route::post('/logout',function(){
         Auth::logout();
         return redirect('/login');
     })->name('logout');
-});
-
 
 // require __DIR__ . '/auth.php';

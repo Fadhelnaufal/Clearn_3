@@ -770,7 +770,7 @@ $(function () {
 
 
 
-    // chart 11 
+    // chart 11
 
     var options = {
         series: [58, 25, 25],
@@ -1003,7 +1003,7 @@ $(function () {
         },
         tooltip: {
             theme: "dark",
-            
+
         },
     };
 

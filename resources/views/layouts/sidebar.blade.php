@@ -1,52 +1,79 @@
    <!--start sidebar-->
    <aside class="sidebar-wrapper" data-simplebar="true">
-       <div class="sidebar-header">
+       <div class="sidebar-header mb-3">
            <div class="logo-icon">
-               <img src="{{ URL::asset('build/images/logo-clearn.png') }}" class="logo-img" alt="">
+               <img src="{{ asset('build/images/logo_edmon.svg') }}" class="logo-img mt-3" alt="" width="50">
            </div>
            <div class="logo-name flex-grow-1">
-               <img src="{{ URL::asset('build/images/clearn1.svg') }}" class="" alt="">
+               <img src="{{ asset('build/images/edmon.svg') }}" class="mt-3" alt="">
            </div>
            <div class="sidebar-close">
                <span class="material-icons-outlined">close</span>
            </div>
        </div>
-       <div class="sidebar-nav">
-           <!--navigation-->
-           <ul class="metismenu" id="sidenav">
-               <li>
-                   <a href="{{ url('/dashboard') }}">
-                       <div class="parent-icon"><i class="material-icons-outlined">home</i>
-                       </div>
-                       <div class="menu-title">Dashboard</div>
-                   </a>
-               </li>
-               <li>
-                   <a href="javascript:;" class="has-arrow">
-                       <div class="parent-icon"><i class="material-icons-outlined">menu_book</i>
-                       </div>
-                       <div class="menu-title">Course</div>
-                   </a>
-                   <ul>
-                       <li><a href="{{ url('/course') }}"><i class="material-icons-outlined">arrow_right</i>Kelas</a>
-                       </li>
-                   </ul>
-               </li>
-               {{-- <li>
+       @if (auth()->user()->hasRole('guru'))
+           <div class="sidebar-nav ">
+               <!--navigation-->
+               <ul class="metismenu mt-" id="sidenav">
+                   <li class="menu-label mt-4">Home</li>
+                   <li class="mt-3">
+                       <a href="{{ url('/dashboard') }}">
+                           <div class="font-20"><i class="fadeIn animated bx bx-home"></i>
+                           </div>
+                           <div class="menu-title">Dashboard</div>
+                       </a>
+                   </li>
+                   <li class="mt-3">
+                       <a href="javascript:;" class="has-arrow">
+                           <div class="font-20"><i class="fadeIn animated bx bx-book"></i>
+                           </div>
+                           <div class="menu-title">Course</div>
+                       </a>
+                       <ul>
+                           <li><a href="{{ url('/course') }}"><i
+                                       class="material-icons-outlined">arrow_right</i>Kelas</a>
+                           </li>
+                       </ul>
+                   </li>
+                   <li class="mt-3">
+                       <a href="{{ url('/discussion') }}">
+                           <div class="font-20"><i class="fadeIn animated bx bx-chat"></i>
+                           </div>
+                           <div class="menu-title">Discussion</div>
+                       </a>
+                   </li>
+                   <li class="mt-3">
+                       <a href="{{ url('/') }}">
+                           <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i>
+                           </div>
+                           <div class="menu-title">Live Code</div>
+                       </a>
+                   </li>
+                   <li class="mt-3">
+                       <a href="{{ url('/') }}">
+                           <div class="font-20"><i class="fadeIn animated bx bx-trophy"></i>
+                           </div>
+                           <div class="menu-title">Quiz</div>
+                       </a>
+                   </li>
+           </div>
+       @endif
+
+       {{-- <li>
                    <a href="{{ url('/live_code') }}">
                        <div class="parent-icon"><i class="material-icons-outlined">code</i>
                        </div>
                        <div class="menu-title">Live Code</div>
                    </a>
                </li> --}}
-               {{-- <li>
+       {{-- <li>
                    <a href="{{ url('/diskusi') }}">
                        <div class="parent-icon"><i class="material-icons-outlined">forum</i>
                        </div>
                        <div class="menu-title">Discussion</div>
                    </a>
                </li> --}}
-               <li class="menu-label">UI Elements</li>
+       {{--
                <li>
                    <a class="has-arrow" href="javascript:;">
                        <div class="parent-icon"><i class="material-icons-outlined">apps</i>
@@ -417,8 +444,8 @@
                        <div class="menu-title">Support</div>
                    </a>
                </li>
-           </ul>
-           <!--end navigation-->
+           </ul> --}}
+       <!--end navigation-->
        </div>
    </aside>
    <!--end sidebar-->

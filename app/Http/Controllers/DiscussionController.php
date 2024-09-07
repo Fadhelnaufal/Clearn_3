@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Kelas;
+use App\Models\Discussion;
+use Illuminate\Support\Facades\Auth;
 
 class DiscussionController extends Controller
 {

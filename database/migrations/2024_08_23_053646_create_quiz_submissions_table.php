@@ -13,20 +13,18 @@ return new class extends Migration
     {
         Schema::create('quiz_submissions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('quiz_id'); 
-            $table->unsignedBigInteger('student_id'); 
-            $table->text('answers'); 
+            $table->unsignedBigInteger('quiz_id');
+            $table->unsignedBigInteger('student_id');
+            $table->text('answers');
             $table->timestamps();
 
             $table->foreign('quiz_id')
             ->references('id')
-            ->on('quizzes')
-            ->onDelete('cascade');
+            ->on('quizzes');
 
       $table->foreign('student_id')
             ->references('id')
-            ->on('users')
-            ->onDelete('cascade');
+            ->on('users');
         });
     }
 

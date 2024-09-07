@@ -34,6 +34,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            // Assign 'siswa' role to new user
+            $user->assignRole('siswa');
+        });
+    }
+
     /**
      * Get the attributes that should be cast.
      *

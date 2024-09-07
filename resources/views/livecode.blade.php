@@ -13,12 +13,12 @@
                             </i> HTML</h3>
                         <textarea name="html" id="html" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="on"
                             autocapitalize="off" spellcheck="false"></textarea>
-                            <div class="col mt-2 mb-2 mx-2">
-                                <button class="copy-btn copy-html btn btn-primary">
-                                    Submit
+                        <div class="col mt-2 mb-2 mx-2">
+                            <button class="copy-btn copy-html btn btn-primary">
+                                Submit
                             </button>
-                                <button class="clear html btn btn-secondary">clear</button>
-                            </div>
+                            <button class="clear html btn btn-secondary">clear</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -47,12 +47,12 @@
                             </i>JS</h3>
                         <textarea name="js" id="js" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="off"
                             autocapitalize="off" spellcheck="false"></textarea>
-                            <div class="col mt-2 mb-2 mx-2">
-                                <button class="clear js btn btn-secondary">clear</button>
-                                <button class="copy-btn copy-html btn btn-primary">
-                                    Submit
-                                </button>
-                            </div>
+                        <div class="col mt-2 mb-2 mx-2">
+                            <button class="clear js btn btn-secondary">clear</button>
+                            <button class="copy-btn copy-html btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

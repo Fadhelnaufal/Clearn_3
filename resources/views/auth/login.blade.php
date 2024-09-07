@@ -17,7 +17,7 @@
                 <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
                     <div class="card rounded-0 m-3 mb-0 border-0 shadow-none bg-none">
                         <div class="card-body p-sm-5">
-                            <img src="{{ URL::asset('build/images/logo1.png') }}" class="mb-4" width="145"
+                            <img src="{{ URL::asset('build/images/edmon.svg') }}" class="mb-4" width="145"
                                 alt="">
                             <h4 class="fw-bold">Get Started Now</h4>
                             <p class="mb-0">Enter your credentials to login your account</p>
@@ -83,6 +83,7 @@
                                             </p>
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
 
@@ -94,7 +95,7 @@
     </div>
 @endsection
 @push('script')
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
+   
     <script>
         $(document).ready(function() {
             $("#show_hide_password a").on('click', function(event) {

@@ -11,7 +11,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        return view('dashboard.siswa');
+        return view('siswa.dashboard');
     }
 
     /**
@@ -19,7 +19,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        return view('dashboard.create');
+        //
     }
 
     /**

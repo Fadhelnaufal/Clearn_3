@@ -13,18 +13,14 @@ return new class extends Migration
     {
         Schema::create('quiz_questions', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key
-            $table->unsignedBigInteger('quiz_id'); // Foreign key referencing `quizzes`
+            $table->unsignedBigInteger('quiz_id'); // Foreign key
+            $table->foreign('quiz_id')->references('id')->on('quizzes'); // Update to 'quizzes'
             $table->string('question'); // The quiz question
             $table->text('options'); // JSON or text field to store options
             $table->string('correct_option'); // The correct option
             $table->timestamps(); // Created at and Updated at timestamps
-
-            // Foreign key constraint
-            $table->foreign('quiz_id')
-                  ->references('id')
-                  ->on('quizzes')
-                  ->onDelete('cascade');
         });
+
     }
 
     /**

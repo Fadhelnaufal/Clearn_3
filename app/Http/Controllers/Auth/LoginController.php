@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -13,22 +14,32 @@ class LoginController extends Controller
         return view('auth.login');
     }
     public function authenticate(Request $request): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            return redirect()->intended('/admin/dashboard');
+        } elseif ($user->hasRole('guru')) {
+            return redirect()->intended('/guru/dashboard');
+        } elseif ($user->hasRole('siswa')) {
+            return redirect()->intended('/siswa/dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return redirect()->intended('dashboard');
     }
+
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ])->onlyInput('email');
+}
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
