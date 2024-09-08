@@ -3,18 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Kelas;
 
-class GuruController extends Controller
+class SettingRoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $kelas = Auth::user()->kelas;
-        return view('guru.dashboard_guru');
+
+        return view('admin.setting-role');
     }
 
     /**
@@ -38,8 +36,7 @@ class GuruController extends Controller
      */
     public function show(string $id)
     {
-        $kelas = Kelas::findOrFail($id);
-        return view('dashboard.show', compact('kelas'));
+        //
     }
 
     /**

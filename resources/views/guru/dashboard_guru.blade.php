@@ -3,7 +3,11 @@
     Dashboard
 @endsection
 @section('content')
-    <x-page-title title="Dashboard" subtitle="Dashboard Guru" />
+    @php
+        $user = auth()->user(); // Get the logged-in user
+        $role = $user->roles->pluck('name')->first(); // Get the user's role name
+    @endphp
+    <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
 
 
 
@@ -62,7 +66,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Course</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
+                                <button class="btn btn-primary w-100 raised">Mulai <i
+                                        class='bx bx-right-arrow-alt'></i></button>
                             </div>
                         </div>
                     </div>
@@ -70,7 +75,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Discussion</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
+                                <button class="btn btn-primary w-100 raised">Mulai <i
+                                        class='bx bx-right-arrow-alt'></i></button>
                             </div>
                         </div>
                     </div>
@@ -79,7 +85,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Live Code</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i class='bx bx-right-arrow-alt'></i></button>
+                                <button class="btn btn-primary w-100 raised">Mulai <i
+                                        class='bx bx-right-arrow-alt'></i></button>
                             </div>
                         </div>
                     </div>
@@ -106,19 +113,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-3">
-            <div class="card">
-                <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Pemrograman Web</h5>
-                    <p class="card-text">Nam libero tempore, cum soluta nobis est
-                        eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
-                        omnis.</p>
-                    <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
+        {{-- @foreach ($kelas as $course)
+            <div class="col-sm-3">
+                <div class="card">
+                    <img src="{{ asset('storage/laravel.png') }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $course->mapel }}</h5>
+                        <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
+                        <a href="{{ route('siswa.course.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        @endforeach --}}
     </div>
 @endsection
 @push('script')

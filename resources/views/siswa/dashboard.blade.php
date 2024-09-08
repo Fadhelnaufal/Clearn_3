@@ -3,78 +3,99 @@
     Dashboard
 @endsection
 @section('content')
-    <x-page-title title="Dashboard" subtitle="Dashboard" />
+    @php
+        $user = auth()->user(); // Get the logged-in user
+        $role = $user->roles->pluck('name')->first(); // Get the user's role name
+    @endphp
+    <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
 
-    <!-- Modal -->
-
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="questionsModalLabel">Questionnaire Achievement Goals</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body mx-3 mt-2">
-                    <p class="text-justify">Before accessing the dashboard, you need to complete the questionnaire below to determine your learning goals.</p>
-                    <form id="questions-form" action="{{ route('siswa.store.answers') }}" method="POST">
-                        @csrf
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th class="question-cell">Statement</th>
-                                    <th class="options-cell">1</th>
-                                    <th class="options-cell">2</th>
-                                    <th class="options-cell">3</th>
-                                    <th class="options-cell">4</th>
-                                    <th class="options-cell">5</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($questions as $index => $question)
+    {{-- @if (!$hasUserType)
+        <!-- Modal -->
+        <div class="modal modal-lg fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="questionsModalLabel">Questionnaire Achievement Goals</h5>
+                    </div>
+                    <div class="modal-body mx-3 mt-2">
+                        <p class="text-justify">
+                            Sebelum Memasuki Dashboard, anda harus mengisi questionnaire di bawah ini untuk mengetahui
+                            tujuan
+                            belajar anda.
+                        </p>
+                        <form id="answerForm" action="{{ route('siswa.store.answers') }}" method="POST">
+                            @csrf
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $question->text }}</td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="1" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="2" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="3" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="4" required></td>
-                                        <td><input type="radio" name="answers[{{ $index }}][answer_value]" value="5" required></td>
-                                        <input type="hidden" name="answers[{{ $index }}][question_id]" value="{{ $question->id }}">
+                                        <th class="number">No</th>
+                                        <th class="question-cell">Pernyataan</th>
+                                        <th class="options-cell">1</th>
+                                        <th class="options-cell">2</th>
+                                        <th class="options-cell">3</th>
+                                        <th class="options-cell">4</th>
+                                        <th class="options-cell">5</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <button type="submit" class="btn btn-primary">Submit Answers</button>
-                    </form>
+                                </thead>
+                                <tbody>
+                                    @foreach ($questions as $index => $question)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $question->text }}</td>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <td>
+                                                    <input type="radio"
+                                                        id="answer_{{ $index }}_{{ $i }}"
+                                                        name="answers[{{ $index }}][answer_value]"
+                                                        value="{{ $i }}"
+                                                        {{ old('answers.' . $index . '.answer_value') == $i ? 'checked' : '' }}
+                                                        required>
+                                                </td>
+                                            @endfor
+                                            <input type="hidden" id="question_id_{{ $index }}"
+                                                name="answers[{{ $index }}][question_id]"
+                                                value="{{ $question->id }}">
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary">Submit Jawaban</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 
-<!-- Result Modal -->
-<div class="modal fade" id="result-modal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="resultModalLabel">Your User Type</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <img id="user-category-image" src="" alt="User Type Image" class="img-fluid">
-                <h4 id="user-category-name"></h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    @if (!$hasUserType)
+        <!-- Result Modal -->
+        <div id="result-modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hasil Pengguna</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="user-category-image" src="" alt="" class="img-fluid">
+                        <h4 id="user-category-name"></h4>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Include form here -->
+                        <form id="save-user-type-form" action="{{ route('siswa.saveUserType') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_type_id" id="user_type_id">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div> --}}
+    @endif --}}
+
 
     <div class="row">
         <div class="col-xxl-8 d-flex align-items-stretch">
@@ -221,17 +242,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-3">
-                <div class="card" >
-                    <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="..." >
-                    <div class="card-body">
-                        <h5 class="card-title">Materi 1</h5>
-                        <p class="card-text"id="deskripsi">Nam libero tempore, cum soluta nobis est
-                            eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.</p>
-                        <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
+            @foreach ($kelas as $course)
+                <div class="col-sm-3">
+                    <div class="card">
+                        <img src="{{ asset('storage/laravel.png') }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $course->mapel }}</h5>
+                            <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
+                            <a href="{{ route('siswa.course.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 @endsection
@@ -245,41 +267,80 @@
 
     <script>
         $(document).ready(function() {
-            // Make the questions modal static and then show it
-            $('#questions-modal').modal({
-                backdrop: 'static',
-                keyboard: false
-            }).modal('show'); // Automatically show the modal
+            var showQuestionsModal = @json(!$hasUserType);
+            console.log('showQuestionsModal:', showQuestionsModal);
 
-            $('#questions-form').on('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            if (showQuestionsModal) {
+                $('#questions-modal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }).modal('show');
+            }
+
+            $('#answerForm').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
                 $.ajax({
                     url: "{{ route('siswa.store.answers') }}",
                     method: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
-                        console.log(response); // Log response for debugging
+                        $('#questions-modal').modal('hide');
 
-                        if (response.success) {
-                            $('#questions-modal').modal('hide');
-                            $('#user-category-name').text(response.user_type.name);
-                            $('#user-category-image').attr('src', response.user_type.image);
-                            $('#result-modal').modal('show');
+                        $.ajax({
+                            url: "{{ route('siswa.result') }}",
+                            method: 'GET',
+                            success: function(result) {
+                                console.log('Result:',
+                                result); // Check this in console
+                                $('#user-category-name').text(result.name);
+                                $('#user-category-image').attr('src', result.image);
+                                $('#user_type_id').val(result
+                                .id); // Ensure this is set
+                                $('#result-modal').modal('show');
+                            },
+                            error: function(xhr) {
+                                console.log(xhr.responseText); // Debug output
+                                alert('Terjadi kesalahan saat mengambil hasil.');
+                            }
+                        });
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText); // Debug output
+                        alert('Terjadi kesalahan saat mengirim formulir.');
+                    }
+                });
+            });
+
+            $('#save-user-type-form').on('submit', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "{{ route('siswa.saveUserType') }}",
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(saveResponse) {
+                        if (saveResponse.success) {
+                            $('#result-modal').modal('hide');
+                            window.location.href = "{{ route('siswa.dashboard') }}";
                         } else {
-                            alert('An error occurred: ' + response.message);
+                            alert('Terjadi kesalahan saat menyimpan tipe pengguna.');
                         }
                     },
                     error: function(xhr) {
-                        $('#loader').hide();
-                        console.error('AJAX Error:', xhr.responseText); // Log the error response text for debugging
-                        alert('An error occurred while processing your request.');
+                        console.log(xhr.responseText); // Debug output
+                        alert('Terjadi kesalahan saat mengirim data.');
                     }
                 });
             });
         });
     </script>
-
 
     <!--plugins-->
     <script src="{{ URL::asset('build/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>

@@ -10,7 +10,10 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MateriController;
+use App\Http\Controllers\SettingRoleController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\SubMateriController;
+use App\Models\SubMateri;
 use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -32,9 +35,9 @@ Route::get('/', function () {
 // Route::get('/livecode_guru', function () {
 //     return view('guru.livecode_guru');
 // });
-// Route::get('/tambah_materi', function () {
-//     return view('guru.tambah_materi');
-// });
+Route::get('/tambah_materi', function () {
+    return view('guru.tambah_materi');
+});
 // Route::get('/tambah_studi_kasus', function () {
 //     return view('guru.tambah_studi_kasus');
 // });
@@ -72,16 +75,6 @@ Route::get('/', function () {
 //     return view('icons-boxicons');
 // });
 
-// Route::get('/login',[LoginController::class,'index'])->name('login');
-// Route::get('/register',[RegisterController::class,'index'])->name('register');
-// Route::post('/login',[LoginController::class,'authenticate']);
-// Route::post('/register',[RegisterController::class,'create']);
-
-// Route::post('/logout',function(){
-//     Auth::logout();
-//     return redirect('/login');
-// })->name('logout');
-
 // Public Routes
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -92,11 +85,8 @@ Route::post('/register', [RegisterController::class, 'create']);
 Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
-    // Route::resource('/course', KelasController::class)->only(['index', 'show', 'join'])->names([
-    //     'index' => 'siswa.course.index',
-    //     'show' => 'siswa.course.show',
-    //     'join' => 'siswa.join.show',
-    // ]);
+    Route::get('/user-type-result', [SiswaController::class, 'getUserTypeResult'])->name('siswa.result');
+    Route::post('/save-user-type', [SiswaController::class, 'saveUserType'])->name('siswa.saveUserType');
     Route::get('/course', [KelasController::class, 'index'])->name('siswa.course.index');
     Route::get('/course/{id}', [KelasController::class, 'show'])->name('siswa.course.show');
     Route::post('/course/join', [KelasController::class, 'join'])->name('siswa.course.join');
@@ -110,12 +100,29 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
 Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     Route::get('/dashboard', [GuruController::class, 'index'])->name('guru.dashboard');
     Route::resource('/course', KelasController::class);
-    Route::resource('/course-detail', MateriController::class);
+    Route::resource('/course-detail/{id}', MateriController::class)->names([
+        'index' => 'guru.course-detail.index',
+        'create' => 'guru.course-detail.create',
+        'store' => 'guru.course-detail.store',
+        'show' => 'guru.course-detail.show',
+        'edit' => 'guru.course-detail.edit',
+        'update' => 'guru.course-detail.update',
+        'destroy' => 'guru.course-detail.destroy',
+    ]);
+    // Route::get('/kelas/{id}/sub-materi/{subMateriId}', [SubMateriController::class, 'showSubMateri'])
+    // ->name('sub-materi.show');});
+
+    Route::get('/tambah_materi', function () {
+        return view('guru.tambah_materi');
+    });
 });
 
 // Admin Routes
 Route::prefix('admin')->middleware(['role:admin'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::resource('/dashboard', AdminController::class)->names([
+        'index' => 'admin.dashboard',
+    ]);
+    Route::resource('/setting-role', SettingRoleController::class);
 });
 
 // Logout Route

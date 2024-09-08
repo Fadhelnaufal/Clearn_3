@@ -37,7 +37,7 @@ class RegisterController extends Controller
         auth()->login($user);
 
         // Redirect to the intended location or dashboard
-        return redirect()->intended('dashboard');
+        return redirect()->intended('login');
     }
 
     use RegistersUsers;

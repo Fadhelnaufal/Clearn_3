@@ -3,7 +3,11 @@
     Dashboard
 @endsection
 @section('content')
-    <x-page-title title="Dashboard" subtitle="Dashboard Guru" />
+    @php
+        $user = auth()->user(); // Get the logged-in user
+        $role = $user->roles->pluck('name')->first(); // Get the user's role name
+    @endphp
+    <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
 
 
 

@@ -14,10 +14,10 @@ class UserTypesSeeder extends Seeder
     public function run(): void
     {
         DB::table('user_types')->insert([
-            ['name' => 'Overachiever','image' => 'MApr.png'],
-            ['name' => 'Mastery Expert','image' => 'MAvo.png'],
-            ['name' => 'Best Performance','image' => 'PApr.png'],
-            ['name' => 'Nonachiever','image' => 'PAvo.png'],
+            ['name' => 'Overachiever','image' => 'overachiever.png'],
+            ['name' => 'Mastery Expert','image' => 'mastery-expert.png'],
+            ['name' => 'Best Performance','image' => 'best-performance.png'],
+            ['name' => 'Nonachiever','image' => 'non-achiever.png'],
         ]);
     }
 }

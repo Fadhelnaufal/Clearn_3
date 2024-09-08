@@ -90,7 +90,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $course->mapel }}</h5>
                                 <p class="card-title">{{ $course->kelas }}</p>
-                                <a href="{{ route('siswa.course.show', $course->id) }}" class="btn btn-primary">View
+                                <a href="{{ route('siswa.course-detail.show', $course->id) }}" class="btn btn-primary">View
                                     Details</a>
                             </div>
                         </div>

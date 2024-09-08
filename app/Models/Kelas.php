@@ -16,7 +16,7 @@ class Kelas extends Model
         'kelas',
         'logo',
         'user_id',
-        'token'
+        'token',
     ];
 
     protected static function boot()
@@ -35,5 +35,9 @@ class Kelas extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'class_user', 'kelas_id', 'user_id');
+    }
+    public function materi()
+    {
+        return $this->hasMany(Materi::class);
     }
 }

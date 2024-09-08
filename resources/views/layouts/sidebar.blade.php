@@ -12,93 +12,119 @@
            </div>
        </div>
 
-    @if (auth()->check())
-    @php
-        $user = auth()->user();
-    @endphp
+       @if (auth()->check())
+           @php
+               $user = auth()->user();
+           @endphp
 
-    @if ($user->hasRole('guru'))
-        <div class="sidebar-nav">
-            <!-- Navigation for Guru -->
-            <ul class="metismenu mt-" id="sidenav">
-                <li class="menu-label mt-4">Home</li>
-                <li class="mt-3">
-                    <a href="{{ url('/guru/dashboard') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-home"></i></div>
-                        <div class="menu-title">Dashboard</div>
-                    </a>
-                </li>
-                <li class="mt-3">
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
-                        <div class="menu-title">Course</div>
-                    </a>
-                    <ul>
-                        <li><a href="{{ url('/guru/course') }}"><i class="material-icons-outlined">arrow_right</i>Kelas</a></li>
-                    </ul>
-                </li>
-                <li class="mt-3">
-                    <a href="{{ url('/guru/discussion') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-chat"></i></div>
-                        <div class="menu-title">Discussion</div>
-                    </a>
-                </li>
-                <li class="mt-3">
-                    <a href="{{ url('/guru/livecode') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
-                        <div class="menu-title">Live Code</div>
-                    </a>
-                </li>
-                <li class="mt-3">
-                    <a href="{{ url('/guru/quiz') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-trophy"></i></div>
-                        <div class="menu-title">Quiz</div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    @elseif ($user->hasRole('siswa'))
-        <div class="sidebar-nav">
-            <!-- Navigation for Siswa -->
-            <ul class="metismenu mt-" id="sidenav">
-                <li class="menu-label mt-4">Home</li>
-                <li class="mt-3">
-                    <a href="{{ url('/siswa/dashboard') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-home"></i></div>
-                        <div class="menu-title">Dashboard</div>
-                    </a>
-                </li>
-                <li class="mt-3">
-                    <a href="javascript:;" class="has-arrow">
-                        <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
-                        <div class="menu-title">Course</div>
-                    </a>
-                    <ul>
-                        <li><a href="{{ url('/siswa/course') }}"><i class="material-icons-outlined">arrow_right</i>Kelas</a></li>
-                    </ul>
-                </li>
-                <li class="mt-3">
-                    <a href="{{ url('/siswa/discussion') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-chat"></i></div>
-                        <div class="menu-title">Discussion</div>
-                    </a>
-                </li>
-                <li class="mt-3">
-                    <a href="{{ url('/siswa/livecode') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
-                        <div class="menu-title">Live Code</div>
-                    </a>
-                </li>
-                <li class="mt-3">
-                    <a href="{{ url('/siswa/quiz') }}">
-                        <div class="font-20"><i class="fadeIn animated bx bx-trophy"></i></div>
-                        <div class="menu-title">Quiz</div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    @endif
-@endif
+           @if ($user->hasRole('guru'))
+               <div class="sidebar-nav">
+                   <!-- Navigation for Guru -->
+                   <ul class="metismenu mt-4" id="sidenav">
+                       <li class="menu-label mt-4">Home</li>
+                       <li class="mt-3">
+                           <a href="{{ url('/guru/dashboard') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-home"></i></div>
+                               <div class="menu-title">Dashboard</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="javascript:;" class="has-arrow">
+                               <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
+                               <div class="menu-title">Course</div>
+                           </a>
+                           <ul>
+                               <li><a href="{{ url('/guru/course') }}"><i
+                                           class="material-icons-outlined">arrow_right</i>Kelas</a></li>
+                           </ul>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/guru/discussion') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-chat"></i></div>
+                               <div class="menu-title">Discussion</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/guru/livecode') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
+                               <div class="menu-title">Live Code</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/guru/quiz') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-trophy"></i></div>
+                               <div class="menu-title">Quiz</div>
+                           </a>
+                       </li>
+                   </ul>
+               </div>
+           @elseif ($user->hasRole('siswa'))
+               <div class="sidebar-nav">
+                   <!-- Navigation for Siswa -->
+                   <ul class="metismenu mt-4" id="sidenav">
+                       <li class="menu-label mt-4">Home</li>
+                       <li class="mt-3">
+                           <a href="{{ url('/siswa/dashboard') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-home"></i></div>
+                               <div class="menu-title">Dashboard</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="javascript:;" class="has-arrow">
+                               <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
+                               <div class="menu-title">Course</div>
+                           </a>
+                           <ul>
+                               <li><a href="{{ url('/siswa/course') }}"><i
+                                           class="material-icons-outlined">arrow_right</i>Kelas</a></li>
+                           </ul>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/siswa/discussion') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-chat"></i></div>
+                               <div class="menu-title">Discussion</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/siswa/livecode') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
+                               <div class="menu-title">Live Code</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/siswa/quiz') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-trophy"></i></div>
+                               <div class="menu-title">Quiz</div>
+                           </a>
+                       </li>
+                   </ul>
+               </div>
+           @elseif ($user->hasRole('admin'))
+               @php
+                   $user = auth()->user(); // Get the logged-in user
+                   $role = $user->roles->pluck('name')->first(); // Get the user's role name
+               @endphp
+               <div class="sidebar-nav">
+                   <!-- Navigation for Admin -->
+                   <ul class="metismenu mt-4" id="sidenav">
+                       <li class="menu-label mt-4">{{ ucfirst($role) }} Panel</li>
+                       <li class="mt-3">
+                           <a href="{{ url('/admin/dashboard') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-home"></i></div>
+                               <div class="menu-title">Admin Dashboard</div>
+                           </a>
+                       </li>
+                       <li class="mt-3">
+                           <a href="{{ url('/admin/setting-role') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-cog"></i></div>
+                               <div class="menu-title">Set Roles</div>
+                           </a>
+                       </li>
+                   </ul>
+               </div>
+           @endif
+       @endif
+
 
 
        {{-- <li>

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <x-page-title title="Course" subtitle="Detail Kelas" />
+    <x-page-title title="Course" subtitle="Detail Kelas {{ $kelas->mapel }}" />
     <div class="row">
         <div class="container">
             <div class="card">
@@ -75,53 +75,48 @@
                 <div class="row">
                     <div class="col-md-7">
                         <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Materi 1
-                                    </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <a href=""><strong>Materi 1</strong></a> It is hidden by
-                                        default, until the collapse plugin adds the appropriate classes that we use to
-                                        style each element.
-                                        <div class="col">
-                                            <button type="submit" class="btn btn-primary mt-4 p-2 btn-sm me-2"><i
-                                                    class="bi bi-plus-lg"></i> Tambah
-                                                Materi</button>
-                                            <button type="submit" data-bs-toggle="modal" data-bs-target="#tambahsoal"
-                                                class="btn btn-secondary mt-4 p-2 btn-sm me-2"><i
-                                                    class="bi bi-plus-lg"></i> Tambah
-                                                Soal</button>
-                                            <button type="submit" class="btn btn-warning mt-4 p-2 btn-sm me-2"><i
-                                                    class="bi bi-pencil-square"></i> Edit
-                                                TP</button>
-                                            <button type="submit" class="btn btn-danger mt-4 p-2 btn-sm me-2"><i
-                                                    class="bi bi-trash3"></i> Hapus
-                                                TP</button>
+                            @if ($materis->isNotEmpty())
+                                @foreach ($materis as $materi)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading{{ $materi->id }}">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapse{{ $materi->id }}" aria-expanded="true"
+                                                aria-controls="collapse{{ $materi->id }}">
+                                                {{ $materi->judul }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse show"
+                                            aria-labelledby="heading{{ $materi->id }}" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                @foreach ($materi->subMateris as $subMateri)
+                                                    <div class="sub-materi-item">
+                                                        <a
+                                                            href="{{ route('subMateri.show', $subMateri->id) }}"><strong>{{ $subMateri->judul }}</strong></a>
+                                                        <p>{{ $subMateri->isi }}</p>
+                                                        @if ($subMateri->lampiran)
+                                                            <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
+                                                                target="_blank">Download Lampiran</a>
+                                                        @endif
+                                                    </div>
+                                                @endforeach
+                                                <div class="col mt-3">
+                                                    <button type="button" class="btn btn-primary mt-2"><i
+                                                            class="bi bi-plus-lg"></i> Tambah Materi</button>
+                                                    <button type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#tambahsoal" class="btn btn-secondary mt-2"><i
+                                                            class="bi bi-plus-lg"></i> Tambah Soal</button>
+                                                    <button type="button" class="btn btn-warning mt-2"><i
+                                                            class="bi bi-pencil-square"></i> Edit TP</button>
+                                                    <button type="button" class="btn btn-danger mt-2"><i
+                                                            class="bi bi-trash3"></i> Hapus TP</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Materi 2
-                                    </button>
-                                </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <strong>This is the second item's accordion body.</strong> It is hidden by
-                                        default, until the collapse plugin adds the appropriate classes that we use to
-                                        style each element.
-                                    </div>
-                                </div>
-                            </div>
+                                @endforeach
+                            @else
+                                <p>No materi available for this class.</p>
+                            @endif
                         </div>
                     </div>
                     <div class="modal fade" id="tambahsoal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -153,7 +148,7 @@
                         <div class="card">
                             <div class="card-body text-center mt-2 mb-2">
                                 <h3 class="mb-3">Jumlah TP</h3>
-                                <h1 class="mt-3 mb-3">0</h1>
+                                <h1 class="mt-3 mb-3">{{ $materis->count() }}</h1>
                                 <div class="parent-icon mb-3 mt-3">
                                     <button type="button" class="btn btn-primary" data-bs-target="#FormModal"
                                         data-bs-toggle="modal">Tambah TP <i class="fa-solid fa-plus ms-2"></i></button>
@@ -172,18 +167,17 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-body">
-                                        <form class="row g-3">
+                                        <form class="row g-3" id="addMateriForm" method="POST" action="{{route('guru.course-detail.store')}}">
+                                            @csrf
                                             <div class="col-md-12">
-                                                <label for="input5" class="form-label">Nama Materi</label>
-                                                <input type="text" class="form-control" id="input5">
+                                                <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                                <label for="judul" class="form-label">Nama Materi</label>
+                                                <input type="text" class="form-control" id="judul" name="judul" required>
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                                    <button type="button"
-                                                        class="btn ripple btn-primary px-2">Tambah</button>
-                                                    <button type="button"
-                                                        class="btn ripple btn-secondary px-2 text-center"
-                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
+                                                    <button type="button" class="btn ripple btn-secondary px-2 text-center" data-bs-dismiss="modal">Batal</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -203,12 +197,13 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
                                             Studi Kasus 1
                                         </button>
                                     </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                        data-bs-parent="#accordionExample">
+                                    <div id="collapseOne" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <a href=""><strong>Studi Kasus</strong></a> It is hidden by
                                             default, until the collapse plugin adds the appropriate classes that we use to
@@ -217,7 +212,8 @@
                                                 <button type="submit" class="btn btn-primary mt-4 p-2 btn-sm me-2"><i
                                                         class="bi bi-plus-lg"></i> Tambah
                                                     Materi</button>
-                                                <button type="submit" data-bs-toggle="modal" data-bs-target="#tambahsoal"
+                                                <button type="submit" data-bs-toggle="modal"
+                                                    data-bs-target="#tambahsoal"
                                                     class="btn btn-secondary mt-4 p-2 btn-sm me-2"><i
                                                         class="bi bi-plus-lg"></i> Tambah
                                                     Soal</button>
@@ -267,11 +263,10 @@
                                 <h3 class="mb-3">Jumlah Studi Kasus</h3>
                                 <h1 class="mt-3 mb-3">0</h1>
                                 <div class="parent-icon mb-3 mt-3">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#exampleModal">
-                                                Tambah Studi Kasus<i
-                                                class="fa-solid fa-plus ms-2"></i>
-                                            </button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                        Tambah Studi Kasus<i class="fa-solid fa-plus ms-2"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>

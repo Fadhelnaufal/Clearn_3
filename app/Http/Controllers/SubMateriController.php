@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\SubMateri;
 use Illuminate\Support\Facades\Storage;
 
-class MateriController extends Controller
+class SubMateriController extends Controller
 {
     // ... existing methods
+    public function showSubMateri($id, $subMateriId)
+    {
+        $kelas = Kelas::findOrFail($id);
+        $materis = $kelas->materi; // Ensure this relationship exists and returns a collection of materi
+        $subMateri = SubMateri::findOrFail($subMateriId);
+
+        return view('materi.show_sub_materi', compact('subMateri', 'materis'));
+    }
 
     // Show form to create a new sub materi
     public function createSubMateri($materiId)

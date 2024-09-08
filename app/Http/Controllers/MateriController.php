@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\Kelas;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
@@ -14,8 +15,19 @@ class MateriController extends Controller
      */
     public function index()
     {
-        $materi = Materi::get()->all();
-        return view('class.materi', compact('materi'));
+        $user = Auth::user();
+        if ($user->hasRole('siswa')) {
+            // Fetch classes the user has joined (assuming the relationship name is 'kelas')
+            $materi = $user->kelas; // Ensure this relationship exists in your User model
+        } else {
+            // For 'guru' or other roles, fetch all classes
+            $materi = Materi::all();
+        }
+
+        $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
+        return view($view, compact('materi'));
+        // $materi = Materi::get()->all();
+        // return view('guru.materi', compact('materi'));
     }
 
     /**
@@ -24,6 +36,22 @@ class MateriController extends Controller
     public function create()
     {
         return view('materi.create');
+    }
+    public function show($id)
+    {
+        // Retrieve the course details based on the ID
+        $kelas = Kelas::findOrFail($id); // Assuming you have a Kelas model
+        $materi = Materi::get()->all();
+        $materis = $kelas->materi()->with('subMateris')->get();;
+        if ($materis === null) {
+            return abort(404, 'Materis not found');
+        }
+
+        $user = Auth::user();
+        $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
+
+        return view($view, compact('kelas', 'materis'));
+
     }
 
     /**
@@ -40,7 +68,7 @@ class MateriController extends Controller
         $kelas = Kelas::findOrFail($request->kelas_id);
         $materi = $kelas->materi()->create($data);
 
-        return redirect()->route('kelas.show', $request->kelas_id)
+        return redirect()->route('guru.course-detail.show', $request->kelas_id)
             ->with('success', 'Materi berhasil ditambahkan');
     }
 

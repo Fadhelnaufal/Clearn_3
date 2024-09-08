@@ -55,23 +55,15 @@ class KelasController extends Controller
             $request->merge(['logo' => $filePath]);
         }
 
-        $kelas = new Kelas();
-        $kelas->mapel = $request->input('mapel');
-        $kelas->kelas = $request->input('kelas');
-        $kelas->logo = $filePath;
-        $kelas->user_id = Auth::id();
-        $kelas->token = Str::random(5); // Generate a random token
-        $kelas->save(); // Save the Kelas instance
+        $data = $request->all();
+        $data['logo'] = $filePath;
+        $data['user_id'] = Auth::user()->id;
+        $data['token'] = Str::random(5); // Automatically generate a 64-character token
 
-        // $data = $request->all();
-        // $data['logo'] = $filePath;
-        // $data['user_id'] = Auth::user()->id;
-        // $data['token'] = Str::random(5); // Automatically generate a 64-character token
-
-        // $kelas = Kelas::create($data);
+        $kelas = Kelas::create($data);
 
         return redirect()->route('course.index', $kelas->id)
-            ->with('success', 'Kelas Berhasil dibuat dengan token: ' . $kelas->token);
+            ->with('success', 'Kelas "' . $kelas->mapel . '" berhasil dibuat dengan token: ' . $kelas->token);
     }
 
     /**
@@ -115,7 +107,7 @@ class KelasController extends Controller
             $file = $request->file('logo');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('images/logos', $fileName, 'public');
-            $data['logo'] = $filePath;
+            $request->merge(['logo' => $filePath]);
         }
 
         $kelas->update($data);
