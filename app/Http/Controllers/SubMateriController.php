@@ -3,32 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
-use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\SubMateri;
+use App\Models\UserType;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class SubMateriController extends Controller
 {
     // ... existing methods
     public function showSubMateri($id, $subMateriId)
     {
-        $kelas = Kelas::findOrFail($id);
-        $materis = $kelas->materi; // Ensure this relationship exists and returns a collection of materi
-        $subMateri = SubMateri::findOrFail($subMateriId);
+        $kelas = Kelas::with('materi')->findOrFail($id);
+        $userTypes = UserType::all();
+        $materis = $kelas->materis; // Use the correct relationship here
+        // $subMateri = SubMateri::findOrFail($subMateriId);
+        // $subMateri = null;
 
-        return view('materi.show_sub_materi', compact('subMateri', 'materis'));
+        return view('guru.tambah_materi', compact('kelas', 'materis', 'userTypes'));
     }
 
     // Show form to create a new sub materi
-    public function createSubMateri($materiId)
+    public function createSubMateri($materiId,$kelasId)
     {
+        $kelas = Kelas::findOrFail($kelasId);
         $materi = Materi::findOrFail($materiId);
-        return view('materi.create_sub_materi', compact('materi'));
+        // $userType = UserType::findOrFail($userTypeId);
+        return view('materi.create_sub_materi', compact('kelas','materi'));
     }
 
     // Store a new sub materi
-    public function storeSubMateri(Request $request, $materiId)
+    public function storeSubMateri(Request $request, $userTypeId, $kelasId, $materiId)
     {
         $this->validate($request, [
             'judul' => 'required|max:255',
@@ -36,9 +41,12 @@ class SubMateriController extends Controller
             'lampiran' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
         ]);
 
+        $kelas = Kelas::findOrFail($kelasId);
         $materi = Materi::findOrFail($materiId);
+        $userType = UserType::findOrFail($userTypeId);
 
         $data = $request->only(['judul', 'isi']);
+        $data['kategori_id'] = $userTypeId;
 
         if ($request->hasFile('lampiran')) {
             $file = $request->file('lampiran');
@@ -47,9 +55,16 @@ class SubMateriController extends Controller
             $data['lampiran'] = $filePath;
         }
 
-        $materi->subMateris()->create($data);
+        $materi = $kelas->materis()->first();
+        // $materi->subMateris()->create($data);
+        if ($materi) {
+            $materi->subMateris()->create($data);
+        } else {
+            // If no Materi is found, directly create SubMateri in Kelas
+            $kelas->subMateris()->create($data);
+        }
 
-        return redirect()->route('materi.show', $materiId)
+        return redirect()->route('guru-course-detail.show', $kelasId)
             ->with('success', 'Sub Materi berhasil ditambahkan');
     }
 

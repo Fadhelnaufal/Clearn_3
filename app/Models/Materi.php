@@ -12,7 +12,7 @@ class Materi extends Model
     protected $fillable = [
         'kelas_id',
         'judul',
-        'kategori_id'
+        // 'kategori_id'
     ];
 
     public function kategori()

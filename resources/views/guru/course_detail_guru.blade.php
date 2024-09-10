@@ -74,18 +74,18 @@
             <div class="tab-pane fade show active target" id="misi">
                 <div class="row">
                     <div class="col-md-7">
-                        <div class="accordion" id="accordionExample">
-                            @if ($materis->isNotEmpty())
-                                @foreach ($materis as $materi)
-                                    <div class="accordion-item">
+                        @if ($materis->isNotEmpty())
+                            @foreach ($materis as $materi)
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item mb-3">
                                         <h2 class="accordion-header" id="heading{{ $materi->id }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse{{ $materi->id }}" aria-expanded="true"
-                                                aria-controls="collapse{{ $materi->id }}">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $materi->id }}"
+                                                aria-expanded="false" aria-controls="collapse{{ $materi->id }}">
                                                 {{ $materi->judul }}
                                             </button>
                                         </h2>
-                                        <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse show"
+                                        <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse"
                                             aria-labelledby="heading{{ $materi->id }}" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 @foreach ($materi->subMateris as $subMateri)
@@ -100,23 +100,84 @@
                                                     </div>
                                                 @endforeach
                                                 <div class="col mt-3">
-                                                    <button type="button" class="btn btn-primary mt-2"><i
-                                                            class="bi bi-plus-lg"></i> Tambah Materi</button>
+                                                    @if (isset($subMateriId))
+                                                        <a href="{{ route('sub-materi.show', ['id' => $kelas->id, 'subMateriId' => $subMateriId]) }}"
+                                                            class="btn btn-primary mt-2">
+                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ route('sub-materi.create', ['kelasId' => $kelas->id, 'materiId' => $materi->id]) }}"
+                                                            class="btn btn-primary mt-2">
+                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
+                                                        </a>
+                                                    @endif
                                                     <button type="button" data-bs-toggle="modal"
                                                         data-bs-target="#tambahsoal" class="btn btn-secondary mt-2"><i
                                                             class="bi bi-plus-lg"></i> Tambah Soal</button>
-                                                    <button type="button" class="btn btn-warning mt-2"><i
-                                                            class="bi bi-pencil-square"></i> Edit TP</button>
-                                                    <button type="button" class="btn btn-danger mt-2"><i
-                                                            class="bi bi-trash3"></i> Hapus TP</button>
+                                                    <button type="button" class="btn btn-warning mt-1"
+                                                        data-bs-target="#EditModal" data-bs-toggle="modal"><i
+                                                            class="bi bi-pencil-square"></i>Edit TP</button>
+                                                    <form id="delete-form-{{ $materi->id }}"
+                                                        action="{{ route('guru.course-detail.destroy', $materi->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-danger mt-1"
+                                                            onclick="confirmDelete({{ $materi->id }})">
+                                                            <i class="bi bi-trash3"></i> Hapus TP
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-                            @else
-                                <p>No materi available for this class.</p>
-                            @endif
+                                </div>
+                            @endforeach
+                        @else
+                            <p>No materi available for this class.</p>
+                        @endif
+                    </div>
+                    <div class="modal fade" id="EditModal">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header border-bottom-0 py-2">
+                                    <h5 class="modal-title">Edit Materi</h5>
+                                    <a href="javascript:;" class="primary-menu-close" data-bs-dismiss="modal">
+                                        <i class="material-icons-outlined">close</i>
+                                    </a>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-body">
+                                        @if ($materi)
+                                            <form class="row g-3" id="addMateriForm" method="POST"
+                                                action="{{ route('guru.course-detail.update', [$materi->id]) }}">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="col-md-12">
+                                                    <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                                    <label for="judul" class="form-label">Nama Materi</label>
+                                                    <input type="text" class="form-control" id="judul"
+                                                        name="judul" value="{{ old('judul', $materi->judul) }}"
+                                                        required>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="d-md-flex d-grid align-items-center gap-3">
+                                                        <button type="button" class="btn ripple btn-primary px-2"
+                                                            onclick="submitForm()">
+                                                            Simpan Perubahan
+                                                        </button>
+                                                        <button type="button"
+                                                            class="btn ripple btn-secondary px-2 text-center"
+                                                            data-bs-dismiss="modal">
+                                                            Batal
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal fade" id="tambahsoal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -160,27 +221,28 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header border-bottom-0 py-2">
-                                    <h5 class="modal-title">Tambah Materi</h5>
+                                    <h5 class="modal-title">Tambahkan Materi</h5>
                                     <a href="javascript:;" class="primary-menu-close" data-bs-dismiss="modal">
                                         <i class="material-icons-outlined">close</i>
                                     </a>
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-body">
-                                        <form class="row g-3" id="addMateriForm" method="POST" action="{{route('guru.course-detail.store')}}">
-                                            @csrf
-                                            <div class="col-md-12">
-                                                <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
-                                                <label for="judul" class="form-label">Nama Materi</label>
-                                                <input type="text" class="form-control" id="judul" name="judul" required>
+                                        <form class="row g-3" id="addMateriForm" method="POST"
+                                        action="{{ route('guru.course-detail.store') }}">
+                                        @csrf
+                                        <div class="col-md-12">
+                                            <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                            <label for="judul" class="form-label">Nama Materi</label>
+                                            <input type="text" class="form-control" id="judul" name="judul" required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="d-md-flex d-grid align-items-center gap-3">
+                                                <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
+                                                <button type="button" class="btn ripple btn-secondary px-2 text-center" data-bs-dismiss="modal">Batal</button>
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="d-md-flex d-grid align-items-center gap-3">
-                                                    <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
-                                                    <button type="button" class="btn ripple btn-secondary px-2 text-center" data-bs-dismiss="modal">Batal</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        </div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +403,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <p class="mx-3 mt-3">belum ada anggota kelas</p>
+                            <p class="mx-3 mt-3">{{ $kelas->siswa }}</p>
                         </div>
                     </div>
                 </div>
@@ -354,27 +416,42 @@
                             <p class="mx-3 mt-3">ini adalah informasi kelas</p>
                         </div>
                         <div class="col mx-3 mt-3 mb-3">
-                            <form action="">
-                                <div class="">
+                            <form action="{{ route('course.update', $kelas->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-2">
                                     <label for="input5" class="form-label mt-2">Nama Mata Pelajaran</label>
-                                    <input type="text" class="form-control" id="input5" name="judul">
+                                    <input type="text" class="form-control" id="input5" name="mapel"
+                                        value="{{ $kelas->mapel }}">
                                 </div>
-                                <div class="">
+                                <div class="mb-2">
                                     <label for="input5" class="form-label mt-2">Nama Kelas </label>
-                                    <input type="text" class="form-control" id="input5" name="judul">
+                                    <input type="text" class="form-control" id="input5" name="kelas"
+                                        value="{{ $kelas->kelas }}">
                                 </div>
-                                <div class="">
+                                <div class="mb-2">
                                     <label for="input5" class="form-label">Logo Kelas</label>
-                                    <input type="file" class="form-control" id="image_kelas" name="image_kelas"
-                                        accept="image/png, image/jpeg">
+                                    <input type="file" class="form-control" id="image_kelas" name="logo"
+                                        value="{{ $kelas->logo }}" accept="image/png, image/jpeg">
                                 </div>
-                                <div class="">
-                                    <button type="submit" class="btn btn-danger mt-4 me-2 p-2"><i
-                                            class="bi bi-trash fs-6 me-2"></i>Hapus</button>
-                                    <button type="submit" class="btn btn-warning mt-4 p-2"><i
-                                            class="bi bi-pencil-square fs-6 me-2"></i>Edit Kelas</button>
+                                <div class="mb-2">
+                                    <button type="submit" class="btn btn-warning mt-4 p-2">
+                                        <i class="bi bi-pencil-square fs-6 me-2"></i> Edit Kelas
+                                    </button>
                                 </div>
                             </form>
+                            <div class="mb-2">
+                                <!-- Delete Form -->
+                                <form action="{{ route('course.destroy', $kelas->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger mt-4 me-2 p-2">
+                                        <i class="bi bi-trash fs-6 me-2"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -412,6 +489,75 @@
             });
         });
     </script>
+
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Yakin TP Akan Dihapus?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+    <!-- Include SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function submitForm() {
+            // Show the toast and submit the form
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Sedang Memproses...',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                document.getElementById('addMateriForm').submit();
+            });
+        }
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+        });
+
+        // Optional: Show success toast if there's a session message
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                    background: '#a5dc86', // Success background color
+                });
+            @endif
+
+            @if (session('toast_error'))
+                Toast.fire({
+                    icon: 'error',
+                    title: "{{ session('toast_error') }}",
+                    background: '#f27474', // Error background color
+                });
+            @endif
+        });
+    </script>
+
+
 
     <script>
         $(".data-attributes span").peity("donut");

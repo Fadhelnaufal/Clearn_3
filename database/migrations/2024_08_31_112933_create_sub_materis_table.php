@@ -20,9 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('kategori_id');
             $table->timestamps();
 
-            $table->foreign('kategori_id')
+            $table->foreign('user_type_id')
             ->references('id')
-            ->on('categories')
+            ->on('user_types')
             ->onDelete('cascade');
         });
     }

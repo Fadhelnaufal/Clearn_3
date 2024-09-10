@@ -113,18 +113,18 @@
         </div>
     </div>
     <div class="row">
-        {{-- @foreach ($kelas as $course)
+        @foreach ($kelas as $course)
             <div class="col-sm-3">
                 <div class="card">
-                    <img src="{{ asset('storage/laravel.png') }}" class="card-img-top" alt="...">
+                    <img src="{{ URL::asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ $course->mapel }}</h5>
                         <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
-                        <a href="{{ route('siswa.course.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
+                        <a href="{{ route('guru.course-detail.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
                     </div>
                 </div>
             </div>
-        @endforeach --}}
+        @endforeach
     </div>
 @endsection
 @push('script')

@@ -13,8 +13,10 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $kelas = Auth::user()->kelas;
-        return view('guru.dashboard_guru');
+        $user = Auth::user();
+        $kelas = Kelas::where('user_id', $user->id)->get();
+        // dd($kelas);
+        return view('guru.dashboard_guru', compact('kelas'));
     }
 
     /**
@@ -39,8 +41,7 @@ class GuruController extends Controller
     public function show(string $id)
     {
         $kelas = Kelas::findOrFail($id);
-        return view('dashboard.show', compact('kelas'));
-    }
+        return view('guru.dashboard_guru', compact('kelas'));    }
 
     /**
      * Show the form for editing the specified resource.

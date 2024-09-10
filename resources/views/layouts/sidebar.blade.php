@@ -29,14 +29,10 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                           <a href="javascript:;" class="has-arrow">
+                           <a href="{{ url('/guru/course') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
-                               <div class="menu-title">Course</div>
+                               <div class="menu-title">Kelas</div>
                            </a>
-                           <ul>
-                               <li><a href="{{ url('/guru/course') }}"><i
-                                           class="material-icons-outlined">arrow_right</i>Kelas</a></li>
-                           </ul>
                        </li>
                        <li class="mt-3">
                            <a href="{{ url('/guru/discussion') }}">
@@ -70,14 +66,11 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                           <a href="javascript:;" class="has-arrow">
-                               <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
-                               <div class="menu-title">Course</div>
-                           </a>
-                           <ul>
-                               <li><a href="{{ url('/siswa/course') }}"><i
-                                           class="material-icons-outlined">arrow_right</i>Kelas</a></li>
-                           </ul>
+                        <a href="{{ url('/siswa/course') }}">
+                            <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
+                            <div class="menu-title">Kelas</div>
+                        </a>
+                    </li>
                        </li>
                        <li class="mt-3">
                            <a href="{{ url('/siswa/discussion') }}">

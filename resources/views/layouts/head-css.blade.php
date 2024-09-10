@@ -10,7 +10,11 @@
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
+
 <!--bootstrap css-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.13.3/sweetalert2.css"
+    integrity="sha512-Gebe6n4xsNr0dWAiRsMbjWOYe1PPVar2zBKIyeUQKPeafXZ61sjU2XCW66JxIPbDdEH3oQspEoWX8PQRhaKyBA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="{{ URL::asset('build/css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
@@ -28,4 +32,4 @@
 <link href="{{ URL::asset('build/css/responsive.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('livecode/css/style.css') }}" rel="stylesheet">
 
-
+@include('sweetalert::alert')

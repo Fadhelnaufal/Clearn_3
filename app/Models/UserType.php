@@ -9,4 +9,9 @@ class UserType extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'image'];
+
+    public function subMateris()
+    {
+        return $this->hasMany(SubMateri::class);
+    }
 }

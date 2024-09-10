@@ -72,7 +72,7 @@ class KelasController extends Controller
     public function show(string $id)
     {
         $kelas = Kelas::findOrFail($id);
-        return view('course.show', compact('kelas'));
+        return redirect()->route('course.index', $kelas->id);
     }
 
     /**
@@ -119,7 +119,7 @@ class KelasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $kelas = Kelas::findOrFail($id);
 
@@ -156,6 +156,23 @@ class KelasController extends Controller
         $user->kelas()->attach($kelas->id);
 
         return redirect()->route('siswa.course.index')->with('success', 'Berhasil bergabung dengan kelas.');
+    }
+
+    public function destroyJoin($id)
+    {
+        $user = Auth::user();
+
+        // Find the class by ID
+        $kelas = Kelas::findOrFail($id);
+
+        // Detach the user from the class
+        if ($user->kelas->contains($kelas)) {
+            // Detach the class from the user
+            $user->kelas()->detach($kelas->id);
+            return redirect()->route('siswa.course.index')->with('success', 'Anda telah keluar dari kelas.');
+        }
+
+        return redirect()->route('siswa.course.index')->with('error', 'Anda tidak tergabung dalam kelas ini.');
     }
 
 

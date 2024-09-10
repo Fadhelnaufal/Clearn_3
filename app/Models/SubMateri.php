@@ -14,11 +14,22 @@ class SubMateri extends Model
         'isi',
         'lampiran',
         'materi_id',
+        'kategori_id',
     ];
 
     // Relasi kebalikannya
     public function materi()
     {
         return $this->belongsTo(Materi::class, 'materi_id');
+    }
+
+    public function userType()
+    {
+        return $this->belongsTo(UserType::class);
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
     }
 }

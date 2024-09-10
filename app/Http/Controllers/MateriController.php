@@ -41,16 +41,18 @@ class MateriController extends Controller
     {
         // Retrieve the course details based on the ID
         $kelas = Kelas::findOrFail($id); // Assuming you have a Kelas model
-        $materi = Materi::get()->all();
+        // $materi = Materi::get()->all();
         $materis = $kelas->materi()->with('subMateris')->get();;
         if ($materis === null) {
             return abort(404, 'Materis not found');
         }
 
+        $materi = $materis->first();
+
         $user = Auth::user();
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
 
-        return view($view, compact('kelas', 'materis'));
+        return view($view, compact('kelas', 'materi', 'materis'));
 
     }
 
@@ -72,14 +74,16 @@ class MateriController extends Controller
             ->with('success', 'Materi berhasil ditambahkan');
     }
 
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $materi = Materi::findOrFail($id);
+        $kelas = Kelas::findOrFail($materi->kelas_id);
 
-        return view('materi.edit', compact('materi'));
+        return view('guru.course-detail', compact('materi', 'kelas'));
     }
 
     /**
@@ -97,7 +101,7 @@ class MateriController extends Controller
 
         $materi->update($data);
 
-        return redirect()->route('kelas.show', $materi->kelas_id)
+        return redirect()->route('guru.course-detail.show', $materi->kelas_id)
             ->with('success', 'Materi berhasil diperbarui');
     }
 
@@ -105,12 +109,15 @@ class MateriController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        $materi = Materi::findOrFail($id);
+{
+    $materi = Materi::findOrFail($id);
 
-        $materi->delete();
+    $materi->delete();
 
-        return redirect()->route('kelas.show', $materi->kelas_id)
-            ->with('success', 'Materi berhasil dihapus');
-    }
+    return redirect()->route('guru.course-detail.show', $materi->kelas_id)
+        ->with('success', 'Materi berhasil dihapus');
+
+
+}
+
 }

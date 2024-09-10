@@ -10,7 +10,7 @@ class Kelas extends Model
 {
     use HasFactory;
 
-
+    protected $table = 'kelas';
     protected $fillable = [
         'mapel',
         'kelas',
@@ -39,5 +39,10 @@ class Kelas extends Model
     public function materi()
     {
         return $this->hasMany(Materi::class);
+    }
+
+    public function subMateris()
+    {
+        return $this->hasMany(SubMateri::class);
     }
 }

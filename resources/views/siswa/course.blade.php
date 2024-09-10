@@ -28,7 +28,8 @@
                                     <input type="text" name="token" class="form-control" id="token" required>
                                 </div>
                                 <div class="d-md-flex d-grid align-items-center gap-3">
-                                    <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
+                                    <button type="submit" class="btn ripple btn-primary px-2"
+                                        onclick="submitForm()">Tambah</button>
                                     <button type="button" class="btn ripple btn-secondary px-2"
                                         data-bs-dismiss="modal">Batal</button>
                                 </div>
@@ -39,47 +40,11 @@
             </div>
         </div>
     </div>
-
-
-    {{-- <div class="row g-0">
-        <div class="col-md-4">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-md-4 border-end">
-                            <div class="p-3">
-                                <img src="{{ URL::asset('build/images/laravel.png') }}" class="w-100 rounded-start" alt="...">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Pemrograman Web</h5>
-                                <p class="card-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore eligendi blanditiis facilis molestiae nemo praesentium rerum neque ab voluptas necessitatibus, natus suscipit laboriosam.</p>
-                                <button type="button" class="btn ripple btn-primary px-2 font-12">Lanjutkan Materi</button>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-        </div>
-    </div> --}}
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
     <div class="row g-0">
         @foreach ($kelas as $course)
             <div class="col-md-4">
-                <div class="card">
-                    <div class="row g-0">
+                <div class="card me-3">
+                    <div class="row">
                         <div class="col-md-4 border-end">
                             <div class="p-3">
                                 <img src="{{ URL::asset('build/images/laravel.png') }}" class="w-100 rounded-start"
@@ -98,8 +63,9 @@
                 </div>
             </div>
         @endforeach
-        <div class="col-md-8">
-        </div>
+    </div>
+    <div class="col-md-8">
+        
     </div>
     {{-- <div class="row g-0">
         @foreach ($kelas as $course)
@@ -126,6 +92,39 @@
     <script>
         $(".data-attributes span").peity("donut")
     </script>
+    <script>
+        // SweetAlert2 toast configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: '#a5dc86',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            @elseif (session('toast_error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: "{{ session('toast_error') }}",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            @endif
+        });
+    </script>
+
     <script src="{{ URL::asset('build/js/main.js') }}"></script>
     <script src="{{ URL::asset('build/js/data-widgets.js') }}"></script>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>

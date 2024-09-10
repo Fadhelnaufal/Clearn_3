@@ -90,17 +90,21 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
     Route::get('/course', [KelasController::class, 'index'])->name('siswa.course.index');
     Route::get('/course/{id}', [KelasController::class, 'show'])->name('siswa.course.show');
     Route::post('/course/join', [KelasController::class, 'join'])->name('siswa.course.join');
+    Route::post('/course/{id}/leave', [KelasController::class, 'destroyJoin'])->name('siswa.course.leave');
     Route::resource('/course-detail', MateriController::class)->only(['index', 'show'])->names([
         'index' => 'siswa.course-detail.index',
         'show' => 'siswa.course-detail.show',
+        'leave' => 'siswa.course-detail.leave',
     ]);
 });
 
 // Guru Routes
 Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     Route::get('/dashboard', [GuruController::class, 'index'])->name('guru.dashboard');
-    Route::resource('/course', KelasController::class);
-    Route::resource('/course-detail/{id}', MateriController::class)->names([
+    Route::resource('/course', KelasController::class)->parameters([
+        'course'=> 'id'
+    ]);
+    Route::resource('/kelas', MateriController::class)->names([
         'index' => 'guru.course-detail.index',
         'create' => 'guru.course-detail.create',
         'store' => 'guru.course-detail.store',
@@ -109,8 +113,12 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'update' => 'guru.course-detail.update',
         'destroy' => 'guru.course-detail.destroy',
     ]);
-    // Route::get('/kelas/{id}/sub-materi/{subMateriId}', [SubMateriController::class, 'showSubMateri'])
-    // ->name('sub-materi.show');});
+    Route::get('/kelas/{id}/sub-materi/{subMateriId}', [SubMateriController::class, 'showSubMateri'])
+    ->name('sub-materi.show');
+    Route::get('/kelas/{kelasId}/sub-materi/create', [SubMateriController::class, 'createSubMateri'])
+    ->name('sub-materi.create');
+    Route::post('/kelas/{kelasId}/sub-materi/store/{userTypeId}', [SubMateriController::class, 'storeSubMateri'])
+    ->name('sub-materi.store');
 
     Route::get('/tambah_materi', function () {
         return view('guru.tambah_materi');
