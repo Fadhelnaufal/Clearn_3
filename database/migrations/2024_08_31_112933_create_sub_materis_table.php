@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('judul');
             $table->text('isi');
             $table->string('lampiran')->nullable();
-            $table->unsignedBigInteger('kategori_id');
+            $table->unsignedBigInteger('user_type_id');
             $table->timestamps();
 
             $table->foreign('user_type_id')

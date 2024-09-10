@@ -81,6 +81,12 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/register', [RegisterController::class, 'create']);
+Route::get('/quizku', function () {
+     return view('quiz.quiz');
+ });
+Route::get('/token_quiz', function () {
+     return view('quiz.token-quiz');
+ });
 
 // Siswa Routes
 Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {

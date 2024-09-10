@@ -98,8 +98,7 @@ class SiswaController extends Controller
         // Calculate user type
         $userType = $this->calculateUserType();
         $user = auth()->user();
-        $user->user_type = $userType['name']; // Assuming user_type is a string
-        $user->user_type_image = $userType['image']; // Assuming user_type_image is a string
+        $user->user_type_id = $userType['id']; // Assuming user_type_image is a string
         $user->save();
 
         return redirect()->back()->with('success', 'Jawaban Anda telah disimpan dan tipe pengguna Anda telah diperbarui.');
@@ -134,62 +133,71 @@ class SiswaController extends Controller
             }
         }
 
-        $userType = [
-            'name' => 'Nonachiever',
-            'image' => 'default_image.png', // Default image if no match
-        ];
+        $userType = UserType::where('name', 'Nonachiever')->first(['id', 'name', 'image']);
 
         // Determine user type
         if (
             $scores['mastery_approach'] > $scores['mastery_avoidance'] &&
             $scores['performance_approach'] > $scores['performance_avoidance']
         ) {
-            $userType = UserType::where('name', 'Overachiever')->first(['name', 'image'])->toArray();
+            $userType = UserType::where('name', 'Overachiever')->first(['id', 'name', 'image']);
         } elseif (
             $scores['mastery_approach'] > $scores['mastery_avoidance'] &&
             $scores['performance_approach'] <= $scores['performance_avoidance']
         ) {
-            $userType = UserType::where('name', 'Mastery Expert')->first(['name', 'image'])->toArray();
+            $userType = UserType::where('name', 'Mastery Expert')->first(['id', 'name', 'image']);
         } elseif (
             $scores['mastery_avoidance'] > $scores['mastery_approach'] &&
             $scores['performance_approach'] > $scores['performance_avoidance']
         ) {
-            $userType = UserType::where('name', 'Best Performance')->first(['name', 'image'])->toArray();
+            $userType = UserType::where('name', 'Best Performance')->first(['id', 'name', 'image']);
         } else {
-            $userType = UserType::where('name', 'Nonachiever')->first(['name', 'image'])->toArray();
+            $userType = UserType::where('name', 'Nonachiever')->first(['id', 'name', 'image']);
         }
 
-        return $userType;
+        return $userType ? $userType->toArray() : [];
     }
 
     public function getUserTypeResult()
     {
-        $userType = $this->calculateUserType(); // Calculate user type
+        // Fetch the user
+        $user = auth()->user();
+
+        // Ensure the user has a user_type_id
+        if (!$user->user_type_id) {
+            return response()->json(['error' => 'User type not found'], 404);
+        }
+
+        // Get the UserType using user_type_id
+        $userType = UserType::find($user->user_type_id);
+
         if (!$userType) {
             return response()->json(['error' => 'User type not found'], 404);
         }
 
-        $imageUrl = asset('storage/images/' . $userType['image']);
+        // Construct the image URL
+        $imageUrl = asset('storage/images/' . $userType->image);
 
         return response()->json([
-            'name' => $userType['name'],
+            'id' => $userType->id,
+            'name' => $userType->name,
             'image' => $imageUrl
         ]);
     }
 
+
     public function saveUserType(Request $request)
     {
         try {
-            $user = Auth::user(); // Mendapatkan instansi pengguna yang sedang login
+            $user = Auth::user();
             $userTypeId = $request->input('user_type_id');
 
             // Get the user type from the database
             $userType = UserType::find($userTypeId);
 
             if ($userType) {
-                $user->user_type = $userType->name;
-                $user->user_type_image = $userType->image;
-                $user->save(); // Menggunakan save() untuk menyimpan perubahan
+                $user->user_type_id = $userType->id; // Set user_type_id
+                $user->save();
             } else {
                 throw new \Exception('User type not found.');
             }

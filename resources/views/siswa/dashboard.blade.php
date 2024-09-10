@@ -9,7 +9,7 @@
     @endphp
     <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
 
-    {{-- @if (!$hasUserType)
+    @if (!$hasUserType)
         <!-- Modal -->
         <div class="modal modal-lg fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel"
             aria-hidden="true">
@@ -94,7 +94,7 @@
                 </div>
             </div>
         </div>
-    @endif --}}
+    @endif
 
 
     <div class="row">
