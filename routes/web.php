@@ -97,6 +97,7 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
         'show' => 'siswa.course-detail.show',
         'leave' => 'siswa.course-detail.leave',
     ]);
+    Route::get('/kelas/{kelasId}/sertifikat', [KelasController::class, 'cetakSertifikat'])->name('kelas.cetakSertifikat');
 });
 
 // Guru Routes

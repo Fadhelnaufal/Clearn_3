@@ -245,7 +245,9 @@
                     <div class="container">
                         <div class="card py-3 px-2 text-center">
                             <img src="{{ asset('assets/images/sertifcok.png') }}" alt="" width="40%" class="img-fluid mx-auto d-block">
-                                <button class="btn btn-primary btn-block mt-3" disabled>Download Sertifikat</button>
+                            <a class="btn btn-primary btn-block mt-3" href="{{ route('kelas.cetakSertifikat', ['kelasId' => $kelas->id]) }}">
+                                Download Sertifikat
+                            </a>
                         </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -174,6 +175,29 @@ class KelasController extends Controller
 
         return redirect()->route('siswa.course.index')->with('error', 'Anda tidak tergabung dalam kelas ini.');
     }
+    public function cetakSertifikat($kelasId)
+    {
+        // Get the currently authenticated user
+        $user = Auth::user();
+
+        // Fetch the class (Kelas) based on the provided ID
+        $kelas = Kelas::findOrFail($kelasId);
+
+        // Prepare the data to pass to the view for generating the certificate
+        $data = [
+            'name' => $user->name,        // User's name
+            'kelas_name' => $kelas->mapel, // Class/course name
+            'date' => now()->format('d M Y'), // Current date
+        ];
+
+        // Generate the PDF using the certificate template
+        $pdf = Pdf::loadView('template.sertif-template', $data)
+            ->setPaper('A4', 'landscape');
+
+        // Stream the PDF to the browser instead of downloading it
+        return $pdf->stream($user->name . '.pdf');
+    }
+
 
 
 }
