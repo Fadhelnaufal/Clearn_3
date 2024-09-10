@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CaseStudiesController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\GuruController;
@@ -35,9 +36,9 @@ Route::get('/', function () {
 // Route::get('/livecode_guru', function () {
 //     return view('guru.livecode_guru');
 // });
-Route::get('/tambah_materi', function () {
-    return view('guru.tambah_materi');
-});
+// Route::get('/tambah_materi', function () {
+//     return view('guru.tambah_materi');
+// });
 // Route::get('/tambah_studi_kasus', function () {
 //     return view('guru.tambah_studi_kasus');
 // });
@@ -104,7 +105,7 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     Route::resource('/course', KelasController::class)->parameters([
         'course'=> 'id'
     ]);
-    Route::resource('/kelas', MateriController::class)->names([
+    Route::resource('/kelas/materi', MateriController::class)->names([
         'index' => 'guru.course-detail.index',
         'create' => 'guru.course-detail.create',
         'store' => 'guru.course-detail.store',
@@ -120,9 +121,15 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     Route::post('/kelas/{kelasId}/sub-materi/store/{userTypeId}', [SubMateriController::class, 'storeSubMateri'])
     ->name('sub-materi.store');
 
-    Route::get('/tambah_materi', function () {
-        return view('guru.tambah_materi');
-    });
+    Route::resource('/kelas/case', CaseStudiesController::class)->names([
+        'index' => 'guru.course-detail.case.index',
+        'create' => 'guru.course-detail.case.create',
+        'store' => 'guru.course-detail.case.store',
+        'show' => 'guru.course-detail.case.show',
+        'edit' => 'guru.course-detail.case.edit',
+        'update' => 'guru.course-detail.case.update',
+        'destroy' => 'guru.course-detail.case.destroy',
+    ]);
 });
 
 // Admin Routes

@@ -41,7 +41,7 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                           <a href="{{ url('/guru/livecode') }}">
+                           <a href="{{ url('/guru/case') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
                                <div class="menu-title">Live Code</div>
                            </a>

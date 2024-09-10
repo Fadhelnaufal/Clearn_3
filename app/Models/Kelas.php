@@ -45,4 +45,9 @@ class Kelas extends Model
     {
         return $this->hasMany(SubMateri::class);
     }
+
+    public function case_studies()
+    {
+        return $this->hasMany(CaseStudies::class);
+    }
 }

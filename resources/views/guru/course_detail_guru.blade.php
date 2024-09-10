@@ -68,7 +68,7 @@
             </div>
         </div>
     </div>
-
+    <!--Tambah TP-->
     <div class="container mt-3">
         <div class="tab-content">
             <div class="tab-pane fade show active target" id="misi">
@@ -99,30 +99,32 @@
                                                         @endif
                                                     </div>
                                                 @endforeach
-                                                <div class="col mt-3">
+                                                <div class="col mt-3 d-flex me-2">
                                                     @if (isset($subMateriId))
                                                         <a href="{{ route('sub-materi.show', ['id' => $kelas->id, 'subMateriId' => $subMateriId]) }}"
-                                                            class="btn btn-primary mt-2">
+                                                            class="btn btn-primary md-2">
                                                             <i class="bi bi-pencil-square"></i> Tambah Materi
                                                         </a>
                                                     @else
                                                         <a href="{{ route('sub-materi.create', ['kelasId' => $kelas->id, 'materiId' => $materi->id]) }}"
-                                                            class="btn btn-primary mt-2">
+                                                            class="btn btn-primary md-2">
                                                             <i class="bi bi-pencil-square"></i> Tambah Materi
                                                         </a>
                                                     @endif
                                                     <button type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#tambahsoal" class="btn btn-secondary mt-2"><i
+                                                        data-bs-target="#tambahsoal" class="btn btn-secondary md-2"><i
                                                             class="bi bi-plus-lg"></i> Tambah Soal</button>
-                                                    <button type="button" class="btn btn-warning mt-1"
-                                                        data-bs-target="#EditModal" data-bs-toggle="modal"><i
+                                                    <button type="button" class="btn btn-warning md-2"
+                                                        data-bs-target="#EditModal" data-bs-toggle="modal"
+                                                        data-materi-id="{{ $materi->id }}"
+                                                        data-materi-judul="{{ $materi->judul }}"><i
                                                             class="bi bi-pencil-square"></i>Edit TP</button>
                                                     <form id="delete-form-{{ $materi->id }}"
                                                         action="{{ route('guru.course-detail.destroy', $materi->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="button" class="btn btn-danger mt-1"
+                                                        <button type="button" class="btn btn-danger md-2"
                                                             onclick="confirmDelete({{ $materi->id }})">
                                                             <i class="bi bi-trash3"></i> Hapus TP
                                                         </button>
@@ -134,7 +136,13 @@
                                 </div>
                             @endforeach
                         @else
-                            <p>No materi available for this class.</p>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <p class="mx-3 mt-3">belum ada tujuan pembelajaran</p>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                     </div>
                     <div class="modal fade" id="EditModal">
@@ -148,33 +156,32 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-body">
-                                        @if ($materi)
-                                            <form class="row g-3" id="addMateriForm" method="POST"
-                                                action="{{ route('guru.course-detail.update', [$materi->id]) }}">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="col-md-12">
-                                                    <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
-                                                    <label for="judul" class="form-label">Nama Materi</label>
-                                                    <input type="text" class="form-control" id="judul"
-                                                        name="judul" value="{{ old('judul', $materi->judul) }}"
-                                                        required>
+                                        <form class="row g-3" id="addMateriForm" method="POST"
+                                            action="{{ route('guru.course-detail.update', $materi->id) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="col-md-12">
+                                                <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                                <input type="hidden" name="kelas_id" value="{{ $materi->id }}">
+                                                <label for="judul" class="form-label">Nama Materi</label>
+                                                <input type="text" class="form-control" id="judul"
+                                                    name="judul_{{ $materi->id }}"
+                                                    value="{{ old('judul_' . $materi->id, $materi->judul) }}" required>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                                    <button type="button" class="btn ripple btn-primary px-2"
+                                                        onclick="submitForm()">
+                                                        Simpan Perubahan
+                                                    </button>
+                                                    <button type="button"
+                                                        class="btn ripple btn-secondary px-2 text-center"
+                                                        data-bs-dismiss="modal">
+                                                        Batal
+                                                    </button>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class="d-md-flex d-grid align-items-center gap-3">
-                                                        <button type="button" class="btn ripple btn-primary px-2"
-                                                            onclick="submitForm()">
-                                                            Simpan Perubahan
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn ripple btn-secondary px-2 text-center"
-                                                            data-bs-dismiss="modal">
-                                                            Batal
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        @endif
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -229,20 +236,24 @@
                                 <div class="modal-body">
                                     <div class="form-body">
                                         <form class="row g-3" id="addMateriForm" method="POST"
-                                        action="{{ route('guru.course-detail.store') }}">
-                                        @csrf
-                                        <div class="col-md-12">
-                                            <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
-                                            <label for="judul" class="form-label">Nama Materi</label>
-                                            <input type="text" class="form-control" id="judul" name="judul" required>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="d-md-flex d-grid align-items-center gap-3">
-                                                <button type="submit" class="btn ripple btn-primary px-2">Tambah</button>
-                                                <button type="button" class="btn ripple btn-secondary px-2 text-center" data-bs-dismiss="modal">Batal</button>
+                                            action="{{ route('guru.course-detail.store') }}">
+                                            @csrf
+                                            <div class="col-md-12">
+                                                <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                                <label for="judul" class="form-label">Nama Materi</label>
+                                                <input type="text" class="form-control" id="judul" name="judul"
+                                                    required>
                                             </div>
-                                        </div>
-                                    </form>
+                                            <div class="col-md-12">
+                                                <div class="d-md-flex d-grid align-items-center gap-3">
+                                                    <button type="submit"
+                                                        class="btn ripple btn-primary px-2">Tambah</button>
+                                                    <button type="button"
+                                                        class="btn ripple btn-secondary px-2 text-center"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -254,76 +265,76 @@
             <div class="tab-pane fade target" id="livecode">
                 <div class="row">
                     <div class="col-md-7">
-                        <div class="card mx-2">
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">
-                                            Studi Kasus 1
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show"
-                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <a href=""><strong>Studi Kasus</strong></a> It is hidden by
-                                            default, until the collapse plugin adds the appropriate classes that we use to
-                                            style each element.
-                                            <div class="col">
-                                                <button type="submit" class="btn btn-primary mt-4 p-2 btn-sm me-2"><i
-                                                        class="bi bi-plus-lg"></i> Tambah
-                                                    Materi</button>
-                                                <button type="submit" data-bs-toggle="modal"
-                                                    data-bs-target="#tambahsoal"
-                                                    class="btn btn-secondary mt-4 p-2 btn-sm me-2"><i
-                                                        class="bi bi-plus-lg"></i> Tambah
-                                                    Soal</button>
-                                                <button type="submit" class="btn btn-warning mt-4 p-2 btn-sm me-2"><i
-                                                        class="bi bi-pencil-square"></i> Edit
-                                                    TP</button>
-                                                <button type="submit" class="btn btn-danger mt-4 p-2 btn-sm me-2"><i
-                                                        class="bi bi-trash3"></i> Hapus
-                                                    TP</button>
+                        @if ($case_studies->isNotEmpty())
+                            @foreach ($case_studies as $caseStudy)
+                                <div class="accordion" id="accordionCaseStudy">
+                                    <div class="accordion-item mb-3">
+                                        <h2 class="accordion-header" id="headingCaseStudy{{ $caseStudy->id }}">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseCaseStudy{{ $caseStudy->id }}"
+                                                aria-expanded="false"
+                                                aria-controls="collapseCaseStudy{{ $caseStudy->id }}">
+                                                {{ $caseStudy->title }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseCaseStudy{{ $caseStudy->id }}"
+                                            class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="accordion-body">
+                                                    {{ $caseStudy->description }}
+                                                </div>
+                                                <!-- Case Study details here -->
+                                                <div class="row">
+                                                    <div class="col mt-3 d-flex">
+                                                        @if (isset($subMateriId))
+                                                            <a href="{{ route('sub-materi.show', ['id' => $kelas->id, 'subMateriId' => $subMateriId]) }}"
+                                                                class="btn btn-primary ">
+                                                                <i class="bi bi-pencil-square"></i> Tambah Materi
+                                                            </a>
+                                                        @else
+                                                            <button type="button"
+                                                                href="{{ route('sub-materi.create', ['kelasId' => $kelas->id, 'materiId' => $materi->id]) }}"
+                                                                class="btn btn-primary ">
+                                                                <i class="bi bi-pencil-square"></i> Tambah Materi
+                                                            </button>
+                                                        @endif
+                                                        <button type="button" class="btn btn-warning ms-2"
+                                                            data-bs-target="#EditModal" data-bs-toggle="modal"><i
+                                                                class="bi bi-pencil-square"></i>Edit</button>
+                                                        <form id="delete-form-{{ $materi->id }}"
+                                                            action="{{ route('guru.course-detail.destroy', $materi->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-danger ms-2"
+                                                                onclick="confirmDelete({{ $materi->id }})">
+                                                                <i class="bi bi-trash3"></i> Hapus
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="card mx-2">
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingTwo">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true"
-                                            aria-controls="collapseTwo">
-                                            CSS
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse "
-                                        aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <a href="">
-                                                <strong>1. Pengertian CSS</strong>
-                                            </a><br>
-                                            <a>
-                                                <strong>2. Kegunaan CSS</strong>
-                                            </a><br>
-                                            <a>
-                                                <strong>3. Mengenal Selector, Property, dan Value CSS</strong>
-                                            </a>
-                                        </div>
+                            @endforeach
+                        @else
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <p class="mx-3 mt-3">belum ada studi kasus</p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
+
                     </div>
                     <div class="col-md-5">
                         <div class="card">
                             <div class="card-body text-center mt-2 mb-2">
                                 <h3 class="mb-3">Jumlah Studi Kasus</h3>
-                                <h1 class="mt-3 mb-3">0</h1>
+                                <h1 class="mt-3 mb-3">{{ $case_studies->count() }}</h1>
                                 <div class="parent-icon mb-3 mt-3">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal">
@@ -347,18 +358,28 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-body">
-                                        <form class="row g-3">
+                                        <form class="row g-3" id="addCaseStudyForm" method="POST"
+                                            action="{{ route('guru.course-detail.case.store') }}"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="col-md-12">
-                                                <label for="input5" class="form-label">Nama Materi</label>
-                                                <input type="text" class="form-control" id="input5">
+                                                <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                                <label for="title" class="form-label">Nama Studi Kasus</label>
+                                                <input type="text" class="form-control" id="title" name="title"
+                                                    required>
+                                                <label for="description" class="form-label">Deskripsi</label>
+                                                <input type="text" class="form-control" id="description"
+                                                    name="description" required>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Batal</button>
-                                    <button type="button" class="btn btn-primary">Tambah</button>
                                 </div>
                             </div>
                         </div>
@@ -469,6 +490,27 @@
     <script src="{{ URL::asset('build/plugins/peity/jquery.peity.min.js') }}"></script>
     <script src="{{ URL::asset('build/plugins/chartjs/js/chart.js') }}"></script>
     <script src="{{ URL::asset('build/plugins/chartjs/js/chartjs-custom.js') }}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set up event listener for the Edit button
+        document.querySelectorAll('[data-bs-target="#EditModal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const materiId = this.getAttribute('data-materi-id');
+                const materiJudul = this.getAttribute('data-materi-judul');
+
+                // Set the form action URL
+                const formAction = `{{ route('guru.course-detail.update', '') }}/${materiId}`;
+                const form = document.getElementById('editMateriForm');
+                form.action = formAction;
+
+                // Set the input values
+                document.getElementById('modalMateriId').value = materiId;
+                document.getElementById('modalMateriJudul').value = materiJudul;
+            });
+        });
+    });
+</script>
 
     <script>
         jQuery(function() {
