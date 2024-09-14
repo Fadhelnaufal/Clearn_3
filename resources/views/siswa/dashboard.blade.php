@@ -24,6 +24,18 @@
                             tujuan
                             belajar anda.
                         </p>
+                        <p class="text-justify">
+                            Pilihlah jawaban yang paling sesuai dengan diri anda.
+                            <strong>
+                                <ul>
+                                    <li>1 = Sangat Tidak Sesuai</li>
+                                    <li>2 = Tidak Sesuai</li>
+                                    <li>3 = Cukup Sesuai</li>
+                                    <li>4 = Sesuai</li>
+                                    <li>5 = Sangat Sesuai</li>
+                                </ul>
+                            </strong>
+                        </p>
                         <form id="answerForm" action="{{ route('siswa.store.answers') }}" method="POST">
                             @csrf
                             <table class="table">
@@ -72,15 +84,13 @@
         <!-- Result Modal -->
         <div id="result-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content align-items-center justify-content-center text-center">
                     <div class="modal-header">
                         <h5 class="modal-title">Hasil Pengguna</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
-                        <img id="user-category-image" src="" alt="" class="img-fluid">
+                        <img id="user-category-image" src="{{ session('result.type_user_image') }}" alt="user type image"
+                            class="img-fluid" width="30%">
                         <h4 id="user-category-name"></h4>
                     </div>
                     <div class="modal-footer">
@@ -245,11 +255,11 @@
             @foreach ($kelas as $course)
                 <div class="col-sm-3">
                     <div class="card">
-                        <img src="{{ URL::asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
+                        <img src="{{ asset('assets/images/logos/' . $course->logo)}}" class="card-img-top me-2" alt="..." width="50%">
                         <div class="card-body">
                             <h5 class="card-title">{{ $course->mapel }}</h5>
                             <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
-                            <a href="{{ route('siswa.course.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
+                            <a href="{{ route('siswa.course-detail.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
                         </div>
                     </div>
                 </div>
@@ -298,11 +308,11 @@
                             method: 'GET',
                             success: function(result) {
                                 console.log('Result:',
-                                result); // Check this in console
+                                    result); // Check this in console
                                 $('#user-category-name').text(result.name);
                                 $('#user-category-image').attr('src', result.image);
                                 $('#user_type_id').val(result
-                                .id); // Ensure this is set
+                                    .id); // Ensure this is set
                                 $('#result-modal').modal('show');
                             },
                             error: function(xhr) {

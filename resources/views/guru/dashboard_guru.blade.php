@@ -116,7 +116,7 @@
         @foreach ($kelas as $course)
             <div class="col-sm-3">
                 <div class="card">
-                    <img src="{{ URL::asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
+                    <img src=" {{ asset('assets/images/logos/' . $course->logo)}}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ $course->mapel }}</h5>
                         <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>

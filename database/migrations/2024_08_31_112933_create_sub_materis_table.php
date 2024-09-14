@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('materi_id')->constrained()->onDelete('cascade');
             $table->string('judul');
-            $table->text('isi');
+            $table->longText('isi');
             $table->string('lampiran')->nullable();
             $table->unsignedBigInteger('user_type_id');
             $table->timestamps();

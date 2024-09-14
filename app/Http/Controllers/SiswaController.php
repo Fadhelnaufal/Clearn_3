@@ -176,11 +176,11 @@ class SiswaController extends Controller
         }
 
         // Construct the image URL
-        $imageUrl = asset('storage/images/' . $userType->image);
+        $imageUrl = $userType ? asset('assets/images/userType/' . $userType->image) : '';
 
         return response()->json([
-            'id' => $userType->id,
-            'name' => $userType->name,
+            'id' => $userType ? $userType->id : null,
+            'name' => $userType ? $userType->name : null,
             'image' => $imageUrl
         ]);
     }
@@ -188,24 +188,32 @@ class SiswaController extends Controller
 
     public function saveUserType(Request $request)
     {
-        try {
-            $user = Auth::user();
-            $userTypeId = $request->input('user_type_id');
+        $user = Auth::user();
+        $userTypeId = $request->input('user_type_id');
 
+        // Validate the input
+        $validated = $request->validate([
+            'user_type_id' => 'required|exists:user_types,id',
+        ]);
+
+        try {
             // Get the user type from the database
             $userType = UserType::find($userTypeId);
 
             if ($userType) {
                 $user->user_type_id = $userType->id; // Set user_type_id
                 $user->save();
-            } else {
-                throw new \Exception('User type not found.');
-            }
 
-            return response()->json(['success' => true, 'message' => 'User type saved successfully.']);
+                return response()->json(['success' => true, 'message' => 'User type saved successfully.']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'User type not found.'], 404);
+            }
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
+    }
+    public function livecode(){
+        return view('siswa.livecode');
     }
 
 }

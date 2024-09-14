@@ -121,4 +121,5 @@ class SubMateriController extends Controller
         return redirect()->route('materi.show', $materiId)
             ->with('success', 'Sub Materi berhasil dihapus');
     }
+
 }

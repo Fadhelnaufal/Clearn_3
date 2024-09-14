@@ -12,120 +12,75 @@
 
 
     <div class="row">
-        <div class="col-xxl-8   align-items-stretch">
-            <div class="card w-100 overflow-hidden rounded-4">
-                <div class="card-body position-relative p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-7 ps-3">
-                            <div class="d-flex align-items-center gap-3 mb-5">
-                                <img src="https://placehold.co/110x110/png" class="rounded-circle bg-grd-info p-1"
-                                    width="60" height="60" alt="user">
-                                <div class="">
-                                    <p class="mb-0 fw-semibold">Selamat Datang</p>
-                                    <h4 class="fw-semibold fs-4 mb-0"> Pak {{ Auth::user()->name }}</h4>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-5">
-                                <div class="">
-                                    <p class="mb-3">Kelas</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">1<i
-                                            class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
-                                    </h4>
-
-                                </div>
-                                <div class="">
-                                    <p class="mb-3">Siswa</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">1180<i
-                                            class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-5">
-                                <div class="">
-                                    <p class="mb-3">Materi</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">4/15<i
-                                            class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
-                                    </h4>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-5">
-                            <div class="welcome-back-img pt-4 pe-5">
-                                <img src="{{ URL::asset('build/images/tampan.png') }}" height="300" alt="">
-                            </div>
-                        </div>
-                    </div><!--end row-->
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-4 d-flex  align-items-stretch">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Course</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i
-                                        class='bx bx-right-arrow-alt'></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Discussion</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i
-                                        class='bx bx-right-arrow-alt'></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Live Code</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i
-                                        class='bx bx-right-arrow-alt'></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">Quiz</h5>
-                                <button class="btn btn-secondary w-100 disabled">Coming Soon </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="continue">
-        <div class="row">
-            <div class="col-md-12">
-                <h4>
-                    Kelas Terbaru
-                </h4>
-            </div>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-sm-3">
-            <div class="card">
-                <img src="{{ asset('build/images/laravel.png') }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Pemrograman Web</h5>
-                    <p class="card-text">Nam libero tempore, cum soluta nobis est
-                        eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
-                        omnis.</p>
-                    <button type="button" class="btn ripple btn-primary px-5">Lanjutkan</button>
+            <div class="card bg-primary">
+                <div class="card-content">
+                    <div class="card-body text-white">
+                        <div class="media d-flex">
+                            <div class="align-self-center me-3">
+                                <i class="bi bi-people float-start fs-1"></i>
+                            </div>
+                            <div class="media-body float-end">
+                                <h3 class="text-white">{{ $userCount }}</h3>
+                                <span>Users</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="col-sm-3">
+            <div class="card bg-success">
+                <div class="card-content">
+                    <div class="card-body text-white">
+                        <div class="media d-flex">
+                            <div class="align-self-center me-3">
+                                <i class="bi bi-people float-start fs-1"></i>
+                            </div>
+                            <div class="media-body float-end">
+                                <h3 class="text-white">{{ $siswaCount }}</h3>
+                                <span>Siswa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card bg-warning">
+                <div class="card-content">
+                    <div class="card-body ">
+                        <div class="media d-flex">
+                            <div class="align-self-center me-3">
+                                <i class="bi bi-people float-start fs-1"></i>
+                            </div>
+                            <div class="media-body float-end">
+                                <h3>{{ $guruCount }}</h3>
+                                <span>Guru</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card bg-dark">
+                <div class="card-content">
+                    <div class="card-body text-white">
+                        <div class="media d-flex">
+                            <div class="align-self-center me-3">
+                                <i class="bi bi-people float-start fs-1"></i>
+                            </div>
+                            <div class="media-body  ">
+                                <h3 class="text-white">{{ $adminCount }}</h3>
+                                <span>Admin</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 @push('script')

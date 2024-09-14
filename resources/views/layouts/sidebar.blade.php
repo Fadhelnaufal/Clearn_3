@@ -79,7 +79,7 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                           <a href="{{ url('/siswa/livecode') }}">
+                           <a href="{{ route('/siswa/livecode') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
                                <div class="menu-title">Live Code</div>
                            </a>

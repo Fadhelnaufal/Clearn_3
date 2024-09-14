@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -11,7 +12,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $siswaCount = User::role('siswa')->count(); // Get the count of users with the 'siswa' role
+        $guruCount = User::role('guru')->count(); // Get the count of users with the 'guru' role
+        $userCount = User::count(); // Get the count of all users
+        $adminCount = User::role('admin')->count(); // Get the count of users with the 'admin' role
+        return view('admin.dashboard' , compact('siswaCount', 'guruCount', 'userCount','adminCount'));
     }
 
     /**

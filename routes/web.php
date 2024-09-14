@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CaseStudiesController;
+use App\Http\Controllers\CkeditorController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\GuruController;
@@ -21,9 +22,9 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('landing');
 });
-// Route::get('/course', function () {
-//     return view('course');
-// });
+Route::get('/text', function () {
+    return view('component-text-utilities');
+});
 // Route::get('/course_detail', function () {
 //     return view('course_detail');
 // });
@@ -51,9 +52,9 @@ Route::get('/', function () {
 // Route::get('/course_detail_guru', function () {
 //     return view('guru.course_detail_guru');
 // });
-// Route::get('/card', function () {
-//     return view('component-cards-basic');
-// });
+Route::get('/card', function () {
+    return view('component-cards-basic');
+});
 // Route::get('/component-carousels', function () {
 //     return view('component-carousels');
 // });
@@ -91,6 +92,7 @@ Route::get('/token_quiz', function () {
 // Siswa Routes
 Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
+    Route::get('/siswa/livecode', [SiswaController::class, 'livecode'])->name('/siswa/livecode');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
     Route::get('/user-type-result', [SiswaController::class, 'getUserTypeResult'])->name('siswa.result');
     Route::post('/save-user-type', [SiswaController::class, 'saveUserType'])->name('siswa.saveUserType');
@@ -127,6 +129,9 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     ->name('sub-materi.create');
     Route::post('/kelas/{kelasId}/sub-materi/store/{userTypeId}', [SubMateriController::class, 'storeSubMateri'])
     ->name('sub-materi.store');
+    Route::get('/ckeditor', [CkeditorController::class, 'index']);
+    Route::post('/upload', [CkeditorController::class, 'upload'])
+    ->name('ckeditor.upload');
 
     Route::resource('/kelas/case', CaseStudiesController::class)->names([
         'index' => 'guru.course-detail.case.index',

@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-md-4 border-end">
                             <div class="p-3">
-                                <img src="{{ URL::asset('build/images/laravel.png') }}" class="w-100 rounded-start"
+                                <img src="{{ asset('assets/images/logos/' . $course->logo)}}" class="rounded-start" width="100%"
                                     alt="...">
                             </div>
                         </div>
@@ -65,7 +65,7 @@
         @endforeach
     </div>
     <div class="col-md-8">
-        
+
     </div>
     {{-- <div class="row g-0">
         @foreach ($kelas as $course)

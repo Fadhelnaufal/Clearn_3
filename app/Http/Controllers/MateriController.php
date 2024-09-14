@@ -51,10 +51,14 @@ class MateriController extends Controller
 
         $materi = $materis->first();
 
+        $siswas = $kelas->users()->whereHas('roles', function ($query) {
+            $query->where('role_id', 3); // Assuming role_id 2 is for 'siswa'
+        })->get();
+
         $user = Auth::user();
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
 
-        return view($view, compact('kelas', 'materi', 'materis' , 'case_studies'));
+        return view($view, compact('siswas','kelas', 'materi', 'materis' , 'case_studies'));
 
     }
 
@@ -85,24 +89,27 @@ class MateriController extends Controller
         $materi = Materi::findOrFail($id);
         $kelas = Kelas::findOrFail($materi->kelas_id);
 
+        if (is_null($materi)) {
+            abort(404, 'Materi not found');
+        }
+
         return view('guru.course-detail', compact('materi', 'kelas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'judul_' .$id=> 'required|max:255'
+            'judul' => 'required|max:255'
         ]);
 
         $materi = Materi::findOrFail($id);
-        // $data = $request->only(['judul']);
+        $data = $request->only(['judul']);
 
-        $materi->update([
-            'judul'=> $request->input('judul_'.$id),
-        ]);
+
+        $materi->update($data);
 
         return redirect()->route('guru.course-detail.show', $materi->kelas_id)
             ->with('success', 'Materi berhasil diperbarui');

@@ -50,7 +50,7 @@
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" data-bs-toggle="pill" href="#anggota_kelas" role="tab"
+                            <a class="nav-link" data-bs-toggle="pill" href="#anggota_siswa" role="tab"
                                 aria-selected="false">
                                 <div class="d-flex align-items-center">
                                     <div class="tab-icon"><i class='bi bi-people-fill me-2 fs-5'></i>
@@ -60,8 +60,7 @@
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" data-bs-toggle="pill" href="#info_kelas" role="tab"
-                                aria-selected="false">
+                            <a class="nav-link" data-bs-toggle="pill" href="#info" role="tab" aria-selected="false">
                                 <div class="d-flex align-items-center">
                                     <div class="tab-icon"><i class='bi bi-gear me-2 fs-5'></i>
                                     </div>
@@ -75,7 +74,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="tab-content">
+        <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active target" id="misi">
                 <div class="row mx-1">
                     <div class="col-md-7">
@@ -192,12 +191,13 @@
                     <!-- Sidebar Section -->
                 </div>
             </div>
+            {{-- leaderboard --}}
             <div class="tab-pane fade target" id="leaderboard">
                 <div class="container">
                     <div class="row mx-1">
                         <div class="col-md-7">
                             <div class="card px-2 py-2">
-                                <table class="table table-responsive    ">
+                                <table class="table table-responsive">
                                     <thead>
                                         <tr>
                                             <th scope="col">Peringkat</th>
@@ -206,22 +206,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-
-                                        </tr>
+                                        @php
+                                            $xp = 1000;
+                                        @endphp
+                                        @foreach ($siswas as $siswa)
+                                            <tr>
+                                                <th scope="row">{{ $loop->iteration }}</th>
+                                                <td>{{ $siswa->name }}</td>
+                                                <td>{{$xp}}</td>
+                                            </tr>
+                                            @php
+                                                $xp -= 150;
+                                            @endphp
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -235,6 +232,7 @@
                 </div>
             </div>
 
+            {{-- sertifikat --}}
             <div class="tab-pane fade target" id="sertifikat">
                 <div class="row">
                     <div class="card">
@@ -244,51 +242,46 @@
                 <div class="row">
                     <div class="container">
                         <div class="card py-3 px-2 text-center">
-                            <img src="{{ asset('assets/images/sertifcok.png') }}" alt="" width="40%" class="img-fluid mx-auto d-block">
-                            <a class="btn btn-primary btn-block mt-3" href="{{ route('kelas.cetakSertifikat', ['kelasId' => $kelas->id]) }}">
+                            <img src="{{ asset('assets/images/sertifcok.png') }}" alt="" width="40%"
+                                class="img-fluid mx-auto d-block">
+                            <a class="btn btn-primary btn-block mt-3"
+                                href="{{ route('kelas.cetakSertifikat', ['kelasId' => $kelas->id]) }}">
                                 Download Sertifikat
                             </a>
-                        </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-pane fade target" id="anggota_kelas">
+            {{-- anggota kelas --}}
+            <div class="tab-pane fade target" id="anggota_siswa">
                 <div class="card px-2 py-2">
-                    <table class="table table-responsive">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Peringkat</th>
+                                <th scope="col">no</th>
                                 <th scope="col">Nama</th>
-                                <th scope="col">Perolehan EXP</th>
+                                <th scope="col">Tipe</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-
-                            </tr>
+                            @foreach ($siswas as $siswa)
+                                <tr>
+                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td>{{ $siswa->name }}</td>
+                                    <td>{{ $siswa->userType->name }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade target" id="info_kelas">
+
+            {{-- info kelas --}}
+            <div class="tab-pane fade target" id="info">
                 <div class="card ">
                     <div class="row">
-                        <div class="col-md-5 mt-5 ms-3">
+                        <div class="col-md-5  ms-3">
                             <div class="">
                                 <label for="input5" class="form-label mt-2">Nama Mata Pelajaran</label>
                                 <input disabled type="text" class="form-control" id="input5" name="judul"
@@ -301,7 +294,8 @@
                             </div>
                             <div class="">
                                 <label for="input5" class="form-label mt-2">Jumlah Siswa </label>
-                                <input disabled type="number" class="form-control" id="input5" name="jumlah_siswa">
+                                <input disabled type="number" class="form-control" id="input5" name="jumlah_siswa"
+                                    value="{{ $kelas->users()->count() }}">
                             </div>
                             <form action="{{ route('siswa.course.leave', $kelas->id) }}" id="leaveClassForm"
                                 method="POST">
@@ -322,117 +316,117 @@
                 </div>
             </div>
         </div>
-    </div>
-@endsection
-@push('script')
-    <!--plugins-->
-    <script src="{{ URL::asset('build/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
-    <script src="{{ URL::asset('build/plugins/metismenu/metisMenu.min.js') }}"></script>
-    <script src="{{ URL::asset('build/plugins/apexchart/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('build/plugins/simplebar/js/simplebar.min.js') }}"></script>
-    <script src="{{ URL::asset('build/plugins/peity/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('build/plugins/chartjs/js/chart.js') }}"></script>
-    <script src="{{ URL::asset('build/plugins/chartjs/js/chartjs-custom.js') }}"></script>
-    <script src="{{ URL::asset('build/js/main.js') }}"></script>
-    <script src="{{ URL::asset('build/js/data-widgets.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $(".accordion-button").on('click', function() {
-                var target = $(this).data("target");
-                $(".accordion-collapse").not(target).collapse('hide'); // Hide other collapses
-                $(target).collapse('toggle'); // Toggle the clicked collapse
+    @endsection
+    @push('script')
+        <!--plugins-->
+        <script src="{{ URL::asset('build/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
+        <script src="{{ URL::asset('build/plugins/metismenu/metisMenu.min.js') }}"></script>
+        <script src="{{ URL::asset('build/plugins/apexchart/apexcharts.min.js') }}"></script>
+        <script src="{{ URL::asset('build/plugins/simplebar/js/simplebar.min.js') }}"></script>
+        <script src="{{ URL::asset('build/plugins/peity/jquery.peity.min.js') }}"></script>
+        <script src="{{ URL::asset('build/plugins/chartjs/js/chart.js') }}"></script>
+        <script src="{{ URL::asset('build/plugins/chartjs/js/chartjs-custom.js') }}"></script>
+        <script src="{{ URL::asset('build/js/main.js') }}"></script>
+        <script src="{{ URL::asset('build/js/data-widgets.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $(".accordion-button").on('click', function() {
+                    var target = $(this).data("target");
+                    $(".accordion-collapse").not(target).collapse('hide'); // Hide other collapses
+                    $(target).collapse('toggle'); // Toggle the clicked collapse
+                });
             });
-        });
-    </script>
-    <script>
-        jQuery(function() {
-            // Initially hide all tab content
-            jQuery('.tab-content .tab-pane').removeClass('show active');
+        </script>
 
-            // Show the first tab's content by default
-            jQuery('#misi').addClass('show active');
+        <script>
+            jQuery(function() {
+                // Initially hide all tab content
+                jQuery('.tab-content .tab-pane').removeClass('show active');
 
-            // Handle nav-link clicks
-            jQuery('.nav-link').click(function(event) {
-                event.preventDefault(); // Prevent default link behavior
-                jQuery('.tab-pane').removeClass('show active'); // Hide all tab panes
+                // Show the first tab's content by default
+                jQuery('#misi').addClass('show active');
 
-                var targetId = jQuery(this).attr(
-                    'href'); // Get the href attribute which corresponds to the tab-pane ID
-                jQuery(targetId).addClass('show active'); // Show the corresponding tab-pane
+                // Handle nav-link clicks
+                jQuery('.nav-link').click(function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    jQuery('.tab-pane').removeClass('show active'); // Hide all tab panes
+
+                    var targetId = jQuery(this).attr(
+                        'href'); // Get the href attribute which corresponds to the tab-pane ID
+                    jQuery(targetId).addClass('show active'); // Show the corresponding tab-pane
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        // Function to show confirmation dialog before submitting the "leave class" form
-        function confirmDelete() {
-            Swal.fire({
-                title: 'Apakah kamu yakin ingin keluar dari kelas ini?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Ya, keluar!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit the form if the user confirms
-                    document.getElementById('leaveClassForm').submit();
-                }
-            });
-        }
+        <script>
+            // Function to show confirmation dialog before submitting the "leave class" form
+            function confirmDelete() {
+                Swal.fire({
+                    title: 'Apakah kamu yakin ingin keluar dari kelas ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, keluar!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form if the user confirms
+                        document.getElementById('leaveClassForm').submit();
+                    }
+                });
+            }
 
-        // Function to submit the form with a processing toast
-        function submitForm() {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Sedang Memproses...',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                document.getElementById('addMateriForm').submit();
-            });
-        }
-
-        // Set up SweetAlert for toasts
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            iconColor: 'white',
-            customClass: {
-                popup: 'colored-toast',
-            },
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-        });
-
-        // Display success or error toast based on session messages
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (session('success'))
-                Toast.fire({
+            // Function to submit the form with a processing toast
+            function submitForm() {
+                Swal.fire({
+                    position: 'center',
                     icon: 'success',
-                    title: "{{ session('success') }}",
-                    background: '#a5dc86', // Success background color
+                    title: 'Sedang Memproses...',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    document.getElementById('addMateriForm').submit();
                 });
-            @endif
+            }
 
-            @if (session('toast_error'))
-                Toast.fire({
-                    icon: 'error',
-                    title: "{{ session('toast_error') }}",
-                    background: '#f27474', // Error background color
-                });
-            @endif
-        });
-    </script>
+            // Set up SweetAlert for toasts
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                iconColor: 'white',
+                customClass: {
+                    popup: 'colored-toast',
+                },
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
 
-    <!-- Include SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            // Display success or error toast based on session messages
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session('success'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: "{{ session('success') }}",
+                        background: '#a5dc86', // Success background color
+                    });
+                @endif
 
-    <script></script>
+                @if (session('toast_error'))
+                    Toast.fire({
+                        icon: 'error',
+                        title: "{{ session('toast_error') }}",
+                        background: '#f27474', // Error background color
+                    });
+                @endif
+            });
+        </script>
 
-    <script src="{{ URL::asset('livecode/js/app.js') }}"></script>
-@endpush
+        <!-- Include SweetAlert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script></script>
+
+        <script src="{{ URL::asset('livecode/js/app.js') }}"></script>
+    @endpush

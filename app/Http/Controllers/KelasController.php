@@ -51,13 +51,15 @@ class KelasController extends Controller
 
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('images/logos', $fileName, 'public');
-            $request->merge(['logo' => $filePath]);
+            $originName = $file->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time(). '_' . $fileName  . '.' . $extension;
+            $file->move(public_path('assets/images/logos'), $fileName);
         }
 
         $data = $request->all();
-        $data['logo'] = $filePath;
+        $data['logo'] = $fileName;
         $data['user_id'] = Auth::user()->id;
         $data['token'] = Str::random(5); // Automatically generate a 64-character token
 
@@ -72,7 +74,8 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        $kelas = Kelas::findOrFail($id);
+        $kelas = Kelas::with('user')->get();
+
         return redirect()->route('course.index', $kelas->id);
     }
 

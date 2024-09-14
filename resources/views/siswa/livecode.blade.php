@@ -88,7 +88,7 @@
                     $('#loader').show();
 
                     $.ajax({
-                        url: "{{ route('store.answers') }}",
+                        url: "{{ route('siswa.store.answers') }}",
                         method: 'POST',
                         data: $(this).serialize(),
                         success: function(response) {
