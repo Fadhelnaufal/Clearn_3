@@ -25,7 +25,7 @@ class StudiesSubmission extends Model
         return $this->belongsTo(CaseStudies::class, 'case_study_id');
     }
 
-    public function student()
+    public function users()
     {
         return $this->belongsTo(User::class, 'student_id');
     }

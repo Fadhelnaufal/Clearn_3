@@ -19,17 +19,19 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>mark@gmail.com</td>
-                        <td>junior front end</td>
-                        <td>100</td>
-                        <td>
-                            <a href="" class="btn btn-primary btn-sm me-2"><i class="bi bi-eye me-1"></i>Lihat</a>
-                            <a href="" class="btn btn-success btn-sm"><i class="bi bi-pencil-square me-1"></i>Nilai</a>
-                        </td>
-                      </tr>
+                      @foreach ($submission as $submissions)
+                        <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $submissions->users->name }}</td>
+                            <td>{{ $submissions->users->email }}</td>
+                            <td>{{ $submissions->level }}</td>
+                            <td>{{ $submissions->nilai }}</td>
+                            <td>
+                                <a href="" class="btn btn-primary btn-sm me-2"><i class="bi bi-eye me-1"></i>Lihat</a>
+                                <a href="" class="btn btn-success btn-sm"><i class="bi bi-pencil-square me-1"></i>Nilai</a>
+                            </td>
+                        </tr>
+                      @endforeach
                       <!-- Add more rows as needed -->
                     </tbody>
                   </table>

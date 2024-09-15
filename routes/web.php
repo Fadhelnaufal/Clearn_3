@@ -16,6 +16,7 @@ use App\Http\Controllers\SettingRoleController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\StudentSubmissionController;
 use App\Http\Controllers\SubMateriController;
+use App\Http\Controllers\ResultCaseStudyController;
 use App\Models\SubMateri;
 use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -155,6 +156,16 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'edit' => 'guru.course-detail.case.edit',
         'update' => 'guru.course-detail.case.update',
         'destroy' => 'guru.course-detail.case.destroy',
+    ]);
+
+    Route::resource('/result/case-study', ResultCaseStudyController::class)->names([
+        'index' => 'guru.result.case.index',
+        'create' => 'guru.result.case.create',
+        'store' => 'guru.result.case.store',
+        'show' => 'guru.result.case.show',
+        'edit' => 'guru.result.case.edit',
+        'update' => 'guru.result.case.update',
+        'destroy' => 'guru.result.case.destroy',
     ]);
 
     Route::get('/compiler', [GuruController::class, 'compiler'])->name('guru.compiler');

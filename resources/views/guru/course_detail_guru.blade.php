@@ -305,11 +305,9 @@
                                                 <!-- Case Study details here -->
                                                 <div class="row">
                                                     <div class="col mt-3 d-flex gap-2">
-                                                        <button type="button" class="btn btn-success md-2"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#editCaseModal{{ $caseStudy->id }}">
+                                                        <a class="btn btn-primary md-2" href="{{route('guru.result.case.index')}}">
                                                             <i class="bi bi-eye"></i> Lihat Hasil
-                                                        </button>
+                                                        </a>
                                                         <button type="button" class="btn btn-warning md-2"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#editCaseModal{{ $caseStudy->id }}">
