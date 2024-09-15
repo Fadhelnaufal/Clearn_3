@@ -88,7 +88,6 @@
                     method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <input type="hidden" id="all-form-data" name="all_form">
                 </form>
             </div>
         </div>
@@ -150,21 +149,49 @@
                     console.error('Error initializing editor for userType ID: ' + userType.id, error);
                 });
         });
-
         document.querySelector('#submit-all').addEventListener('click', function() {
             let allForm = [];
+            let formHidden = document.querySelector('#form-hidden');
+            let hiddenFormData = new FormData(formHidden);
+
             userTypes.forEach(function(userType, i) {
                 var form = document.querySelector('#form' + userType.id);
                 var formData = new FormData(form);
+
+                // Capture editor data
                 formData.set('isi', editorMaster[i].getData());
+
+                // Handle the file input
+                var lampiran = formData.get('lampiran');
+                if (lampiran) {
+                    hiddenFormData.append('lampiran[' + i + ']', lampiran);
+                }
                 var formDataJson = Object.fromEntries(formData.entries());
                 allForm.push(formDataJson);
             });
 
-            document.querySelector('#all-form-data').value = JSON.stringify(allForm);
-            document.querySelector('#form-hidden').submit();
+            // Store JSON data in the hidden input field
+            // document.querySelector('#all-form-data').value = JSON.stringify(allForm);
+            hiddenFormData.append('all_form', JSON.stringify(allForm));
 
-        })
+            // Submit the hidden form along with the files
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', formHidden.action, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // If the request was successful, redirect to the desired route
+                    window.location.href = "{{ route('guru.dashboard') }}"; // Change to your success route
+                } else {
+                    // Handle the error if needed
+                    console.error('Form submission failed: ', xhr.responseText);
+                }
+            };
+            xhr.onerror = function() {
+                console.error('Request failed.');
+            };
+            xhr.send(hiddenFormData);
+        });
+
         // document.querySelector('#submi').addEventListener('submit', function(e) {
         //     // Get the content of CKEditor and fill the hidden input
         //     // e.preventDefault();
