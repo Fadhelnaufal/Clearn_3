@@ -29,13 +29,13 @@
                 </div>
             </div>
             <div class="tab-content">
-                @foreach ($userTypes as $userType)
+                @foreach ($userTypes as $index => $userType)
                     <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="kategori{{ $userType->id }}"
                         role="tabpanel">
                         <div class="row">
                             <div class="card">
-                                <form action="{{ route('sub-materi.store', [$kelas->id, $userType->id]) }}" id="form1"
-                                    method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('sub-materi.store', [$kelas->id, $userType->id]) }}"
+                                    id="form{{ $userType->id }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="materi_id" value="{{ $kelas->materi->first()->id }}">
                                     <input type="hidden" name="user_type_id" value="{{ $userType->id }}">
@@ -61,19 +61,35 @@
                                                 cols="30" rows="10">
                                                 <p></p>
                                             </div>
-                                            <input type="hidden" name="isi" id="isi{{ $userType->id }}">
+                                            <input type="hidden" name="isi" id="isi">
+                                            <input type="hidden" name="id_kategori" value="{{ $userType->id }}">
                                         </div>
 
                                     </div>
-                                    <div class="col">
-                                        <button type="submit" class="btn btn-primary mt-4 p-2">Tambah</button>
-                                        <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>
-                                    </div>
+
+                                    @if ($loop->last)
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-primary mt-4 p-2">Tambah</button>
+                                            <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>
+                                        </div>
+                                    @endif
+
                                 </form>
                             </div>
                         </div>
                     </div>
                 @endforeach
+                <div class="col">
+                    <button type="submit" id="submit-all" class="btn btn-primary mt-4 p-2">Tambah</button>
+                    <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>
+                </div>
+
+                <form style="display:none" id="form-hidden" action="{{ route('sub-materi.store', [$kelas->id, 1]) }}"
+                    method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <input type="hidden" id="all-form-data" name="all_form">
+                </form>
             </div>
         </div>
     </div>
@@ -100,7 +116,8 @@
     <script>
         // Pass the userTypes data to JavaScript as a JSON array
         var userTypes = @json($userTypes);
-        let editorMaster = {};
+
+        let editorMaster = [];
         // Loop over userTypes and initialize CKEditor for each editor
         userTypes.forEach(function(userType) {
             // import { ClassicEditor, Base64UploadAdapter } from 'ckeditor5';
@@ -122,7 +139,7 @@
                     console.log('Editor was initialized for userType ID: ' + userType.id, editor);
 
                     // Handle form submission
-                    editorMaster[userType.id] = editor;
+                    editorMaster.push(editor);
                     // document.querySelector('form').addEventListener('submit', function() {
                     //     // Get the content of CKEditor and fill the hidden input
                     //     var editorData = editor.getData();
@@ -133,20 +150,35 @@
                     console.error('Error initializing editor for userType ID: ' + userType.id, error);
                 });
         });
-        document.querySelector('#form1').addEventListener('submit', function(e) {
-            // Get the content of CKEditor and fill the hidden input
-            // e.preventDefault();
-            userTypes.forEach(function(userType) {
-                var editorData = editorMaster[userType.id].getData();
-                console.log('Data from editor for userType ID ' + userType.id + ': ', editorData);
 
-                // Fill the hidden input with the editor data
-                document.querySelector('#isi' + userType.id).value = editorData;
+        document.querySelector('#submit-all').addEventListener('click', function() {
+            let allForm = [];
+            userTypes.forEach(function(userType, i) {
+                var form = document.querySelector('#form' + userType.id);
+                var formData = new FormData(form);
+                formData.set('isi', editorMaster[i].getData());
+                var formDataJson = Object.fromEntries(formData.entries());
+                allForm.push(formDataJson);
             });
-            // var editorData = editorMaster.getData();
-            // console.log(editorData);
-            // document.querySelector('#isi1'.value = editorData;
-        });
+
+            document.querySelector('#all-form-data').value = JSON.stringify(allForm);
+            document.querySelector('#form-hidden').submit();
+
+        })
+        // document.querySelector('#submi').addEventListener('submit', function(e) {
+        //     // Get the content of CKEditor and fill the hidden input
+        //     // e.preventDefault();
+        //     userTypes.forEach(function(userType) {
+        //         var editorData = editorMaster[userType.id].getData();
+        //         console.log('Data from editor for userType ID ' + userType.id + ': ', editorData);
+
+        //         // Fill the hidden input with the editor data
+        //         document.querySelector('#isi' + userType.id).value = editorData;
+        //     });
+        //     // var editorData = editorMaster.getData();
+        //     // console.log(editorData);
+        //     // document.querySelector('#isi1'.value = editorData;
+        // });
     </script>
 
 

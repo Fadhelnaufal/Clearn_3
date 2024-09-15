@@ -14,6 +14,7 @@ class SubMateri extends Model
         'isi',
         'lampiran',
         'materi_id',
+        'user_type_id',
         'kategori_id',
     ];
 

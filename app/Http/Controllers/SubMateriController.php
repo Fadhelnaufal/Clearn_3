@@ -24,48 +24,73 @@ class SubMateriController extends Controller
     }
 
     // Show form to create a new sub materi
-    public function createSubMateri($materiId,$kelasId)
+    public function createSubMateri($materiId, $kelasId)
     {
         $kelas = Kelas::with('materi')->find($kelasId);
         // $materi = Materi::findOrFail($materiId);
         // $userType = UserType::findOrFail($userTypeId);
-        return view('materi.create_sub_materi', compact('kelas','materi'));
+        return view('materi.create_sub_materi', compact('kelas', 'materi'));
     }
 
     // Store a new sub materi
     public function storeSubMateri(Request $request, $userTypeId)
     {
-        dd($request->all());
-        // Adjust validation rules
-        $validationRules = [
-            'judul' => 'required|max:255',
-            'materi_id' => 'required|integer',
-            'user_type_id' => 'required|integer',
-            'isi.' . $userTypeId => 'required|string', // Dynamic validation for 'isi'
-            'lampiran' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
-        ];
+        // dd($request->all());
 
-        // Perform validation
-        $validatedData = $request->validate($validationRules);
 
-        // Collecting data for saving
-        $data = [
-            'judul' => $validatedData['judul'],
-            'isi' => $validatedData['isi'][$userTypeId], // Get the correct 'isi' field
-            'kategori_id' => $userTypeId, // Assuming 'kategori_id' is the same as 'user_type_id'
-            'materi_id' => $validatedData['materi_id'],
-        ];
+        $all_data = json_decode($request->all_form);
 
-        // Handle file upload if present
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
-            $data['lampiran'] = $filePath;
+
+        foreach ($all_data as $key => $value) {
+            // dd($value);
+            $data = [
+                'judul' => $value->judul,
+                'isi' => $value->isi, // Get the correct 'isi' field
+                'user_type_id' => $value->id_kategori, // Assuming 'kategori_id' is the same as 'user_type_id'
+                'materi_id' => $value->materi_id,
+            ];
+
+            SubMateri::create($data);
+
+            // if ($value['lampiran']) {
+            //     $file = $request->file('lampiran');
+            //     $fileName = time() . '_' . $file->getClientOriginalName();
+            //     $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
+            //     $data['lampiran'] = $filePath;
+            // }
         }
 
+
+        // Adjust validation rules
+        // $validationRules = [
+        //     'judul' => 'required|max:255',
+        //     'materi_id' => 'required|integer',
+        //     'user_type_id' => 'required|integer',
+        //     'isi.' . $userTypeId => 'required|string', // Dynamic validation for 'isi'
+        //     'lampiran' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
+        // ];
+
+        // // Perform validation
+        // $validatedData = $request->validate($validationRules);
+
+        // // Collecting data for saving
+        // $data = [
+        //     'judul' => $validatedData['judul'],
+        //     'isi' => $validatedData['isi'][$userTypeId], // Get the correct 'isi' field
+        //     'kategori_id' => $userTypeId, // Assuming 'kategori_id' is the same as 'user_type_id'
+        //     'materi_id' => $validatedData['materi_id'],
+        // ];
+
+        // Handle file upload if present
+        // if ($request->hasFile('lampiran')) {
+        //     $file = $request->file('lampiran');
+        //     $fileName = time() . '_' . $file->getClientOriginalName();
+        //     $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
+        //     $data['lampiran'] = $filePath;
+        // }
+
         // Create the sub-materi record in the database
-        SubMateri::create($data);
+        // SubMateri::create($data);
 
         // Redirect back with a success message
         return redirect()->route('guru.dashboard')
