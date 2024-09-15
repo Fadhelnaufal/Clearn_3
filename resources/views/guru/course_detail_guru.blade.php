@@ -95,9 +95,9 @@
                                                 @foreach ($materi->subMateris as $subMateri)
                                                     <div class="sub-materi-item">
                                                         <a href="{{ route('sub-materi.show',[$kelas->id, $materi->id]) }}">
-                                                            <strong>{{ $subMateri->judul }}</strong>
+                                                            <strong>Materi: {{ $subMateri->judul }} dari {{ $subMateri->userType->name }}</strong>
                                                         </a>
-                                                        <p>{{ $subMateri->isi }}</p>
+                                                        {{-- <p>{{ $subMateri->isi }}</p> --}}
                                                         @if ($subMateri->lampiran)
                                                             <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
                                                                 target="_blank">
@@ -106,6 +106,15 @@
                                                         @endif
                                                     </div>
                                                 @endforeach
+                                                    @if (isset($soalTests))
+                                                        @foreach ($soalTests as $soalTest)
+                                                            <div class="soal-test-item">
+                                                                <a href="">
+                                                                    <strong>Soal Test: </strong>
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+                                                    @endif
                                                 <div class="row">
 
                                                 </div>

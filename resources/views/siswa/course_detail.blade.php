@@ -95,12 +95,12 @@
                                                 @foreach ($materi->subMateris as $subMateri)
                                                     <div class="sub-materi-item">
                                                         <a
-                                                            href="{{ route('sub-materi.show', [$kelas->id , $materi->id ]) }}"><strong>{{ $subMateri->judul }}</strong></a>
-                                                        {{-- <p>{{ $subMateri->isi }}</p> --}}
-                                                        {{-- @if ($subMateri->lampiran)
+                                                            href="{{ route('subMateri.show', $subMateri->id) }}"><strong>{{ $subMateri->judul }}</strong></a>
+                                                        <p>{{ $subMateri->isi }}</p>
+                                                        @if ($subMateri->lampiran)
                                                             <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
                                                                 target="_blank">Download Lampiran</a>
-                                                        @endif --}}
+                                                        @endif
                                                     </div>
                                                 @endforeach
                                             </div>
