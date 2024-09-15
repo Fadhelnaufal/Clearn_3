@@ -11,7 +11,8 @@ class CaseStudies extends Model
     protected $fillable = [
         'kelas_id',
         'title',
-        'description'
+        'description',
+        'image',
     ];
 
     public function kelas()

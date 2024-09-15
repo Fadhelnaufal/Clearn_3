@@ -148,8 +148,16 @@
                         @if ($case_studies->isNotEmpty())
                             @foreach ($case_studies as $caseStudy)
                                 <div class="card">
-                                    <h2>{{ $caseStudy->title }}</h2>
-                                    <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}">{{ $caseStudy->description }}</a>
+                                    <div class="card-body">
+                                        <h2 class="card-title">{{ $caseStudy->title }}</h2>
+                                        <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}"
+                                            style="color: gray;">
+                                            <p class="card-text text-neutral-600">
+                                                <i class="bi bi-box-arrow-in-up-right ms-3 fs-6"></i>
+                                                {{ $caseStudy->description }}
+                                            </p>
+                                        </a>
+                                    </div>
                                 </div>
                             @endforeach
                         @else
@@ -401,14 +409,14 @@
 
         <!-- Include SweetAlert2 -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+        {{--
         <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css" />
         <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
         <script>
             $(document).ready(function() {
                 $('#siswa').DataTable();
             });
-        </script>
+        </script> --}}
 
         <script src="{{ URL::asset('livecode/js/app.js') }}"></script>
     @endpush

@@ -9,7 +9,7 @@
     <x-page-title title="Kelas" subtitle="Materi" />
     <div class="row">
         <div class="container">
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-body px-2">
                     <ul class="nav nav-pills mb-0" role="tablist">
                         @foreach ($userTypes as $userType)
@@ -65,7 +65,6 @@
                                         </div>
 
                                     </div>
-
                                     <div class="col">
                                         <button type="submit" class="btn btn-primary mt-4 p-2">Tambah</button>
                                         <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>

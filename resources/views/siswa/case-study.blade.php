@@ -9,9 +9,10 @@
     </div>
     <div class="container">
         <div class="mb-3">
-            <div class="card px-2 py-2 text-center">
+            <div class="card px-2 py-3 text-center items-center justify-center flex flex-col">
                 <h3>{{ $caseStudy->title }}</h3>
                 <p>{{ $caseStudy->description }}</p>
+                <img src="{{ asset('assets/images/case_studies/' . $caseStudy->image) }}" class="rounded-start mx-auto" width="50%" alt="tidak ada gambar">
             </div>
         </div>
         <div class="row">
