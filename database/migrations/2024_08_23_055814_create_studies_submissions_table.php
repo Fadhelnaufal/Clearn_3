@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->text('html')->nullable();
             $table->text('css')->nullable();
-            $table->text('javascript')->nullable();
+            $table->text('js')->nullable();
             $table->timestamps();
 
             $table->foreign('case_study_id')

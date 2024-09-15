@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Sertifikat;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -199,6 +200,35 @@ class KelasController extends Controller
 
         // Stream the PDF to the browser instead of downloading it
         return $pdf->stream($user->name . '.pdf');
+    }
+
+    public function storeSertifikat(Request $request)
+    {
+        $this->validate($request, [
+            'sertifikat' => 'required|image|mimes:jpg,jpeg,png,gif|max:4098',
+            'name' => 'nullable|max:255',
+        ]);
+
+        $kelas = Kelas::findOrFail($request->kelas_id);
+
+        $file = $request->file('sertifikat');
+        if ($file) {
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('images/sertifikat', $fileName, 'public');
+
+            // Save the certificate to the sertifikat table
+            $sertifikat = new Sertifikat();
+            $sertifikat->kelas_id = $kelas->id;
+            $sertifikat->background = $filePath;
+            $sertifikat->save();
+
+            // Redirect after successful save
+            return redirect()->route('kelas.cetakSertifikat', $kelas->id)
+                ->with('success', 'Sertifikat berhasil diunggah');
+        } else {
+            // Handle the case where no file was uploaded
+            return redirect()->back()->withErrors(['sertifikat' => 'No file was uploaded']);
+        }
     }
 
 

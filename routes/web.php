@@ -14,6 +14,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\SettingRoleController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\StudentSubmissionController;
 use App\Http\Controllers\SubMateriController;
 use App\Models\SubMateri;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +23,8 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('landing');
 });
-Route::get('/text', function () {
-    return view('component-text-utilities');
+Route::get('/materi', function () {
+    return view('siswa.case-study');
 });
 // Route::get('/course_detail', function () {
 //     return view('course_detail');
@@ -92,7 +93,7 @@ Route::get('/token_quiz', function () {
 // Siswa Routes
 Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
-    Route::get('/siswa/livecode', [SiswaController::class, 'livecode'])->name('/siswa/livecode');
+    Route::get('/compiler', [SiswaController::class, 'compiler'])->name('/siswa/compiler');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
     Route::get('/user-type-result', [SiswaController::class, 'getUserTypeResult'])->name('siswa.result');
     Route::post('/save-user-type', [SiswaController::class, 'saveUserType'])->name('siswa.saveUserType');
@@ -105,6 +106,15 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
         'show' => 'siswa.course-detail.show',
         'leave' => 'siswa.course-detail.leave',
     ]);
+    Route::resource('/case-submission', StudentSubmissionController::class)->parameters([
+        'case-submission' => 'id'
+    ])->names([
+        'index' => 'siswa.case-submission.index',
+        'show'=> 'siswa.case-submission.show',
+        'create' => 'siswa.case-submission.create',
+        'store' => 'siswa.case-submission.store',
+    ]);
+
     Route::get('/kelas/{kelasId}/sertifikat', [KelasController::class, 'cetakSertifikat'])->name('kelas.cetakSertifikat');
 });
 
@@ -114,6 +124,7 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     Route::resource('/course', KelasController::class)->parameters([
         'course'=> 'id'
     ]);
+    Route::post('/course/create-sertifikat', [KelasController::class, 'storeSertifikat'])->name('guru.course.store-sertifikat');
     Route::resource('/kelas/materi', MateriController::class)->names([
         'index' => 'guru.course-detail.index',
         'create' => 'guru.course-detail.create',
@@ -142,6 +153,8 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'update' => 'guru.course-detail.case.update',
         'destroy' => 'guru.course-detail.case.destroy',
     ]);
+
+    Route::get('/compiler', [GuruController::class, 'compiler'])->name('guru.compiler');
 });
 
 // Admin Routes

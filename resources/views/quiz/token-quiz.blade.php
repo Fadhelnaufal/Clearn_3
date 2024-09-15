@@ -20,7 +20,6 @@
                 <div class="group">
                     <input class="input" type="search" placeholder="Masukkan Token Kelas" />
                 </div>
-
                 <button class="btn start">Start Quiz</button>
             </div>
 

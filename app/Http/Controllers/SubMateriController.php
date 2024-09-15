@@ -26,28 +26,36 @@ class SubMateriController extends Controller
     // Show form to create a new sub materi
     public function createSubMateri($materiId,$kelasId)
     {
-        $kelas = Kelas::findOrFail($kelasId);
-        $materi = Materi::findOrFail($materiId);
+        $kelas = Kelas::with('materi')->find($kelasId);
+        // $materi = Materi::findOrFail($materiId);
         // $userType = UserType::findOrFail($userTypeId);
         return view('materi.create_sub_materi', compact('kelas','materi'));
     }
 
     // Store a new sub materi
-    public function storeSubMateri(Request $request, $userTypeId, $kelasId, $materiId)
+    public function storeSubMateri(Request $request, $userTypeId)
     {
-        $this->validate($request, [
+        // Adjust validation rules
+        $validationRules = [
             'judul' => 'required|max:255',
-            'isi' => 'required',
+            'materi_id' => 'required|integer',
+            'user_type_id' => 'required|integer',
+            'isi.' . $userTypeId => 'required|string', // Dynamic validation for 'isi'
             'lampiran' => 'nullable|file|mimes:pdf,doc,docx|max:10000',
-        ]);
+        ];
 
-        $kelas = Kelas::findOrFail($kelasId);
-        $materi = Materi::findOrFail($materiId);
-        $userType = UserType::findOrFail($userTypeId);
+        // Perform validation
+        $validatedData = $request->validate($validationRules);
 
-        $data = $request->only(['judul', 'isi']);
-        $data['kategori_id'] = $userTypeId;
+        // Collecting data for saving
+        $data = [
+            'judul' => $validatedData['judul'],
+            'isi' => $validatedData['isi'][$userTypeId], // Get the correct 'isi' field
+            'kategori_id' => $userTypeId, // Assuming 'kategori_id' is the same as 'user_type_id'
+            'materi_id' => $validatedData['materi_id'],
+        ];
 
+        // Handle file upload if present
         if ($request->hasFile('lampiran')) {
             $file = $request->file('lampiran');
             $fileName = time() . '_' . $file->getClientOriginalName();
@@ -55,18 +63,14 @@ class SubMateriController extends Controller
             $data['lampiran'] = $filePath;
         }
 
-        $materi = $kelas->materis()->first();
-        // $materi->subMateris()->create($data);
-        if ($materi) {
-            $materi->subMateris()->create($data);
-        } else {
-            // If no Materi is found, directly create SubMateri in Kelas
-            $kelas->subMateris()->create($data);
-        }
+        // Create the sub-materi record in the database
+        SubMateri::create($data);
 
-        return redirect()->route('guru-course-detail.show', $kelasId)
+        // Redirect back with a success message
+        return redirect()->route('guru.dashboard')
             ->with('success', 'Sub Materi berhasil ditambahkan');
     }
+
 
     // Show form to edit a sub materi
     public function editSubMateri($subMateriId)

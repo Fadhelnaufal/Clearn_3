@@ -17,7 +17,7 @@ class StudiesSubmission extends Model
         'student_id',
         'html',
         'css',
-        'javascript'
+        'js'
     ];
 
     public function caseStudy()

@@ -11,14 +11,9 @@
                         <h3 class="mx-2 my-2"><i class="material-icons-outlined mx-2">
                                 code
                             </i> HTML</h3>
-                        <textarea name="html" id="html" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="on"
-                            autocapitalize="off" spellcheck="false"></textarea>
-                        <div class="col mt-2 mb-2 mx-2">
-                            <button class="copy-btn copy-html btn btn-primary">
-                                Submit
-                            </button>
-                            <button class="clear html btn btn-secondary">clear</button>
-                        </div>
+                        <textarea class="mb-5" name="html" id="html" cols="auto" rows="auto" autofocus autocomplete="off"
+                            autocorrect="on" autocapitalize="off" spellcheck="false"></textarea>
+
                     </div>
                 </form>
             </div>
@@ -28,14 +23,8 @@
                         <h3 class="mx-2 my-2"><i class="material-icons-outlined mx-2">
                                 code
                             </i>CSS</h3>
-                        <textarea name="css" id="css" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="off"
-                            autocapitalize="off" spellcheck="false"></textarea>
-                        <div class="col mt-2 mb-2 mx-2">
-                            <button class="copy-btn copy-html btn btn-primary">
-                                Submit
-                            </button>
-                            <button class="clear css btn btn-secondary">clear</button>
-                        </div>
+                        <textarea class="mb-5" name="css" id="css" cols="auto" rows="auto" autofocus autocomplete="off"
+                            autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                     </div>
                 </form>
             </div>
@@ -45,14 +34,8 @@
                         <h3 class="mx-2 my-2"><i class="material-icons-outlined mx-2">
                                 code
                             </i>JS</h3>
-                        <textarea name="js" id="js" cols="auto" rows="auto" autofocus autocomplete="off" autocorrect="off"
-                            autocapitalize="off" spellcheck="false"></textarea>
-                        <div class="col mt-2 mb-2 mx-2">
-                            <button class="clear js btn btn-secondary">clear</button>
-                            <button class="copy-btn copy-html btn btn-primary">
-                                Submit
-                            </button>
-                        </div>
+                        <textarea class="mb-5" name="js" id="js" cols="auto" rows="auto" autofocus autocomplete="off"
+                            autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                     </div>
                 </form>
             </div>

@@ -11,7 +11,15 @@ class StudentSubmissionController extends Controller
 {
     public function index()
     {
-        return view('livecode');
+        $caseStudies = CaseStudies::all();
+        return view('siswa.case-study' , compact('caseStudies'));
+    }
+
+    public function show($id)
+    {
+        $caseStudy = CaseStudies::findOrFail($id);
+        $submissions = $caseStudy->submissions()->where('student_id', Auth::user()->id)->get();
+        return view('siswa.case-study', compact('caseStudy', 'submissions'));
     }
 
     public function create($id)
@@ -26,30 +34,41 @@ class StudentSubmissionController extends Controller
         return view('student_submissions.create', compact('caseStudy'));
     }
 
-    public function store(Request $request, $caseStudyId)
+    public function store(Request $request)
     {
-        $this->validate($request, [
+        // Validate the incoming request
+        $request->validate([
             'html' => 'nullable|string',
             'css' => 'nullable|string',
-            'javascript' => 'nullable|string',
+            'js' => 'nullable|string',
+            'case_study_id' => 'required|integer|exists:case_studies,id',
         ]);
 
+        // Retrieve the case study
+        $caseStudyId = $request->input('case_study_id');
         $caseStudy = CaseStudies::findOrFail($caseStudyId);
+
 
         // Ensure the student is enrolled in the class
         if (!Auth::user()->kelas->contains('id', $caseStudy->kelas_id)) {
             return redirect()->back()->with('error', 'You are not enrolled in the class for this case study.');
         }
 
-        StudiesSubmission::create([
+        // Create a new submission record
+        $submission = StudiesSubmission::create([
             'case_study_id' => $caseStudyId,
             'student_id' => Auth::user()->id,
             'html' => $request->input('html'),
             'css' => $request->input('css'),
-            'javascript' => $request->input('javascript'),
+            'js' => $request->input('js'),
         ]);
 
-        return redirect()->route('case_studies.index')
+        // Redirect with success message
+        return redirect()->back()
             ->with('success', 'Solution successfully submitted');
     }
+
+
+
+
 }

@@ -25,7 +25,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="tab-icon"><i class="bi bi-code-square me-2 fs-5"></i>
                                     </div>
-                                    <div class="tab-title">Live Code</div>
+                                    <div class="tab-title">Studi Kasus</div>
                                 </div>
                             </a>
                         </li>
@@ -141,43 +141,19 @@
                     <!-- Sidebar Section -->
                 </div>
             </div>
-            <!-- livecode Section -->
+            <!-- studi kasus Section -->
             <div class="tab-pane fade target" id="livecode">
                 <div class="row mx-1">
                     <div class="col-md-7">
-                        @if ($materis->isNotEmpty())
-                            @foreach ($materis as $materi)
-                                <div class="accordion" id="accordionExample">
-                                    <div class="accordion-item mb-3">
-                                        <h2 class="accordion-header" id="heading{{ $materi->id }}">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $materi->id }}"
-                                                aria-expanded="false" aria-controls="collapse{{ $materi->id }}">
-                                                {{ $materi->judul }}
-                                            </button>
-                                        </h2>
-                                        <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse"
-                                            aria-labelledby="heading{{ $materi->id }}"
-                                            data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                @foreach ($materi->subMateris as $subMateri)
-                                                    <div class="sub-materi-item">
-                                                        <a
-                                                            href="{{ route('subMateri.show', $subMateri->id) }}"><strong>{{ $subMateri->judul }}</strong></a>
-                                                        <p>{{ $subMateri->isi }}</p>
-                                                        @if ($subMateri->lampiran)
-                                                            <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
-                                                                target="_blank">Download Lampiran</a>
-                                                        @endif
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
+                        @if ($case_studies->isNotEmpty())
+                            @foreach ($case_studies as $caseStudy)
+                                <div class="card">
+                                    <h2>{{ $caseStudy->title }}</h2>
+                                    <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}">{{ $caseStudy->description }}</a>
                                 </div>
                             @endforeach
                         @else
-                            <p>No materi available for this class.</p>
+                            <p>No Studi Kasus available for this class.</p>
                         @endif
                     </div>
                     <div class="col-md-5">
@@ -213,7 +189,7 @@
                                             <tr>
                                                 <th scope="row">{{ $loop->iteration }}</th>
                                                 <td>{{ $siswa->name }}</td>
-                                                <td>{{$xp}}</td>
+                                                <td>{{ $xp }}</td>
                                             </tr>
                                             @php
                                                 $xp -= 150;
@@ -256,7 +232,7 @@
             {{-- anggota kelas --}}
             <div class="tab-pane fade target" id="anggota_siswa">
                 <div class="card px-2 py-2">
-                    <table class="table">
+                    <table class="table" id="siswa">
                         <thead>
                             <tr>
                                 <th scope="col">no</th>
@@ -426,7 +402,13 @@
         <!-- Include SweetAlert2 -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css" />
+        <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#siswa').DataTable();
+            });
+        </script>
 
         <script src="{{ URL::asset('livecode/js/app.js') }}"></script>
     @endpush
