@@ -94,7 +94,7 @@
                                                 {{-- Sub-materis display here --}}
                                                 @foreach ($materi->subMateris as $subMateri)
                                                     <div class="sub-materi-item">
-                                                        <a href="{{ route('subMateri.show', $subMateri->id) }}">
+                                                        <a href="{{ route('sub-materi.show',[$kelas->id, $materi->id]) }}">
                                                             <strong>{{ $subMateri->judul }}</strong>
                                                         </a>
                                                         <p>{{ $subMateri->isi }}</p>
