@@ -7,21 +7,39 @@ use App\Models\Materi;
 use App\Models\SubMateri;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class SubMateriController extends Controller
 {
     // ... existing methods
-    public function showSubMateri($id, $subMateriId)
-    {
-        $kelas = Kelas::with('materi')->findOrFail($id);
-        $userTypes = UserType::all();
-        $materis = $kelas->materis; // Use the correct relationship here
-        // $subMateri = SubMateri::findOrFail($subMateriId);
-        // $subMateri = null;
+    public function showSubMateri($id, $subMateriId, $userTypeId)
+{
+    // Fetch the Kelas instance with its related Materis and Case Studies
+    $kelas = Kelas::with(['materi', 'case_studies', 'users'])->findOrFail($id);
 
-        return view('guru.tambah_materi', compact('kelas', 'materis', 'userTypes'));
-    }
+    // Fetch all user types
+    $userTypes = UserType::all();
+
+    // Check if Materis exists; initialize as an empty collection if null
+    $materis = $kelas->materi ?? collect();
+
+    // Fetch case studies related to the Kelas
+    $case_studies = $kelas->case_studies;
+
+    // Fetch users with role 'siswa' (role_id 3); adjust if necessary
+    $siswas = $kelas->users()->whereHas('roles', function ($query) {
+        $query->where('role_id', 3); // Adjust role_id based on your application's role setup
+    })->get();
+
+    // Determine the view based on the user's role
+    $user = Auth::user();
+    $view = $user->hasRole('guru') ? 'guru.preview-materi' : 'siswa.materi';
+
+    // Return the appropriate view with the data
+    return view($view, compact('kelas', 'materis', 'userTypes', 'case_studies', 'siswas'));
+}
+
 
     // Show form to create a new sub materi
     public function createSubMateri($materiId, $kelasId)
@@ -50,12 +68,12 @@ class SubMateriController extends Controller
                 'materi_id' => $value->materi_id,
             ];
 
-            if (isset($value->lampiran)) {
-                $file = $request->file('lampiran');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
-                $data['lampiran'] = $filePath;
-            }
+            // if (isset($value->lampiran)) {
+            //     $file = $request->file('lampiran');
+            //     $fileName = time() . '_' . $file->getClientOriginalName();
+            //     $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
+            //     $data['lampiran'] = $filePath;
+            // }
 
             SubMateri::create($data);
 

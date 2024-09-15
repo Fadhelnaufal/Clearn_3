@@ -118,6 +118,8 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
         'create' => 'siswa.case-submission.create',
         'store' => 'siswa.case-submission.store',
     ]);
+    Route::get('/kelas/{id}/sub-materi/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
+    ->name('siswa.sub-materi.show');
 
     Route::get('/kelas/{kelasId}/sertifikat', [KelasController::class, 'cetakSertifikat'])->name('kelas.cetakSertifikat');
 });

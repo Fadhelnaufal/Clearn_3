@@ -6,6 +6,8 @@ use App\Models\CaseStudies;
 use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\Kelas;
+use App\Models\SubMateri;
+use App\Models\SoalTest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -43,8 +45,17 @@ class MateriController extends Controller
         // Retrieve the course details based on the ID
         $kelas = Kelas::findOrFail($id); // Assuming you have a Kelas model
         // $materi = Materi::get()->all();
+        $user = Auth::user();
+        if ($user->hasRole('siswa')) {
+            foreach ($kelas->materi as $materis) {
+                // Filter subMateris based on the user's user_type_id
+                $materis->subMateris = $materis->subMateris->where('user_type_id', $user->user_type_id);
+            }
+        }
         $materis = $kelas->materi()->with('subMateris')->get();
+        $subMateris = SubMateri::with('UserType')->get();
         $case_studies = $kelas->case_studies()->get();
+        $soalTests = $kelas->materi()->with('soalTests')->get();
 
         if ($materis === null) {
             return abort(404, 'Materis not found');
@@ -56,10 +67,9 @@ class MateriController extends Controller
             $query->where('role_id', 3); // Assuming role_id 2 is for 'siswa'
         })->get();
 
-        $user = Auth::user();
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
 
-        return view($view, compact('siswas','kelas', 'materi', 'materis' , 'case_studies'));
+        return view($view, compact('user','siswas','kelas', 'materi', 'materis' , 'case_studies', 'soalTests', 'subMateris'));
 
     }
 

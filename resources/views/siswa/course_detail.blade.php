@@ -80,34 +80,41 @@
                     <div class="col-md-7">
                         @if ($materis->isNotEmpty())
                             @foreach ($materis as $materi)
-                                <div class="accordion" id="accordionExample">
-                                    <div class="accordion-item mb-3">
-                                        <h2 class="accordion-header" id="heading{{ $materi->id }}">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $materi->id }}"
-                                                aria-expanded="false" aria-controls="collapse{{ $materi->id }}">
-                                                {{ $materi->judul }}
-                                            </button>
-                                        </h2>
-                                        <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse"
-                                            aria-labelledby="heading{{ $materi->id }}" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                @foreach ($materi->subMateris as $subMateri)
-                                                    <div class="sub-materi-item">
-                                                        <a
-                                                            href="{{ route('subMateri.show', $subMateri->id) }}"><strong>{{ $subMateri->judul }}</strong></a>
-                                                        <p>{{ $subMateri->isi }}</p>
-                                                        @if ($subMateri->lampiran)
-                                                            <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
-                                                                target="_blank">Download Lampiran</a>
-                                                        @endif
-                                                    </div>
-                                                @endforeach
-                                            </div>
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item mb-3">
+                                    <h2 class="accordion-header" id="heading{{ $materi->id }}">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $materi->id }}"
+                                            aria-expanded="false" aria-controls="collapse{{ $materi->id }}">
+                                            {{ $materi->judul }}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse"
+                                        aria-labelledby="heading{{ $materi->id }}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            @foreach ($materi->subMateris->where('user_type_id', $user->user_type_id) as $subMateri)
+                                                <div class="sub-materi-item">
+                                                    <a
+                                                        href="{{ route('siswa.sub-materi.show', [$kelas->id, $materi->id, $subMateri->user_type_id]) }}">
+                                                        <strong>{{ $subMateri->judul }}</strong>
+                                                    </a>
+                                                    <p>{{ $subMateri->isi }}</p>
+                                                    @if ($subMateri->lampiran)
+                                                        <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
+                                                            target="_blank">Download Lampiran</a>
+                                                    @endif
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            </div>
+                        @endforeach
+
+                        @if ($materis->isEmpty())
+                            <p>No materi available for this class.</p>
+                        @endif
+
                         @else
                             <p>No materi available for this class.</p>
                         @endif
