@@ -8,6 +8,7 @@ use App\Models\SubMateri;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Str;
 
 class SubMateriController extends Controller
@@ -21,7 +22,15 @@ class SubMateriController extends Controller
         // $subMateri = SubMateri::findOrFail($subMateriId);
         // $subMateri = null;
 
-        return view('guru.tambah_materi', compact('kelas', 'materis', 'userTypes'));
+        if(is_null($materis)) {
+            $materis = collect();
+        } else {
+            $subMateri = SubMateri::findOrFail($subMateriId);
+        }
+        $user = Auth::user();
+        $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
+
+        return view($view, compact('kelas', 'materis', 'userTypes'));
     }
 
     // Show form to create a new sub materi

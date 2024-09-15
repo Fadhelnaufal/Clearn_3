@@ -24,8 +24,8 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('landing');
 });
-Route::get('/materi', function () {
-    return view('guru.hasil-studi-kasus');
+Route::get('/preview', function () {
+    return view('guru.preview-materi');
 });
 Route::get('/tabel', function () {
     return view('table-datatable');
