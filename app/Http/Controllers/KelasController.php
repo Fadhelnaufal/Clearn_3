@@ -74,9 +74,9 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        $kelas = Kelas::with('user')->get();
+        $kelas = Kelas::with('users')->get();
 
-        return redirect()->route('course.index', $kelas->id);
+        return redirect()->route('course.index' , compact('kelas'));
     }
 
     /**
@@ -85,7 +85,8 @@ class KelasController extends Controller
     public function edit(string $id)
     {
         $kelas = Kelas::findOrFail($id);
-        return view('course.edit', compact('kelas'));
+        return redirect()->back()->with('success', 'Kelas berhasil diperbarui');
+        // return view('course.edit', compact('kelas'));
     }
 
     /**
