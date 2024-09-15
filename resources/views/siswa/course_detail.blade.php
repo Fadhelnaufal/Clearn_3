@@ -121,12 +121,9 @@
                                             <h5 class="mb-0">Tantangan</h5>
                                         </div>
                                     </div>
-                                    <div class="position-relative">
-                                        <div class="piechart-legend">
+                                    <div class="text-center">
                                             <h2 class="mb-1">{{ $materis->count() }}/{{ $materis->count() }}</h2>
                                             <h6 class="mb-0">Tantangan</h6>
-                                        </div>
-                                        <div id="chart11"></div>
                                     </div>
                                 </div>
                             </div>

@@ -5,7 +5,10 @@
 @endsection
 
 @section('content')
+<div class="container d-flex align-items-center mb-5">
+    <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
     <x-page-title title="Course" subtitle="Detail Kelas {{ $kelas->mapel }}" />
+</div>
     <div class="row">
         <div class="container">
             <div class="card">
@@ -551,6 +554,8 @@
                                         <th scope="col">No</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Tipe</th>
+                                        <th scope="col">Skor</th>
+                                        <th scope="col">Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -559,6 +564,8 @@
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $siswa->name }}</td>
                                             <td>{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
+                                            <td></td>
+                                            <td><button href="" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>Hapus</button></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

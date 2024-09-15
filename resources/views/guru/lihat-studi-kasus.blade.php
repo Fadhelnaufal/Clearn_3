@@ -10,15 +10,13 @@
     <div class="container">
         <div class="mb-3">
             <div class="card px-2 py-3 text-center items-center justify-center flex flex-col">
-                <h3>{{ $caseStudy->title }}</h3>
-                <p>{{ $caseStudy->description }}</p>
-                <img src="{{ asset('assets/images/case_studies/' . $caseStudy->image) }}" class="rounded-start mx-auto" width="50%" alt="tidak ada gambar">
+                <h3></h3>
+                <p></p>
+                <img src="{{ asset('assets/images/case_studies/') }}" class="rounded-start mx-auto" width="50%" alt="tidak ada gambar">
             </div>
         </div>
         <div class="row">
-            <form id="submissionForm" action="{{ route('siswa.case-submission.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="case_study_id" value="{{ $caseStudy->id }}">
+                <input type="hidden" name="case_study_id">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
@@ -47,7 +45,8 @@
                     <div class="col">
                         <div class="card">
                             <div class="outputContainer">
-                                <iframe id="output" title="output" frameborder="0" width="100%" height="100%"></iframe>
+                                <iframe id="output" title="output" frameborder="0" width="100%"
+                                    height="100%"></iframe>
                             </div>
                         </div>
                     </div>
@@ -55,10 +54,9 @@
 
                 <div class="row">
                     <div class="col">
-                        <button class="btn btn-primary" type="button" id="submitCodeBtn">Submit Code</button>
+                        <button class="btn btn-primary" type="submit" id="submitCodeBtn">Submit Code</button>
                     </div>
                 </div>
-            </form>
         </div>
     </div>
 @endsection
@@ -68,23 +66,17 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Add event listener to the submit button
-        document.getElementById('submitCodeBtn').addEventListener('click', function(event) {
+        document.getElementById('submitCodeBtn').addEventListener('click', function() {
             Swal.fire({
                 title: "Apakah Sudah Yakin Dengan Jawabanmu?",
+                showDenyButton: false,
                 showCancelButton: true,
                 confirmButtonText: "Simpan",
-                cancelButtonText: "Batal"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Disable the submit button to prevent multiple clicks
-                    document.getElementById('submitCodeBtn').disabled = true;
-
-                    // Show success message and submit the form
-                    Swal.fire("Jawaban Telah Terkirim!", "", "success").then(() => {
-                        // Submit the form after confirmation
-                        document.getElementById('submissionForm').submit();
-                    });
+                    Swal.fire("Jawaban Telah Terkirim!", "", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
                 }
             });
         });
