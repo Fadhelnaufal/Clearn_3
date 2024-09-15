@@ -20,6 +20,7 @@
 <link href="{{ URL::asset('build/css/bootstrap.min.css') }}" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 @stack('css')
@@ -33,5 +34,9 @@
 <link href="{{ URL::asset('build/css/bordered-theme.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('build/css/responsive.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('livecode/css/style.css') }}" rel="stylesheet">
+{{-- <link href="{{ URL::asset('assets/ckeditor5-premium-features/ckeditor5-premium-features-editor.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('assets/ckeditor5-premium-features/ckeditor5-premium-features-content.css') }}" rel="stylesheet">
+<link href="{{ URL::asset('assets/ckeditor5-premium-features/ckeditor5-premium-features.css') }}" rel="stylesheet"> --}}
 
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 @include('sweetalert::alert')

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('sub_materis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('materi_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('materi_id');
+            $table->foreign('materi_id')->references('id')->on('materis')->onDelete('cascade');
             $table->string('judul');
             $table->longText('isi');
             $table->string('lampiran')->nullable();

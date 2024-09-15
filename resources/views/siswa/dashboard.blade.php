@@ -255,7 +255,7 @@
             @foreach ($kelas as $course)
                 <div class="col-sm-3">
                     <div class="card">
-                        <img src="{{ asset('assets/images/logos/' . $course->logo)}}" class="card-img-top me-2" alt="..." width="50%">
+                        <img src="{{ asset('assets/images/logos/' . $course->logo)}}" class="card-img-top me-2 img-thumbnail" alt="..." >
                         <div class="card-body">
                             <h5 class="card-title">{{ $course->mapel }}</h5>
                             <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>

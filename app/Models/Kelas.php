@@ -50,4 +50,9 @@ class Kelas extends Model
     {
         return $this->hasMany(CaseStudies::class);
     }
+
+    public function sertifikat()
+    {
+        return $this->hasOne(Sertifikat::class);
+    }
 }

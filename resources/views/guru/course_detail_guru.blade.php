@@ -24,7 +24,7 @@
                             <a class="nav-link" data-bs-toggle="pill" href="#livecode" role="tab" aria-selected="false">
                                 <div class="d-flex align-items-center">
                                     <div class="tab-icon"><i class="bi bi-code-square me-2 fs-5"></i></div>
-                                    <div class="tab-title">Live Code</div>
+                                    <div class="tab-title">Studi Kasus</div>
                                 </div>
                             </a>
                         </li>
@@ -268,33 +268,69 @@
                                                 <!-- Case Study details here -->
                                                 <div class="row">
                                                     <div class="col mt-3 d-flex">
-                                                        @if (isset($subMateriId))
-                                                            <a href="{{ route('sub-materi.show', ['id' => $kelas->id, 'subMateriId' => $subMateriId]) }}"
-                                                                class="btn btn-primary ">
-                                                                <i class="bi bi-pencil-square"></i> Tambah Materi
-                                                            </a>
-                                                        @else
-                                                            <button type="button"
-                                                                href="{{ route('sub-materi.create', ['kelasId' => $kelas->id, 'materiId' => $materi->id]) }}"
-                                                                class="btn btn-primary ">
-                                                                <i class="bi bi-pencil-square"></i> Tambah Materi
-                                                            </button>
-                                                        @endif
-                                                        <button type="button" class="btn btn-warning ms-2"
-                                                            data-bs-target="#EditModal" data-bs-toggle="modal"><i
-                                                                class="bi bi-pencil-square"></i>Edit</button>
-                                                        <form id="delete-form-{{ $materi->id }}"
-                                                            action="{{ route('guru.course-detail.destroy', $materi->id) }}"
+                                                        <button type="button" class="btn btn-warning md-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editCaseModal{{ $caseStudy->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit Studi Kasus
+                                                        </button>
+                                                        <form id="delete-form-{{ $caseStudy->id }}"
+                                                            action="{{ route('guru.course-detail.case.destroy', $caseStudy->id) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="button" class="btn btn-danger ms-2"
-                                                                onclick="confirmDelete({{ $materi->id }})">
+                                                                onclick="confirmDelete({{ $caseStudy->id }})">
                                                                 <i class="bi bi-trash3"></i> Hapus
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="editCaseModal{{ $caseStudy->id }}" tabindex="-1"
+                                    aria-labelledby="editMateriLabel{{ $caseStudy->id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header border-bottom-0 py-2">
+                                                <h5 class="modal-title">Edit Studi Kasus</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form
+                                                    action="{{ route('guru.course-detail.case.update', $caseStudy->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" name="kelas_id"
+                                                            value="{{ $caseStudy->kelas_id }}">
+                                                        <label for="title" class="form-label">Nama Studi Kasus</label>
+                                                        <input type="text" class="form-control" id="title"
+                                                            name="title" value="{{ old('title', $caseStudy->title) }}"
+                                                            required>
+                                                        <label for="description" class="form-label">Deskripsi</label>
+                                                        <input type="text" class="form-control" id="description"
+                                                            name="description"
+                                                            value="{{ old('description', $caseStudy->description) }}"
+                                                            required>
+                                                    </div>
+                                                    <div class="col-md-12 mt-3">
+                                                        <div class="d-md-flex d-grid align-items-center gap-3">
+                                                            <button type="submit" class="btn ripple btn-primary px-2"
+                                                                onclick="submitForm()">
+                                                                Simpan Perubahan
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn ripple btn-secondary px-2 text-center"
+                                                                data-bs-dismiss="modal">
+                                                                Batal
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -408,9 +444,49 @@
                                 <h3 class="mb-3">Jumlah Sertifikat</h3>
                                 <h1 class="mt-3 mb-3">0</h1>
                                 <div class="parent-icon mb-3 mt-3">
-                                    <button type="button" class="btn btn-primary" data-bs-target="#FormModal"
+                                    <button type="button" class="btn btn-primary" data-bs-target="#sertifikatModal"
                                         data-bs-toggle="modal">Tambah Sertifikat <i
                                             class="fa-solid fa-plus ms-2"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="sertifikatModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Tambah Sertifikat</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-body">
+                                        <form class="row g-3" id="addCaseStudyForm" method="POST"
+                                            action="{{ route('guru.course.store-sertifikat') }}"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="col-md-12">
+                                                <input type="hidden" name="kelas_id" value="{{ $kelas->id }}">
+                                                <label for="title" class="form-label">Nama Sertifikat</label>
+                                                <input type="text" class="form-control" id="title" name="title"
+                                                    required>
+                                                <label for="kelas" class="form-label">Upload gambar</label>
+                                                <div class="input-group mb-3">
+                                                    <input type="file" class="form-control" id="inputGroupFile02"
+                                                        accept="image/png, image/gif, image/jpeg">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -435,11 +511,12 @@
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $siswa->name }}</td>
-                                            <td>{{ $siswa->userType->name }}</td>
+                                            <td>{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            </table>                        </div>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -468,7 +545,8 @@
                                 <div class="mb-2">
                                     <label for="input5" class="form-label">Logo Kelas</label>
                                     <div class="mb-2">
-                                        <img src="{{ asset('assets/images/logos/' . $kelas->logo) }}" alt="..." width="60%">
+                                        <img src="{{ asset('assets/images/logos/' . $kelas->logo) }}" alt="..."
+                                            width="60%">
                                     </div>
                                     <input type="file" class="form-control" id="image_kelas" name="logo"
                                         value="{{ $kelas->logo }}" accept="image/png, image/jpeg">

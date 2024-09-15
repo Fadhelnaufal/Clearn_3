@@ -34,28 +34,38 @@
                         role="tabpanel">
                         <div class="row">
                             <div class="card">
-                                <form action="{{ route('sub-materi.store', [$kelas->id, $userType->id]) }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ route('sub-materi.store', [$kelas->id, $userType->id]) }}" id="form1"
+                                    method="POST" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" name="materi_id" value="{{ $kelas->materi->first()->id }}">
                                     <input type="hidden" name="user_type_id" value="{{ $userType->id }}">
                                     <div class="col-md-12 mt-2">
-                                        <h3 class="">Kategori {{ $userType->name }}</h3>
+                                        <h3>Kategori {{ $userType->name }}</h3>
+
                                         <div class="col-md-12 mb-2">
                                             <label for="input5" class="form-label mt-2">Nama Materi</label>
                                             <input type="text" class="form-control" id="input5" name="judul"
                                                 required>
                                         </div>
+
                                         <div class="col-md-12 mb-2">
                                             <label for="lampiran" class="form-label mt-2">Lampiran Berkas</label>
                                             <input type="file" class="form-control" id="lampiran" name="lampiran"
                                                 accept=".xlsx,.xls,.doc,.docx,.ppt,.pptx,.txt,.pdf" />
                                         </div>
+
                                         <div class="col-md-12 mb-2">
                                             <label for="editor{{ $userType->id }}" class="form-label mt-2">Isi
                                                 Materi</label>
-                                            <textarea name="description" id="editor{{ $userType->id }}" cols="30" rows="10" required></textarea>
+                                            <div class="ckeditor form-control" id="editor{{ $userType->id }}"
+                                                cols="30" rows="10">
+                                                <p></p>
+                                            </div>
+                                            <input type="hidden" name="isi" id="isi{{ $userType->id }}">
                                         </div>
+
                                     </div>
+
                                     <div class="col">
                                         <button type="submit" class="btn btn-primary mt-4 p-2">Tambah</button>
                                         <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>
@@ -83,29 +93,64 @@
     <script src="{{ URL::asset('build/js/main.js') }}"></script>
     <script src="{{ URL::asset('build/js/data-widgets.js') }}"></script>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.5/build/spline-viewer.js"></script>
+    <script src="{{ asset('public/ckeditor/ckeditor.js') }}"></script>
 
-    <script src="
-    https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-ckfinder@43.1.0/src/index.min.js
-    "></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/43.1.0/classic/ckeditor.js"></script>
-    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/latest/classic/ckeditor.js"></script> --}}
+
+
 
     <script>
-        @foreach ($userTypes as $userType)
+        // Pass the userTypes data to JavaScript as a JSON array
+        var userTypes = @json($userTypes);
+        let editorMaster = {};
+        // Loop over userTypes and initialize CKEditor for each editor
+        userTypes.forEach(function(userType) {
+            // import { ClassicEditor, Base64UploadAdapter } from 'ckeditor5';
             ClassicEditor
-                .create(document.querySelector('#editor{{ $userType->id }}'), {
+                .create(document.querySelector('#editor' + userType.id), {
+                    toolbar: [
+                        'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                        'blockQuote', '|', 'insertTable', 'mediaEmbed', 'undo', 'redo', 'imageUpload'
+                    ],
                     ckfinder: {
                         uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
                     }
+                    // You can uncomment and add the ckfinder config if needed
+                    // ckfinder: {
+                    //     uploadUrl: '{{ route('ckeditor.upload') . '?_token=' . csrf_token() }}'
+                    // }
                 })
                 .then(editor => {
-                    console.log('Editor was initialized', editor);
+                    console.log('Editor was initialized for userType ID: ' + userType.id, editor);
+
+                    // Handle form submission
+                    editorMaster[userType.id] = editor;
+                    // document.querySelector('form').addEventListener('submit', function() {
+                    //     // Get the content of CKEditor and fill the hidden input
+                    //     var editorData = editor.getData();
+                    //     document.querySelector('#isi' + userType.id).value = editorData;
+                    // });
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.error('Error initializing editor for userType ID: ' + userType.id, error);
                 });
-        @endforeach
+        });
+        document.querySelector('#form1').addEventListener('submit', function(e) {
+            // Get the content of CKEditor and fill the hidden input
+            // e.preventDefault();
+            userTypes.forEach(function(userType) {
+                var editorData = editorMaster[userType.id].getData();
+                console.log('Data from editor for userType ID ' + userType.id + ': ', editorData);
+
+                // Fill the hidden input with the editor data
+                document.querySelector('#isi' + userType.id).value = editorData;
+            });
+            // var editorData = editorMaster.getData();
+            // console.log(editorData);
+            // document.querySelector('#isi1'.value = editorData;
+        });
     </script>
+
+
 
     <script>
         jQuery(function() {
@@ -126,4 +171,5 @@
             });
         });
     </script>
+    <script></script>
 @endpush

@@ -66,4 +66,9 @@ class GuruController extends Controller
     {
         //
     }
+
+    public function compiler()
+    {
+        return view('compiler.compiler');
+    }
 }

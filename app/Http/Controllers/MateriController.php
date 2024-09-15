@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaseStudies;
 use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\Kelas;
@@ -119,15 +120,14 @@ class MateriController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-{
-    $materi = Materi::findOrFail($id);
+    {
+        $materi = Materi::findOrFail($id);
 
-    $materi->delete();
+        $materi->delete();
 
-    return redirect()->route('guru.course-detail.show', $materi->kelas_id)
-        ->with('success', 'Materi berhasil dihapus');
+        return redirect()->route('guru.course-detail.show', $materi->kelas_id)
+            ->with('success', 'Materi berhasil dihapus');
 
 
-}
-
+    }
 }
