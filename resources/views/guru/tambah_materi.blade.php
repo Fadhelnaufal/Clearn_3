@@ -67,12 +67,12 @@
 
                                     </div>
 
-                                    @if ($loop->last)
+                                    {{-- @if ($loop->last)
                                         <div class="col">
                                             <button type="submit" class="btn btn-primary mt-4 p-2">Tambah</button>
                                             <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>
                                         </div>
-                                    @endif
+                                    @endif --}}
 
                                 </form>
                             </div>

@@ -50,6 +50,13 @@ class SubMateriController extends Controller
                 'materi_id' => $value->materi_id,
             ];
 
+            if (isset($value->lampiran)) {
+                $file = $request->file('lampiran');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
+                $data['lampiran'] = $filePath;
+            }
+
             SubMateri::create($data);
 
             // if ($value['lampiran']) {
