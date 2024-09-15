@@ -28,7 +28,7 @@
                             <td>{{ $submissions->nilai }}</td>
                             <td>
                                 <a href="" class="btn btn-primary btn-sm me-2"><i class="bi bi-eye me-1"></i>Lihat</a>
-                                <a href="" class="btn btn-success btn-sm"><i class="bi bi-pencil-square me-1"></i>Nilai</a>
+                                <button href="" class="btn btn-success btn-sm"><i class="bi bi-pencil-square me-1"></i>Nilai</button>
                             </td>
                         </tr>
                       @endforeach
