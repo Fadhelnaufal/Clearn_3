@@ -103,38 +103,71 @@
                                                         @endif
                                                     </div>
                                                 @endforeach
-                                                <div class="col mt-3 d-flex me-2">
-                                                    @if (isset($subMateriId))
-                                                        <a href="{{ route('sub-materi.show', ['id' => $kelas->id, 'subMateriId' => $subMateriId]) }}"
-                                                            class="btn btn-primary md-2">
-                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
-                                                        </a>
-                                                    @else
-                                                        <a href="{{ route('sub-materi.create', ['kelasId' => $kelas->id, 'materiId' => $materi->id]) }}"
-                                                            class="btn btn-primary md-2">
-                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
-                                                        </a>
-                                                    @endif
-                                                    <button type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#tambahsoal" class="btn btn-secondary md-2"><i
-                                                            class="bi bi-plus-lg"></i> Tambah Soal</button>
-                                                    {{-- Edit Button to Open Modal --}}
-                                                    <button type="button" class="btn btn-warning md-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#editMateriModal{{ $materi->id }}">
-                                                        <i class="bi bi-pencil-square"></i> Edit TP
-                                                    </button>
+                                                <div class="row">
 
-                                                    {{-- Delete form --}}
-                                                    <form id="delete-form-{{ $materi->id }}"
-                                                        action="{{ route('guru.course-detail.destroy', $materi->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger md-2">
-                                                            <i class="bi bi-trash3"></i> Hapus TP
+                                                </div>
+                                                <div class="mt-2 d-flex gap-2 ">
+                                                    <div class="">
+                                                        @if (isset($subMateriId))
+                                                        <a  class="btn btn-primary md-2" href="{{route('sub-materi.show', ['id'=> $kelas->id,'subMateriId'=> $subMateriId])}}">
+                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
+                                                        </a>
+                                                        @else
+                                                        <a  class="btn btn-primary md-2" href="{{route('sub-materi.create', ['kelasId'=> $kelas->id,'materiId'=> $materi->id])}}">
+                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
+                                                        </a>
+                                                        @endif
+                                                    </div>
+                                                    <div class="">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#tambahsoalModal" class="btn btn-secondary md-2"><i
+                                                                class="bi bi-plus-lg"></i> Tambah Soal</button>
+                                                        <div class="modal fade" id="tambahsoalModal" tabindex="-1"
+                                                            aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                                            data-bs-backdrop="static">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                                            Tambah Soal</h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <label for="judul" class="form-label">Nama
+                                                                            Soal</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="judul{{ $materi->id }}" name="judul"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Batal</button>
+                                                                        <button type="button"
+                                                                            class="btn btn-primary">Tambah
+                                                                            Soal</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="">
+                                                        <button type="button" class="btn btn-warning md-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editMateriModal{{ $materi->id }}">
+                                                            <i class="bi bi-pencil-square"></i> Edit TP
                                                         </button>
-                                                    </form>
+                                                    </div>
+                                                    <div class="">
+                                                        <form id="delete-form-{{ $materi->id }}"
+                                                            action="{{ route('guru.course-detail.destroy', $materi->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger md-2" id="hapustp" onclick="">
+                                                                <i class="bi bi-trash3"></i> Hapus TP
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -265,9 +298,18 @@
                                                 <div class="accordion-body">
                                                     {{ $caseStudy->description }}
                                                 </div>
+                                                <div class="accordion-body">
+                                                    <img src="{{ asset('assets/images/case_studies/' . $caseStudy->image) }}"
+                                                        class="w-50 rounded-start" alt="tidak ada gambar">
+                                                </div>
                                                 <!-- Case Study details here -->
                                                 <div class="row">
-                                                    <div class="col mt-3 d-flex">
+                                                    <div class="col mt-3 d-flex gap-2">
+                                                        <button type="button" class="btn btn-success md-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editCaseModal{{ $caseStudy->id }}">
+                                                            <i class="bi bi-eye"></i> Lihat Hasil
+                                                        </button>
                                                         <button type="button" class="btn btn-warning md-2"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#editCaseModal{{ $caseStudy->id }}">
@@ -311,6 +353,10 @@
                                                         <input type="text" class="form-control" id="title"
                                                             name="title" value="{{ old('title', $caseStudy->title) }}"
                                                             required>
+                                                        <label for="image" class="form-label">Image</label>
+                                                        <input type="file" class="form-control" id="image"
+                                                            name="image" accept="image/png, image/gif, image/jpeg"
+                                                            value="{{ old('image', $caseStudy->image) }}" required>
                                                         <label for="description" class="form-label">Deskripsi</label>
                                                         <input type="text" class="form-control" id="description"
                                                             name="description"
@@ -384,6 +430,9 @@
                                                 <label for="title" class="form-label">Nama Studi Kasus</label>
                                                 <input type="text" class="form-control" id="title" name="title"
                                                     required>
+                                                <label for="image" class="form-label">Upload Gambar</label>
+                                                <input type="file" accept="image/png, image/gif, image/jpeg"
+                                                    class="form-control" id="image" name="image">
                                                 <label for="description" class="form-label">Deskripsi</label>
                                                 <input type="text" class="form-control" id="description"
                                                     name="description" required>

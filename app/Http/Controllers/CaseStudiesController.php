@@ -42,10 +42,24 @@ class CaseStudiesController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'required|max:1000',
+            'image'=> 'nullable|image|mimes:jpg,jpeg,png,gif|max:4098',
         ]);
+        $fileName = null;
 
-        $data = $request->only('title','description');
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $originName = $file->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $fileName = time(). '_' . $fileName  . '.' . $extension;
+            $file->move(public_path('assets/images/case_studies'), $fileName);
+        }
 
+        $data = $request->all();
+        
+        if ($fileName) {
+            $data['image'] = $fileName;
+        }
         $kelas = Kelas::findOrFail($request->kelas_id);
         $caseStudy = $kelas->case_studies()->create($data);
 

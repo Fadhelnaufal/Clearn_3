@@ -35,6 +35,7 @@ class SubMateriController extends Controller
     // Store a new sub materi
     public function storeSubMateri(Request $request, $userTypeId)
     {
+        dd($request->all());
         // Adjust validation rules
         $validationRules = [
             'judul' => 'required|max:255',

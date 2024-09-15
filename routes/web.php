@@ -24,7 +24,10 @@ Route::get('/', function () {
     return view('landing');
 });
 Route::get('/materi', function () {
-    return view('siswa.case-study');
+    return view('guru.hasil-studi-kasus');
+});
+Route::get('/tabel', function () {
+    return view('table-datatable');
 });
 // Route::get('/course_detail', function () {
 //     return view('course_detail');

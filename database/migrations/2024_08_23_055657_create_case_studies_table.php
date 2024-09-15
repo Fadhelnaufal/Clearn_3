@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kelas_id');
             $table->string('title');
             $table->text('description');
+            $table->string('image');
             $table->timestamps();
 
             $table->foreign('kelas_id')
