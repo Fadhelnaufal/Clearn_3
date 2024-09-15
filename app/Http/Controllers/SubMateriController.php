@@ -8,6 +8,7 @@ use App\Models\SubMateri;
 use App\Models\UserType;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Str;
 
 class SubMateriController extends Controller
 {
@@ -40,9 +41,11 @@ class SubMateriController extends Controller
 
         $all_data = json_decode($request->all_form);
 
+        $lampiran = $request->file('lampiran');
 
         foreach ($all_data as $key => $value) {
             // dd($value);
+
             $data = [
                 'judul' => $value->judul,
                 'isi' => $value->isi, // Get the correct 'isi' field
@@ -50,12 +53,22 @@ class SubMateriController extends Controller
                 'materi_id' => $value->materi_id,
             ];
 
-            if (isset($value->lampiran)) {
-                $file = $request->file('lampiran');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
-                $data['lampiran'] = $filePath;
+            if (isset($lampiran[$key])) {
+                $fileName = str()->random(10) . '.' . $lampiran[$key]->getClientOriginalExtension();
+                $filePath = $lampiran[$key]->storeAs('files/sub_materi', $fileName, 'public');
+                $lampiran[$key]->move(public_path('files/sub_materi'), $fileName);
+                $data['lampiran'] = $fileName;
             }
+
+
+
+            // if (isset($value->lampiran)) {
+            //     $file = $value->lampiran;
+
+            //     $fileName = time() . '_' . $file->getClientOriginalName();
+            //     $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
+            //     $data['lampiran'] = $filePath;
+            // }
 
             SubMateri::create($data);
 
@@ -100,8 +113,7 @@ class SubMateriController extends Controller
         // SubMateri::create($data);
 
         // Redirect back with a success message
-        return redirect()->route('guru.dashboard')
-            ->with('success', 'Sub Materi berhasil ditambahkan');
+        return response()->json(['success' => 'Sub materi created successfully']);
     }
 
 
