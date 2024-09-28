@@ -7,7 +7,9 @@
         $user = auth()->user(); // Get the logged-in user
         $role = $user->roles->pluck('name')->first(); // Get the user's role name
     @endphp
-    <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
+    <div class="row mb-4 mt-2">
+        <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
+    </div>
 
 
 

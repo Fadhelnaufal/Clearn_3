@@ -17,7 +17,9 @@ class StudiesSubmission extends Model
         'student_id',
         'html',
         'css',
-        'js'
+        'js',
+        'is_submitted',
+        'completed_at',
     ];
 
     public function caseStudy()
@@ -29,4 +31,15 @@ class StudiesSubmission extends Model
     {
         return $this->belongsTo(User::class, 'student_id');
     }
+
+    public function user_tasks()
+    {
+        return $this->hasMany(UserTask::class, 'task_id', 'id'); // Adjust based on your actual column
+    }
+
+    public function nilai_case_studies()
+    {
+        return $this->hasOne(NilaiCaseStudy::class, 'student_id', 'student_id');
+    }
+    
 }

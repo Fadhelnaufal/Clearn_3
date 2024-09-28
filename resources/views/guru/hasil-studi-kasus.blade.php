@@ -5,40 +5,48 @@
 @section('content')
     <x-page-title title="Course" subtitle="Hasil Studi Kasus" />
     <div class="container mt-4">
+        {{-- <h4>Results for Case Study ID: {{ $caseStudyId ?? 'Not Provided' }}</h4> --}}
         <div class="row">
             <div class="card">
                 <table class="table table-responsive">
                     <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama Lengkap</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Level</th>
-                        <th scope="col">Nilai</th>
-                        <th scope="col">Aksi</th>
-                      </tr>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Nama Lengkap</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Diselesaikan pada</th>
+                            <th scope="col">Nilai</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      @foreach ($submission as $submissions)
-                        <tr>
-                            <th scope="row">{{ $loop->iteration }}</th>
-                            <td>{{ $submissions->users->name }}</td>
-                            <td>{{ $submissions->users->email }}</td>
-                            <td>{{ $submissions->level }}</td>
-                            <td>{{ $submissions->nilai }}</td>
-                            <td>
-                                <a href="" class="btn btn-primary btn-sm me-2"><i class="bi bi-eye me-1"></i>Lihat</a>
-                                <button href="" class="btn btn-success btn-sm"><i class="bi bi-pencil-square me-1"></i>Nilai</button>
-                            </td>
-                        </tr>
-                      @endforeach
-                      <!-- Add more rows as needed -->
+                        @foreach ($submission as $submissions)
+                            <tr>
+                                <th scope="row">{{ $loop->iteration }}</th>
+                                <td>{{ $submissions->users->name }}</td>
+                                <td>{{ $submissions->users->email }}</td>
+                                <td>{{ $submissions->completed_at ?? '-' }}</td>
+                                <td>
+                                    @if ($submissions->score_message === 'Belum Dinilai')
+                                        {{ $submissions->score_message }}
+                                    @else
+                                        {{ $submissions->score_message ?? '-' }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('guru.result.case.showSubmission', ['caseStudyId' => $caseStudyId, 'id' => $submissions->student_id]) }}"
+                                        class="btn btn-primary btn-sm me-2"><i class="bi bi-eye me-1"></i>Lihat</a>
+                                    {{-- <button href="" class="btn btn-success btn-sm"><i
+                                            class="bi bi-pencil-square me-1"></i>Nilai</button> --}}
+                                </td>
+                            </tr>
+                        @endforeach
+                        <!-- Add more rows as needed -->
                     </tbody>
-                  </table>
+                </table>
             </div>
         </div>
     </div>
-
 @endsection
 @push('script')
     <!--plugins-->

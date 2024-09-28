@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
+use App\Models\Materi;
 use App\Models\Sertifikat;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -232,6 +234,37 @@ class KelasController extends Controller
         }
     }
 
+    public function destroyJoinStudent($id, $userSiswaId)
+    {
+        $user = Auth::user();
+
+        // Find the materi and associated class (kelas)
+        $kelas = Kelas::findOrFail($id);
+
+        // Check if the authenticated user has the role of 'guru'
+        if ($user->hasRole('guru')) {
+            // Find the 'siswa' user by ID with the 'siswa' role
+            $userSiswa = User::whereHas('roles', function ($query) {
+                $query->where('role_id', 3); // Adjust role_id if needed
+            })->findOrFail($userSiswaId);
+
+            // Check if the 'siswa' user is joined to the class
+            if ($userSiswa->kelas->contains($kelas)) {
+                // Detach the 'siswa' user from the class
+                $userSiswa->kelas()->detach($kelas->id);
+                return redirect()->route('guru.course-detail.show', $id)
+                    ->with('success', 'Anda telah mengeluarkan siswa dari kelas.');
+                // Set a session flash message to notify the student they have been removed
+                session()->flash('removed_from_class', 'You have been removed from the class.');
+            }
+
+            return redirect()->route('guru.course-detail.show', $id)
+                ->with('error', 'Siswa tidak tergabung dalam kelas ini.');
+        }
+
+        return redirect()->route('guru.course-detail.show', $id)
+            ->with('error', 'Anda tidak memiliki akses untuk mengeluarkan siswa dari kelas.');
+    }
 
 
 }

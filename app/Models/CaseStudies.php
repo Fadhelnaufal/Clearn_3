@@ -24,4 +24,14 @@ class CaseStudies extends Model
     {
         return $this->hasMany(StudiesSubmission::class, 'case_study_id');
     }
+
+    public function userTasks()
+    {
+        return $this->morphMany(UserTask::class, 'task');
+    }
+
+    public function nilaiCaseStudy()
+    {
+        return $this->hasMany(NilaiCaseStudy::class, 'case_study_id');
+    }
 }

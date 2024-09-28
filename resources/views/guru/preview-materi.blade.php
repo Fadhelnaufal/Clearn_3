@@ -4,25 +4,16 @@
 @endsection
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
-        <x-page-title title="Nama Materi" subtitle="Materi" />
+        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <x-page-title title="{{ $subMateri->materi->judul }}" subtitle="Materi {{ $subMateri->userType->name }}" />
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="card py-2 px-2">
-                    <img src="{{ asset('assets/images/gambar_html.png') }}" alt="">
-                    <h1 class="text-center">Pengertian HTML</h1>
-                    <p class="mx-2 my-2 text-justify">Pengertian Dan Fungsi HTML (HyperText Markup Language) - HTML adalah
-                        singkatan dari HyperText Markup Language yaitu bahasa pemrograman standar yang digunakan untuk
-                        membuat sebuah halaman web, yang kemudian dapat diakses untuk menampilkan berbagai informasi di
-                        dalam sebuah penjelajah web Internet (Browser). HTML dapat juga digunakan sebagai link link antara
-                        file-file dalam situs atau dalam komputer dengan menggunakan localhost, atau link yang menghubungkan
-                        antar situs dalam dunia internet. <br><br>
-                        Supaya dapat menghasilkan tampilan wujud yang terintegerasi Pemformatan hiperteks sederhana ditulis
-                        dalam berkas format ASCII sehingga menjadi halaman web dengan perintah-perintah HTML.
-                        HTML merupakan sebuah bahasa yang bermula bahasa yang sebelumnya banyak dipakai di dunia percetakan
-                        dan penerbirtan yang disebut Standard Generalized Markup Language (SGML).</p>
+                    {{-- <img src="{{ asset('assets/images/gambar_html.png') }}" alt=""> --}}
+                    <h1 class="text-center">{{ $subMateri->judul }}</h1>
+                    <p class="mx-2 my-2 text-justify">{!! $subMateri->isi !!}</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -37,12 +28,16 @@
                     <h1>0</h1>
                     <p>Siswa Telah Membaca Materi</p>
                     <div class="d-grid ">
-                        <button class="btn btn-primary" type="button"><i class="bi bi-eye me-2"></i>Lihat</button>
+                        <a href="{{ route('guru.course-detail.show', $kelas->id) }}#leaderboard" class="btn btn-primary"
+                            type="button"><i class="bi bi-eye me-2"></i>Lihat</a>
+
                     </div>
                 </div>
                 <div class="row">
                     <div class="col d-flex justify-content-center gap-3">
-                        <button class="btn btn-success" type="button"><i class="bi bi-pencil-square me-2"></i>Edit Materi</button>
+                        <a href="{{ route('sub-materi.edit', ['kelasId' => $kelas->id, 'userTypeId' => $userTypeId, 'materiId'=> $materi->id, 'subMateriId' => $subMateri->id]) }}"
+                            class="btn btn-success" type="button"><i class="bi bi-pencil-square me-2"></i>Edit
+                            Materi</a>
                         <button class="btn btn-danger" type="button"><i class="bi bi-trash me-2"></i>Hapus Materi</button>
                     </div>
                 </div>
@@ -153,6 +148,28 @@
                         background: '#f27474', // Error background color
                     });
                 @endif
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const hash = window.location.hash.substring(1); // Remove the '#' from the hash
+
+                if (hash) {
+                    const targetPane = document.querySelector(`#${hash}`);
+                    if (targetPane) {
+                        // Remove 'show active' classes from all tab-panes
+                        document.querySelectorAll('.tab-pane').forEach(pane => {
+                            pane.classList.remove('show', 'active');
+                        });
+                        // Add 'show active' classes to the target tab-pane
+                        targetPane.classList.add('show', 'active');
+
+                        // Optionally, if you need to manually trigger a tab show event
+                        // const tabTrigger = new bootstrap.Tab(targetPane);
+                        // tabTrigger.show();
+                    }
+                }
             });
         </script>
 

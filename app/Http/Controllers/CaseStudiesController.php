@@ -16,6 +16,7 @@ class CaseStudiesController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $case = null;
         if ($user->hasRole('siswa')) {
             $case = $user->kelas; // Ensure this relationship exists in your User model
         } else {
@@ -23,7 +24,7 @@ class CaseStudiesController extends Controller
         }
 
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
-        return view($view, compact('case'));
+        return view($view, compact('case', 'materi'));
     }
 
     /**
@@ -56,7 +57,7 @@ class CaseStudiesController extends Controller
         }
 
         $data = $request->all();
-        
+
         if ($fileName) {
             $data['image'] = $fileName;
         }
@@ -71,14 +72,14 @@ class CaseStudiesController extends Controller
      */
     public function show(string $id)
     {
-        $kelas = Kelas::finfOrdFail($id);
+        $kelas = Kelas::findOrdFail($id);
         $materis = $kelas->materi()->with('livecode')->get();
         if ($materis === null) {
             return abort(404, 'case not found');
         }
 
-        $user = Auth::user();
         $materi = $materis->first();
+        $user = Auth::user();
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
 
         return view($view, compact('kelas', 'materi', 'materis'));

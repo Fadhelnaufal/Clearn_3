@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Materi;
 use App\Models\SubMateri;
+use App\Models\UserTask;
 use App\Models\UserType;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -14,43 +16,80 @@ use Str;
 class SubMateriController extends Controller
 {
     // ... existing methods
-    public function showSubMateri($id, $subMateriId)
+    public function showSubMateri($id, $materiId, $subMateriId, $userTypeId = null)
     {
-        $kelas = Kelas::with('materi')->findOrFail($id);
-        $userTypes = UserType::all();
-        $materis = $kelas->materis; // Use the correct relationship here
-        // $subMateri = SubMateri::findOrFail($subMateriId);
-        // $subMateri = null;
+        // Fetch the Kelas instance
+        $kelas = Kelas::with(['materi', 'case_studies', 'users'])->findOrFail($id);
 
-        return view('guru.tambah_materi', compact('kelas', 'materis', 'userTypes'));
+        // Fetch the specific Materi and SubMateri
+        $materi = Materi::where('id', $materiId)->where('kelas_id', $id)->firstOrFail();
+        $subMateri = SubMateri::where('id', $subMateriId)->where('materi_id', $materiId)->firstOrFail();
+
+        // Fetch the other necessary data
+        $userTypes = UserType::all();
+        $case_studies = $kelas->case_studies;
+        $siswas = $kelas->users()->whereHas('roles', function ($query) {
+            $query->where('role_id', 3); // Adjust role_id as needed
+        })->get();
+
+        // Determine the view based on the user's role
+        $user = Auth::user();
+        $case = $user->kelas;
+        $task = UserTask::where('student_id', $user->id)
+        ->where('task_id', $subMateriId)
+        ->where('task_type', 'sub_materi')
+        ->first();
+
+        $subMateri->is_completed = $task ? $task->is_completed : false;
+        $view = $user->hasRole('guru') ? 'guru.preview-materi' : 'siswa.materi';
+
+        // Return the view with all necessary data
+        return view($view, compact('kelas', 'materi', 'subMateri', 'userTypeId', 'case_studies', 'siswas', 'userTypes', 'task'));
     }
 
     // Show form to create a new sub materi
-    public function createSubMateri($materiId, $kelasId)
+    public function createSubMateri($kelasId, $materiId)
     {
+        // dd('a');
+
         $kelas = Kelas::with('materi')->find($kelasId);
-        // $materi = Materi::findOrFail($materiId);
-        // $userType = UserType::findOrFail($userTypeId);
-        return view('materi.create_sub_materi', compact('kelas', 'materi'));
+        $materi = Materi::findOrFail($materiId);
+        $userTypes = UserType::all();
+        return view('guru.tambah_materi', compact('kelas', 'materi', 'userTypes'));
     }
 
     // Store a new sub materi
     public function storeSubMateri(Request $request, $userTypeId)
     {
-        // dd($request->all());
-
 
         $all_data = json_decode($request->all_form);
 
 
         foreach ($all_data as $key => $value) {
-            // dd($value);
-            $data = [
-                'judul' => $value->judul,
-                'isi' => $value->isi, // Get the correct 'isi' field
-                'user_type_id' => $value->id_kategori, // Assuming 'kategori_id' is the same as 'user_type_id'
-                'materi_id' => $value->materi_id,
+            $all_data = json_decode($request->all_form);
+            // dd($all_data);
+            $lampiran = $request->file('lampiran');
+
+            foreach ($all_data as $key => $value) {
+                // dd($value);
+
+                $data = [
+                    'judul' => $value->judul,
+                    'isi' => $value->isi, // Get the correct 'isi' field
+                    'materi_id' => $value->materi_id,
+                    'user_type_id' => $value->id_kategori, // Assuming 'kategori_id' is the same as 'user_type_id'
             ];
+
+            // dd($data);
+            if (isset($lampiran[$key])) {
+                $fileName = str()->random(10) . '.' . $lampiran[$key]->getClientOriginalExtension();
+                $filePath = $lampiran[$key]->storeAs('files/sub_materi', $fileName, 'public');
+                $lampiran[$key]->move(public_path('files/sub_materi'), $fileName);
+                $data['lampiran'] = $fileName;
+            }
+
+            SubMateri::create($data);
+        }
 
             // if (isset($value->lampiran)) {
             //     $file = $request->file('lampiran');
@@ -59,7 +98,7 @@ class SubMateriController extends Controller
             //     $data['lampiran'] = $filePath;
             // }
 
-            SubMateri::create($data);
+
 
             // if ($value['lampiran']) {
             //     $file = $request->file('lampiran');
@@ -67,7 +106,7 @@ class SubMateriController extends Controller
             //     $filePath = $file->storeAs('files/sub_materi', $fileName, 'public');
             //     $data['lampiran'] = $filePath;
             // }
-        }
+
 
 
         // Adjust validation rules
@@ -102,16 +141,23 @@ class SubMateriController extends Controller
         // SubMateri::create($data);
 
         // Redirect back with a success message
-        return redirect()->route('guru.dashboard')
-            ->with('success', 'Sub Materi berhasil ditambahkan');
+        // return redirect()->route('guru.dashboard')
+        //     ->with('success', 'Sub Materi berhasil ditambahkan');
+        return response()->json(['success' => 'Sub materi created successfully']);
+
+        }
     }
 
 
     // Show form to edit a sub materi
-    public function editSubMateri($subMateriId)
+    public function editSubMateri($kelasId, $materiId, $subMateriId, $userTypeId)
     {
-        $subMateri = SubMateri::findOrFail($subMateriId);
-        return view('materi.edit_sub_materi', compact('subMateri'));
+        $kelas = Kelas::with(['materi', 'case_studies', 'users'])->findOrFail($kelasId);
+        $userTypes = UserType::all();
+        $materi = Materi::findOrFail($materiId);
+        $subMateri = SubMateri::where('id', $subMateriId)->where('materi_id', $materiId)->firstOrFail();
+
+        return view('guru.edit_materi', compact('kelas','materi','materiId', 'subMateri' , 'userTypeId', 'userTypes'));
     }
 
     // Update an existing sub materi
@@ -159,6 +205,42 @@ class SubMateriController extends Controller
 
         return redirect()->route('materi.show', $materiId)
             ->with('success', 'Sub Materi berhasil dihapus');
+    }
+
+    public function markAsRead(Request $request, $kelasId, $materiId, $subMateriId)
+    {
+        $user = Auth::user();
+
+        // Find or create the user task
+        $userTask = UserTask::firstOrCreate(
+            [
+                'student_id' => $user->id,
+                'task_id' => $subMateriId,
+                'task_type' => 'sub_materi', // Ensure this is consistent
+                'user_type_id' => $user->user_type_id, // Add user type id
+            ],
+            [
+                'is_completed' => false, // Default to incomplete if creating a new record
+                'completed_at' => null,
+                'points' => 0,
+            ]
+        );
+
+        // Make sure the task is not already completed
+        if (!$userTask->is_completed) {
+            // Update the task to mark it as completed
+            $userTask->update([
+                'is_completed' => true,
+                'completed_at' => Carbon::now(),
+                'points' => 50,
+            ]);
+        }
+
+        return response()->json(['success' => 'Materi sudah dibaca']);
+        // return response()->json([
+        //     'success' => 'Materi sudah dibaca',
+        //     'redirect' => route('siswa.course-detail.show', ['kelasId' => $kelasId])
+        // ]);
     }
 
 }

@@ -18,8 +18,9 @@ class StudentSubmissionController extends Controller
     public function show($id)
     {
         $caseStudy = CaseStudies::findOrFail($id);
-        $submissions = $caseStudy->submissions()->where('student_id', Auth::user()->id)->get();
-        return view('siswa.case-study', compact('caseStudy', 'submissions'));
+        $submission = $caseStudy->submissions()->where('student_id', Auth::user()->id)->first();
+
+        return view('siswa.case-study', compact('caseStudy', 'submission'));
     }
 
     public function create($id)
@@ -61,14 +62,64 @@ class StudentSubmissionController extends Controller
             'html' => $request->input('html'),
             'css' => $request->input('css'),
             'js' => $request->input('js'),
+            'is_submitted' => true,
+            'completed_at' => now(),
         ]);
+
+        $user = Auth::user();
+        $subMateriId = $caseStudyId;
+
+        $userTask = \App\Models\UserTask::firstOrCreate(
+            [
+                'student_id' => $user->id,
+                'task_id' => $subMateriId, // Set the task ID from case study ID or subMateri
+                'task_type' => 'case_study', // Ensure this matches your task type logic
+                'user_type_id' => $user->user_type_id, // Add user type ID
+            ],
+            [
+                'is_completed' => false, // Set task as completed after submission
+                'completed_at' => null, // Mark the completion time
+            ]
+        );
+        $userTask->save();
 
         // Redirect with success message
         return redirect()->back()
             ->with('success', 'Solution successfully submitted');
     }
 
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'html' => 'nullable|string',
+            'css' => 'nullable|string',
+            'js' => 'nullable|string',
+            'case_study_id' => 'required|integer|exists:case_studies,id',
+        ]);
 
+        // Retrieve the case study and the existing submission
+        $caseStudyId = $request->input('case_study_id');
+        $caseStudy = CaseStudies::findOrFail($caseStudyId);
+        $submission = StudiesSubmission::where('case_study_id', $caseStudyId)
+            ->where('student_id', Auth::user()->id)
+            ->firstOrFail(); // Make sure to get the submission for the current student
 
+        // Ensure the student is enrolled in the class
+        if (!Auth::user()->kelas->contains('id', $caseStudy->kelas_id)) {
+            return redirect()->back()->with('error', 'You are not enrolled in the class for this case study.');
+        }
+
+        // Update the submission with the validated data
+        $submission->update([
+            'html' => $request->input('html'),
+            'css' => $request->input('css'),
+            'js' => $request->input('js'),
+            'is_submitted' => true, // Assuming you want to keep this true on update as well
+            'completed_at' => now(), // Update completed_at time if needed
+        ]);
+
+        return redirect()->back()->with('success', 'Submission updated successfully');
+    }
 
 }

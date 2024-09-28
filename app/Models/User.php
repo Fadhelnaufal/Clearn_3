@@ -65,4 +65,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Kelas::class, 'class_user', 'user_id', 'kelas_id');
     }
+
+    public function user_tasks()
+    {
+        return $this->hasMany(UserTask::class, 'student_id'); // Adjust based on your actual foreign key
+    }
+
+    
 }

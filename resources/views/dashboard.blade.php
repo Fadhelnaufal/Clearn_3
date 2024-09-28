@@ -3,8 +3,9 @@
     Dashboard
 @endsection
 @section('content')
-    <x-page-title title="Dashboard" subtitle="Dashboard" />
-
+<div class="row mb-4 mt-2">
+    <x-page-title title="Dashboard" subtitle="Dashboard"/>
+</div>
     <!-- Modal -->
 
     <!-- Modal -->
@@ -81,7 +82,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xxl-8 d-flex align-items-stretch">
+        <div class="col-xxl-8 d-flex align-items-stretch mt-4">
             <div class="card w-100 overflow-hidden rounded-4">
                 <div class="card-body position-relative p-4">
                     <div class="row">

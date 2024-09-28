@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Question;
@@ -24,12 +25,32 @@ class SiswaController extends Controller
         $kelas = Auth::user()->kelas;
         $user = Auth::user();
         $userType = $user->user_type_id ? UserType::find($user->user_type_id) : null;
+        $totalPoints = $user->user_tasks->sum('points');
 
+        // Fetch all materi related to the user's classes
+        $materisCollection = $kelas->flatMap(function ($kelas) {
+            return $kelas->materi; // Get all materi for each class
+        });
+
+        // Count completed materi
+        $completedMaterisCount = $user->user_tasks()
+        ->where('is_completed', true)
+        ->whereHas('materi', function ($query) use ($user) {
+            $query->whereExists(function ($subQuery) use ($user) {
+                $subQuery->selectRaw(1)
+                    ->from('user_tasks')
+                    ->whereColumn('user_tasks.task_id', 'materis.id') // Correct the table name to 'materis'
+                    ->where('user_tasks.student_id', $user->id)
+                    ->where('user_tasks.is_completed', true);
+            });
+        })
+        ->count();
+        
         // Determine whether the user has a user_type_id
         $hasUserType = !is_null($user->user_type_id);
 
         // Pass the necessary variables to the view
-        return view('siswa.dashboard', compact('questions', 'kelas', 'hasUserType'));
+        return view('siswa.dashboard', compact('questions', 'kelas', 'hasUserType', 'userType', 'totalPoints', 'completedMaterisCount', 'materisCollection'));
     }
 
     /**

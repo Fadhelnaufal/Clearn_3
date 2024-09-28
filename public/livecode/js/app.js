@@ -3,13 +3,8 @@ var css = document.getElementById("css");
 var js = document.getElementById("js");
 var code = document.getElementById("output").contentWindow.document;
 function compile() {
-    const PREFIX = "livecode-";
-    const data = ["html", "css", "js"].map((key) => {
-        const prefixedKey = PREFIX + key;
-        const jsonValue = localStorage.getItem(prefixedKey);
-
-        if (jsonValue != null) return JSON.parse(jsonValue);
-    });
+    var code = document.getElementById("output").contentWindow.document;
+    var data = [html.value, css.value, js.value];
     setInitial(data);
     document.body.onkeyup = function () {
         localStorage.setItem("livecode-html", JSON.stringify(html.value));
@@ -18,15 +13,26 @@ function compile() {
         code.open();
         code.writeln(
             html.value +
-                "<style>" +
-                css.value +
-                "</style>" +
-                "<script>" +
-                js.value +
-                "</script>"
+            "<style>" +
+            css.value +
+            "</style>" +
+            "<script>" +
+            js.value +
+            "</script>"
         );
         code.close();
     };
+    code.open();
+    code.writeln(
+        html.value +
+        "<style>" +
+        css.value +
+        "</style>" +
+        "<script>" +
+        js.value +
+        "</script>"
+    );
+    code.close();
 }
 
 function setInitial(data) {

@@ -92,14 +92,14 @@
                                         <div id="collapse{{ $materi->id }}" class="accordion-collapse collapse"
                                             aria-labelledby="heading{{ $materi->id }}" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
-                                                @foreach ($materi->subMateris as $subMateri)
+                                                @foreach ($materi->subMateris->where('user_type_id', $user->user_type_id) as $subMateri)
                                                     <div class="sub-materi-item">
-                                                        <a
-                                                            href="{{ route('subMateri.show', $subMateri->id) }}"><strong>{{ $subMateri->judul }}</strong></a>
-                                                        <p>{{ $subMateri->isi }}</p>
+                                                        <a href="{{ route('siswa.sub-materi.show', [$kelas->id, $materi->id, $subMateri->id, $subMateri->user_type_id]) }}"
+                                                            style="color: #7964EF"><strong>Materi: {{ $subMateri->judul }}</strong></a>
                                                         @if ($subMateri->lampiran)
-                                                            <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
-                                                                target="_blank">Download Lampiran</a>
+                                                            <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}"
+                                                                target="_blank" style="color: #7964EF"><i
+                                                                    class="bi bi-file-earmark-arrow-down"></i></a>
                                                         @endif
                                                     </div>
                                                 @endforeach
@@ -122,8 +122,8 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                            <h2 class="mb-1">{{ $materis->count() }}/{{ $materis->count() }}</h2>
-                                            <h6 class="mb-0">Tantangan</h6>
+                                        <h2 class="mb-1">{{ $completedMaterisCount }}/{{ $materis->count()+ $case_studies->count() }}</h2>
+                                        <h6 class="mb-0">Tantangan</h6>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                         <div class="card text-center">
                             <div class="card-content">
                                 <h4 class="mt-3">Total Perolehan EXP</h4>
-                                <h5>0</h5>
+                                <h5>{{ $totalPoints ?? 0 }}</h5>
                             </div>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                                     <div class="card-body">
                                         <h2 class="card-title">{{ $caseStudy->title }}</h2>
                                         <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}"
-                                            style="color: gray;">
+                                            style="color: #7964EF">
                                             <p class="card-text text-neutral-600">
                                                 <i class="bi bi-box-arrow-in-up-right ms-3 fs-6"></i>
                                                 {{ $caseStudy->description }}
@@ -165,7 +165,7 @@
                         <div class="card text-center">
                             <div class="card-content">
                                 <h4 class="mt-3">Total Perolehan EXP</h4>
-                                <h5>0</h5>
+                                <h5>{{ $totalPoints ?? 0 }}</h5>
                             </div>
                         </div>
                     </div>
@@ -188,17 +188,17 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $xp = 1000;
+                                            // Sort the students by total points in descending order
+                                            $sortedSiswas = $siswas->sortByDesc(function ($siswa) {
+                                                return $siswa->user_tasks->sum('points');
+                                            });
                                         @endphp
-                                        @foreach ($siswas as $siswa)
+                                        @foreach ($sortedSiswas as $siswa)
                                             <tr>
                                                 <th scope="row">{{ $loop->iteration }}</th>
                                                 <td>{{ $siswa->name }}</td>
-                                                <td>{{ $xp }}</td>
+                                                <td>{{ $siswa->user_tasks->sum('points') }}</td>
                                             </tr>
-                                            @php
-                                                $xp -= 150;
-                                            @endphp
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -403,6 +403,18 @@
                 @endif
             });
         </script>
+
+        {{-- @if (session('removed_from_class'))
+            <script>
+                Swal.fire({
+                    title: 'Removed from Class',
+                    text: "{{ session('removed_from_class') }}",
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif --}}
+
 
         <!-- Include SweetAlert2 -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

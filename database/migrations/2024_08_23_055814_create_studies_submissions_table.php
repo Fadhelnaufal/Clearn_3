@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('html')->nullable();
             $table->text('css')->nullable();
             $table->text('js')->nullable();
+            $table->boolean('is_submitted')->default(false);
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('case_study_id')

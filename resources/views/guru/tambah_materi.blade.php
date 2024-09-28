@@ -37,7 +37,8 @@
                                 <form action="{{ route('sub-materi.store', [$kelas->id, $userType->id]) }}"
                                     id="form{{ $userType->id }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    <input type="hidden" name="materi_id" value="{{ $kelas->materi->first()->id }}">
+                                    <input type="hidden" name="materi_id"
+                                        value="{{ $kelas->materi->where('user_type_id', $userType->id)->first()?->id ?? '' }}">
                                     <input type="hidden" name="user_type_id" value="{{ $userType->id }}">
                                     <div class="col-md-12 mt-2">
                                         <h3>Kategori {{ $userType->name }}</h3>
@@ -84,7 +85,7 @@
                     <button type="reset" class="btn btn-secondary mt-4 p-2">Batal</button>
                 </div>
 
-                <form style="display:none" id="form-hidden" action="{{ route('sub-materi.store', [$kelas->id, 1]) }}"
+                <form style="display:none" id="form-hidden" action="{{ route('sub-materi.store', [$kelas->id, 2]) }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
 
@@ -160,6 +161,7 @@
 
                 // Capture editor data
                 formData.set('isi', editorMaster[i].getData());
+                formData.set('materi_id', {{ $materi->id }});
 
                 // Handle the file input
                 var lampiran = formData.get('lampiran');
@@ -180,7 +182,8 @@
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // If the request was successful, redirect to the desired route
-                    window.location.href = "{{ route('guru.dashboard') }}"; // Change to your success route
+                    //window.location.href = "{{ route('guru.dashboard') }}"; // Change to your success route
+                    window.location.href = "{{ route('guru.dashboard') }}";
                 } else {
                     // Handle the error if needed
                     console.error('Form submission failed: ', xhr.responseText);
@@ -231,3 +234,4 @@
     </script>
     <script></script>
 @endpush
+

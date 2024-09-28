@@ -4,37 +4,56 @@
 @endsection
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
-        <x-page-title title="Nama Materi" subtitle="Materi" />
+        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <x-page-title title="{{ $subMateri->materi->judul }}" subtitle="Materi{{ $subMateri->judul }}" />
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="card py-2 px-2">
-                    <img src="{{ asset('assets/images/gambar_html.png') }}" alt="">
-                    <h1 class="text-center">Pengertian HTML</h1>
-                    <p class="mx-2 my-2 text-justify">Pengertian Dan Fungsi HTML (HyperText Markup Language) - HTML adalah
-                        singkatan dari HyperText Markup Language yaitu bahasa pemrograman standar yang digunakan untuk
-                        membuat sebuah halaman web, yang kemudian dapat diakses untuk menampilkan berbagai informasi di
-                        dalam sebuah penjelajah web Internet (Browser). HTML dapat juga digunakan sebagai link link antara
-                        file-file dalam situs atau dalam komputer dengan menggunakan localhost, atau link yang menghubungkan
-                        antar situs dalam dunia internet. <br><br>
-                        Supaya dapat menghasilkan tampilan wujud yang terintegerasi Pemformatan hiperteks sederhana ditulis
-                        dalam berkas format ASCII sehingga menjadi halaman web dengan perintah-perintah HTML.
-                        HTML merupakan sebuah bahasa yang bermula bahasa yang sebelumnya banyak dipakai di dunia percetakan
-                        dan penerbirtan yang disebut Standard Generalized Markup Language (SGML).</p>
+                    {{-- <img src="{{ asset('assets/images/gambar_html.png') }}" alt=""> --}}
+                    <h1 class="text-center">{{ $subMateri->judul }}</h1>
+                    <p class="mx-2 my-2 text-justify">{!! $subMateri->isi !!}</p>
                     <div class="d-grid ">
-                        <button class="btn btn-primary" type="button">Saya Telah Menyelesaikan Materi</button>
+                        @if ($task === null)
+                            <button id="completed_task" class="btn btn-primary" type="button"
+                                data-submateri-id="{{ $subMateri->id }}" data-materi-id="{{ $materi->id }}"
+                                data-kelas-id="{{ $kelas->id }}"
+                                data-url="{{ route('siswa.sub-materi.mark-as-read', ['id' => $kelas->id, 'materiId' => $materi->id, 'subMateriId' => $subMateri->id]) }}">
+                                Saya Telah Menyelesaikan Materi
+                            </button>
+                        @elseif (!$task->is_completed)
+                            <button id="completed_task" class="btn btn-primary" type="button"
+                                data-submateri-id="{{ $subMateri->id }}" data-materi-id="{{ $materi->id }}"
+                                data-kelas-id="{{ $kelas->id }}"
+                                data-url="{{ route('siswa.sub-materi.mark-as-read', ['id' => $kelas->id, 'materiId' => $materi->id, 'subMateriId' => $subMateri->id]) }}">
+                                Saya Telah Menyelesaikan Materi
+                            </button>
+                        @else
+                            <button id="completed_task" class="btn btn-primary" type="button" disabled>
+                                Materi telah selesai dibaca
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card  py-2 px-2 text-center">
+                <div class="card  py-2 px-2 text-center items-center d-flex justify-content-center">
                     <h1>Lampiran</h1>
-                    <p>Tidak Ada Lampiran</p>
-                    <div class="d-grid ">
-                        <button class="btn btn-primary" type="button" disabled>Download Lampiran</button>
-                    </div>
+                    @if ($subMateri->lampiran)
+                        <iframe class="w-100" style="height: 60vh; width: 100%;"
+                            src="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}"></iframe>
+                        <div class="d-grid ">
+                            <a class="btn btn-primary" type="button"
+                                href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}" target="_blank">Download
+                                Lampiran</a>
+                        </div>
+                    @else
+                        <p>Tidak Ada Lampiran</p>
+                        <div class="d-grid ">
+                            <button class="btn btn-primary" type="button" disabled>Download Lampiran</button>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -50,6 +69,41 @@
         <script src="{{ URL::asset('build/plugins/chartjs/js/chartjs-custom.js') }}"></script>
         <script src="{{ URL::asset('build/js/main.js') }}"></script>
         <script src="{{ URL::asset('build/js/data-widgets.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#completed_task').on('click', function() {
+                    var url = $(this).data('url'); // Get the URL from the button
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}', // Laravel CSRF token for protection
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.success); // Show success message
+                                window.location.href =
+                                    "{{ url()->previous() }}"; // Redirect back to previous page
+                                // window.location.href = response.redirect; // Redirect to the course detail page
+                            } else {
+                                alert(
+                                    `Error marking as completed! ${response.error}`
+                                ); // Show error message
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseText); // Log error for debugging
+                            alert(
+                                'Error marking as completed! Please try again.'
+                            ); // Show error message
+                        }
+                    });
+                });
+            });
+        </script>
+
         <script>
             $(document).ready(function() {
                 $(".accordion-button").on('click', function() {

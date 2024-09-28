@@ -33,4 +33,9 @@ class SubMateri extends Model
     {
         return $this->belongsTo(Kelas::class);
     }
+
+    public function userTasks()
+    {
+        return $this->morphMany(UserTask::class, 'task');
+    }
 }

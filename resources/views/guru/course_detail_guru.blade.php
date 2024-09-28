@@ -5,10 +5,10 @@
 @endsection
 
 @section('content')
-<div class="container d-flex align-items-center mb-5">
-    <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
-    <x-page-title title="Course" subtitle="Detail Kelas {{ $kelas->mapel }}" />
-</div>
+    <div class="container d-flex align-items-center mb-5">
+        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <x-page-title title="Course" subtitle="Detail Kelas {{ $kelas->mapel }}" />
+    </div>
     <div class="row">
         <div class="container">
             <div class="card">
@@ -94,19 +94,21 @@
                                                 {{-- Sub-materis display here --}}
                                                 @foreach ($materi->subMateris as $subMateri)
                                                     <div class="sub-materi-item">
-                                                        <a href="{{ route('sub-materi.show',[$kelas->id, $materi->id]) }}">
-                                                            <strong>Materi: {{ $subMateri->judul }} dari {{ $subMateri->userType->name }}</strong>
+                                                        <a
+                                                            href="{{ route('sub-materi.show', [$kelas->id, $materi->id, $subMateri->id, $subMateri->user_type_id]) }}">
+                                                            <strong>Materi: {{ $subMateri->judul }} untuk
+                                                                {{ $subMateri->userType->name }}</strong>
                                                         </a>
                                                         {{-- <p>{{ $subMateri->isi }}</p> --}}
                                                         @if ($subMateri->lampiran)
-                                                            <a href="{{ asset('storage/' . $subMateri->lampiran) }}"
+                                                            <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}"
                                                                 target="_blank">
                                                                 Download Lampiran
                                                             </a>
                                                         @endif
                                                     </div>
                                                 @endforeach
-                                                    @if (isset($soalTests))
+                                                {{-- @if (isset($soalTests))
                                                         @foreach ($soalTests as $soalTest)
                                                             <div class="soal-test-item">
                                                                 <a href="">
@@ -114,26 +116,31 @@
                                                                 </a>
                                                             </div>
                                                         @endforeach
-                                                    @endif
+                                                    @endif --}}
                                                 <div class="row">
 
                                                 </div>
                                                 <div class="mt-2 d-flex gap-2 ">
                                                     <div class="">
                                                         @if (isset($subMateriId))
-                                                        <a  class="btn btn-primary md-2" href="{{route('sub-materi.show', ['id'=> $kelas->id,'subMateriId'=> $subMateriId])}}">
-                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
-                                                        </a>
+                                                            <a href="{{ route('sub-materi.show', ['id' => $kelas->id, 'subMateriId' => $subMateriId]) }}"
+                                                                class="btn btn-primary ">
+                                                                <i class="bi bi-pencil-square"></i> Tambah Materi
+
+                                                            </a>
                                                         @else
-                                                        <a  class="btn btn-primary md-2" href="{{route('sub-materi.create', ['kelasId'=> $kelas->id,'materiId'=> $materi->id])}}">
-                                                            <i class="bi bi-pencil-square"></i> Tambah Materi
-                                                        </a>
+                                                            <a href="{{ route('sub-materi.create', ['kelasId' => $kelas->id, 'materiId' => $materi->id]) }}"
+                                                                class="btn btn-primary ">
+                                                                <i class="bi bi-pencil-square"></i> Tambah Materi
+
+                                                            </a>
                                                         @endif
                                                     </div>
                                                     <div class="">
                                                         <button type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#tambahsoalModal" class="btn btn-secondary md-2"><i
-                                                                class="bi bi-plus-lg"></i> Tambah Soal</button>
+                                                            data-bs-target="#tambahsoalModal"
+                                                            class="btn btn-secondary md-2"><i class="bi bi-plus-lg"></i>
+                                                            Tambah Soal</button>
                                                         <div class="modal fade" id="tambahsoalModal" tabindex="-1"
                                                             aria-labelledby="exampleModalLabel" aria-hidden="true"
                                                             data-bs-backdrop="static">
@@ -175,7 +182,8 @@
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger md-2" id="hapustp" onclick="">
+                                                            <button type="submit" class="btn btn-danger md-2"
+                                                                id="hapustp" onclick="">
                                                                 <i class="bi bi-trash3"></i> Hapus TP
                                                             </button>
                                                         </form>
@@ -211,7 +219,7 @@
                                                     </div>
                                                     <div class="col-md-12 mt-3">
                                                         <div class="d-md-flex d-grid align-items-center gap-3">
-                                                            <button type="button" class="btn ripple btn-primary px-2"
+                                                            <button type="submit" class="btn ripple btn-primary px-2"
                                                                 onclick="submitForm()">
                                                                 Simpan Perubahan
                                                             </button>
@@ -317,7 +325,8 @@
                                                 <!-- Case Study details here -->
                                                 <div class="row">
                                                     <div class="col mt-3 d-flex gap-2">
-                                                        <a class="btn btn-primary md-2" href="{{route('guru.result.case.index')}}">
+                                                        <a class="btn btn-primary md-2"
+                                                            href="{{ route('guru.result.case.index', ['case_study_id' => $caseStudy->id]) }}">
                                                             <i class="bi bi-eye"></i> Lihat Hasil
                                                         </a>
                                                         <button type="button" class="btn btn-warning md-2"
@@ -472,15 +481,23 @@
                                     <tr>
                                         <th scope="col">Nomor</th>
                                         <th scope="col">Nama</th>
+                                        <th scope="col">Exp</th>
                                         <th scope="col">Nilai</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($siswas as $siswa)
+                                    @php
+                                        // Sort the students by total points in descending order
+                                        $sortedSiswas = $siswas->sortByDesc(function ($siswa) {
+                                            return $siswa->user_tasks->sum('points');
+                                        });
+                                    @endphp
+                                    @foreach ($sortedSiswas as $siswa)
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $siswa->name }}</td>
-                                            <td>500 xp</td>
+                                            <td>{{ $siswa->user_tasks->sum('points') }}</td>
+                                            <td>{{ $siswa->user_tasks->sum('points') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -573,8 +590,16 @@
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $siswa->name }}</td>
                                             <td>{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
-                                            <td></td>
-                                            <td><button href="" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i>Hapus</button></td>
+                                            <td>{{ $siswa->user_tasks->sum('points') }}</td>
+                                            <td>
+                                                <form action="{{ route('guru.course-detail.destroyJoinStudent', [$kelas->id, $siswa->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{ $siswa->id }}">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Apakah kamu yakin ingin menghapus siswa dari kelas ini?')"><i
+                                                            class="bi bi-trash"></i>Keluarkan</button>
+                                                </form>                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -24,12 +24,12 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('landing');
 });
-Route::get('/preview', function () {
-    return view('guru.preview-materi');
+Route::get('/soal', function () {
+    return view('siswa.soal');
 });
-Route::get('/tabel', function () {
-    return view('table-datatable');
-});
+// Route::get('/tabel', function () {
+//     return view('table-datatable');
+// });
 // Route::get('/course_detail', function () {
 //     return view('course_detail');
 // });
@@ -57,15 +57,15 @@ Route::get('/tabel', function () {
 // Route::get('/course_detail_guru', function () {
 //     return view('guru.course_detail_guru');
 // });
-Route::get('/card', function () {
-    return view('component-cards-basic');
-});
+// Route::get('/card', function () {
+//     return view('component-cards-basic');
+// });
 // Route::get('/component-carousels', function () {
 //     return view('component-carousels');
 // });
-// Route::get('/charts-chartjs', function () {
-//     return view('charts-chartjs');
-// });
+Route::get('/charts-chartjs', function () {
+    return view('charts-chartjs');
+});
 // Route::get('/live_code', function () {
 //     return view('livecode');
 // });
@@ -117,9 +117,12 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
         'show'=> 'siswa.case-submission.show',
         'create' => 'siswa.case-submission.create',
         'store' => 'siswa.case-submission.store',
+        'update' => 'siswa.case-submission.update',
     ]);
-    Route::get('/kelas/{id}/sub-materi/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
+    Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('siswa.sub-materi.show');
+    Route::post('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/mark-as-read', [SubMateriController::class, 'markAsRead'])
+    ->name('siswa.sub-materi.mark-as-read');
 
     Route::get('/kelas/{kelasId}/sertifikat', [KelasController::class, 'cetakSertifikat'])->name('kelas.cetakSertifikat');
 });
@@ -131,6 +134,7 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'course'=> 'id'
     ]);
     Route::post('/course/create-sertifikat', [KelasController::class, 'storeSertifikat'])->name('guru.course.store-sertifikat');
+    Route::post('/kelas/materi/{materi}/siswa/{userSiswaId}/destroyJoin', [KelasController::class, 'destroyJoinStudent'])->name('guru.course-detail.destroyJoinStudent');
     Route::resource('/kelas/materi', MateriController::class)->names([
         'index' => 'guru.course-detail.index',
         'create' => 'guru.course-detail.create',
@@ -140,12 +144,16 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'update' => 'guru.course-detail.update',
         'destroy' => 'guru.course-detail.destroy',
     ]);
-    Route::get('/kelas/{id}/sub-materi/{subMateriId}', [SubMateriController::class, 'showSubMateri'])
+    Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('sub-materi.show');
-    Route::get('/kelas/{kelasId}/sub-materi/create', [SubMateriController::class, 'createSubMateri'])
+    Route::get('/kelas/{kelasId}/sub-materi/create/{materiId}', [SubMateriController::class, 'createSubMateri'])
     ->name('sub-materi.create');
     Route::post('/kelas/{kelasId}/sub-materi/store/{userTypeId}', [SubMateriController::class, 'storeSubMateri'])
     ->name('sub-materi.store');
+    Route::get('/kelas/{kelasId}/materi/{materiId}/submateri/{subMateriId}/edit/{userTypeId}', [SubMateriController::class, 'editSubMateri'])
+    ->name('sub-materi.edit');
+    Route::put('/kelas/{kelasId}/sub-materi/update/{userTypeId}', [SubMateriController::class, 'updateSubMateri'])
+    ->name('sub-materi.update');
     Route::get('/ckeditor', [CkeditorController::class, 'index']);
     Route::post('/upload', [CkeditorController::class, 'upload'])
     ->name('ckeditor.upload');
@@ -163,13 +171,16 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
     Route::resource('/result/case-study', ResultCaseStudyController::class)->names([
         'index' => 'guru.result.case.index',
         'create' => 'guru.result.case.create',
-        'store' => 'guru.result.case.store',
         'show' => 'guru.result.case.show',
         'edit' => 'guru.result.case.edit',
-        'update' => 'guru.result.case.update',
         'destroy' => 'guru.result.case.destroy',
     ]);
-
+    Route::post('/result/case-study/siswa/{id}/store', [ResultCaseStudyController::class, 'store'])
+        ->name('guru.result.case.store');
+    Route::put('/result/case-study/siswa/{id}/update', [ResultCaseStudyController::class, 'update'])
+        ->name('guru.result.case.update');
+    Route::get('/result/case-study/{caseStudyId}/siswa/{id}', [ResultCaseStudyController::class, 'showSubmission'])
+        ->name('guru.result.case.showSubmission');
     Route::get('/compiler', [GuruController::class, 'compiler'])->name('guru.compiler');
 });
 

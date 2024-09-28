@@ -7,8 +7,9 @@
         $user = auth()->user(); // Get the logged-in user
         $role = $user->roles->pluck('name')->first(); // Get the user's role name
     @endphp
-    <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
-
+    <div class="row mb-4">
+        <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
+    </div>
     @if (!$hasUserType)
         <!-- Modal -->
         <div class="modal modal-lg fade" id="questions-modal" tabindex="-1" role="dialog" aria-labelledby="questionsModalLabel"
@@ -124,14 +125,14 @@
                             <div class="d-flex align-items-center gap-5">
                                 <div class="">
                                     <p class="mb-3">Level</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">1<i
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $level ?? 1 }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
 
                                 </div>
                                 <div class="">
                                     <p class="mb-3">EXP Points</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">1180<i
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $totalPoints ?? 0 }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
                                 </div>
@@ -139,14 +140,15 @@
                             <div class="d-flex align-items-center gap-5">
                                 <div class="">
                                     <p class="mb-3">Misi</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">4/15<i
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">
+                                        {{ $completedMaterisCount }}/{{ $materisCollection->count() }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
-
                                 </div>
                                 <div class="">
                                     <p class="mb-3">Kelas Diikuti</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">2/2<i
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">
+                                        {{ Auth::user()->kelas->count() }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
                                 </div>
@@ -255,11 +257,13 @@
             @foreach ($kelas as $course)
                 <div class="col-sm-3">
                     <div class="card">
-                        <img src="{{ asset('assets/images/logos/' . $course->logo)}}" class="card-img-top me-2 img-thumbnail" alt="..." >
+                        <img src="{{ asset('assets/images/logos/' . $course->logo) }}"
+                            class="card-img-top me-2 img-thumbnail" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ $course->mapel }}</h5>
                             <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
-                            <a href="{{ route('siswa.course-detail.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
+                            <a href="{{ route('siswa.course-detail.show', $course->id) }}"
+                                class="btn btn-primary">Lanjutkan</a>
                         </div>
                     </div>
                 </div>

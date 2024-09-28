@@ -27,8 +27,9 @@ class MateriController extends Controller
             $materi = Materi::all();
         }
 
+        $kelas = Kelas::all();
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
-        return view($view, compact('materi'));
+        return view($view, compact('kelas','materi'));
         // $materi = Materi::get()->all();
         // return view('guru.materi', compact('materi'));
     }
@@ -45,7 +46,10 @@ class MateriController extends Controller
         // Retrieve the course details based on the ID
         $kelas = Kelas::findOrFail($id); // Assuming you have a Kelas model
         // $materi = Materi::get()->all();
-        $user = Auth::user();
+        $user = Auth::user()->load('user_tasks');
+        $totalPoints = $user->user_tasks->sum('points');
+        // dd($totalPoints);
+        // dd($totalPoints, $user->user_tasks);
         if ($user->hasRole('siswa')) {
             foreach ($kelas->materi as $materis) {
                 // Filter subMateris based on the user's user_type_id
@@ -53,6 +57,15 @@ class MateriController extends Controller
             }
         }
         $materis = $kelas->materi()->with('subMateris')->get();
+        // Prepare completion status for subMateris
+        foreach ($materis as $materi) {
+            foreach ($materi->subMateris as $subMateri) {
+                $subMateri->is_completed = $user->user_tasks()->where('task_id', $subMateri->id)->exists();
+            }
+        }
+        $completedMaterisCount = $user->user_tasks()
+        ->where('is_completed', true)
+        ->count();
         $subMateris = SubMateri::with('UserType')->get();
         $case_studies = $kelas->case_studies()->get();
         $soalTests = $kelas->materi()->with('soalTests')->get();
@@ -69,7 +82,7 @@ class MateriController extends Controller
 
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
 
-        return view($view, compact('user','siswas','kelas', 'materi', 'materis' , 'case_studies', 'soalTests', 'subMateris'));
+        return view($view, compact('user','siswas','kelas', 'materi', 'materis' , 'case_studies', 'soalTests', 'subMateris', 'totalPoints', 'completedMaterisCount'));
 
     }
 
