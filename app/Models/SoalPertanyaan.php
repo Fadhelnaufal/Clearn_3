@@ -20,4 +20,6 @@ class SoalPertanyaan extends Model
     {
         return $this->belongsTo(PertanyaanSoal::class, 'pertanyaan_id');
     }
+
+    
 }

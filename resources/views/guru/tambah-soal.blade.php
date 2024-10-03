@@ -42,7 +42,7 @@
                                 @else
                                     <p>No answer options available</p>
                                 @endif
-                                <div class="mb-4 d-flex">
+                                <div class="mb-4 d-flex gap-2">
                                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
                                         data-pertanyaan-id="{{ $pertanyaan->pertanyaan->id }}"
                                         data-pertanyaan="{{ $pertanyaan->pertanyaan->pertanyaan }}"

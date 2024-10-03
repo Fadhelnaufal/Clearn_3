@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JawabanSoalSiswa;
 use App\Models\Kelas;
 use App\Models\Materi;
 use App\Models\OpsiPertanyaan;
@@ -9,6 +10,7 @@ use App\Models\PertanyaanSoal;
 use App\Models\Soal;
 use App\Models\SoalPertanyaan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class SoalController extends Controller
@@ -214,4 +216,50 @@ class SoalController extends Controller
         return redirect()->back()->with('success', 'Soal berhasil ditambahkan');
     }
 
+    public function showSoal($materi_id, $soalId)
+    {
+        $materi = Materi::with('soal')->findOrFail($materi_id);
+        $soal = Soal::with('pertanyaanSoals')->find($soalId);
+        $pertanyaans = SoalPertanyaan::where('soal_id', $soalId)->get();
+        return view('siswa.soal', compact('soal', 'materi', 'pertanyaans'));
+    }
+
+    public function storeJawaban(Request $request)
+    {
+        // Debug the request to see the incoming data
+        dd($request->all());
+
+        // Validasi data
+    $request->validate([
+        'soal_id' => 'required|exists:soals,id',
+        'jawaban' => 'required|json', // Memastikan jawaban adalah string JSON
+    ]);
+
+    // Dekode jawaban menjadi array
+    $jawabanArray = json_decode($request->jawaban, true);
+
+    // Loop untuk setiap jawaban
+    foreach ($jawabanArray as $jawabanDetail) {
+        $opsi_id = $jawabanDetail['opsi_id'];
+        $pertanyaan_id = $jawabanDetail['pertanyaan_id'];
+        $siswa_id = $jawabanDetail['siswa_id'];
+
+        // Validasi data
+        if (empty($pertanyaan_id) || empty($opsi_id) || empty($siswa_id)) {
+            return redirect()->back()->withErrors(['jawaban' => 'Data jawaban tidak lengkap.']);
+        }
+
+        // Simpan jawaban
+        JawabanSoalSiswa::create([
+            'siswa_id' => $siswa_id,
+            'soal_id' => $request->soal_id,
+            'pertanyaan_id' => $pertanyaan_id,
+            'opsi_id' => $opsi_id,
+            'is_correct' => OpsiPertanyaan::find($opsi_id)->is_correct,
+        ]);
+    }
+
+    return redirect()->route('hasil.quiz', $request->soal_id)
+                     ->with('success', 'Jawaban berhasil disimpan!');
+    }
 }

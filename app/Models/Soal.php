@@ -18,4 +18,9 @@ class Soal extends Model
     {
         return $this->belongsTo(Materi::class, 'materi_id');
     }
+
+    public function pertanyaanSoals()
+    {
+        return $this->belongsToMany(PertanyaanSoal::class, 'soal_pertanyaans', 'soal_id', 'pertanyaan_id');
+    }
 }

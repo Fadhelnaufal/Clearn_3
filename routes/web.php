@@ -126,6 +126,8 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
         'store' => 'siswa.case-submission.store',
         'update' => 'siswa.case-submission.update',
     ]);
+    Route::get('/kelas/materi/{materi_id}/soal/{soalId}/show', [SoalController::class, 'showSoal'])->name('siswa.soal.show.soal');
+    Route::post('/kelas/materi/{materi_id}/soal/{soalId}/store-jawaban', [SoalController::class, 'storeJawaban'])->name('siswa.soal.store.jawaban');
     Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('siswa.sub-materi.show');
     Route::post('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/mark-as-read', [SubMateriController::class, 'markAsRead'])
