@@ -42,23 +42,33 @@
                                 @else
                                     <p>No answer options available</p>
                                 @endif
-                                <div class="mb-4">
+                                <div class="mb-4 d-flex">
                                     <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"
-                                        data-pertanyaan-id="{{ $pertanyaan->id }}"
+                                        data-pertanyaan-id="{{ $pertanyaan->pertanyaan->id }}"
                                         data-pertanyaan="{{ $pertanyaan->pertanyaan->pertanyaan }}"
                                         data-gambar="{{ asset('assets/images/soal/' . $pertanyaan->pertanyaan->gambar) }}"
                                         data-opsi="{{ json_encode($pertanyaan->pertanyaan->opsiPertanyaan) }}">
                                         <i class="bi bi-pencil-square me-2 fs-6"></i>Edit
                                     </button>
-                                    <button class="btn btn-danger"><i class="bi bi-trash3 me-2 fs-6"></i>Hapus</button>
+                                    <form
+                                        action="{{ route('guru.soal.destroy.pertanyaan', ['materi_id' => $materi->id, 'soal_id' => $soal->id, 'pertanyaan_id' => $pertanyaan->pertanyaan->id]) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus soal ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="bi bi-trash3 me-2 fs-6"></i>Hapus
+                                        </button>
+                                    </form>
+
                                 </div>
-                                {{-- edit modal --}}
+                                <!-- Edit Modal -->
                                 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="EditModalLabel"
                                     aria-hidden="true" data-bs-backdrop="static">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header border-bottom-0 py-2">
-                                                <h5 class="modal-title" id="FormModalLabel">Edit Soal nomor</h5>
+                                                <h5 class="modal-title" id="FormModalLabel">Edit Soal</h5>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-body">
@@ -67,7 +77,8 @@
                                                         method="POST" enctype="multipart/form-data" id="kelasForm">
                                                         @csrf
                                                         @method('PUT')
-                                                        <input type="hidden" name="pertanyaan_id" id="pertanyaan_id" value="{{ old('pertanyaan_id') }}">
+                                                        <input type="hidden" name="pertanyaan_id" id="pertanyaan_id"
+                                                            value="{{ $pertanyaan->pertanyaan->id }}">
                                                         <div class="col-md-12">
                                                             <label for="mapel" class="form-label">Soal</label>
                                                             <textarea id="pertanyaan" name="pertanyaan" class="form-control" rows="3" required>{{ old('pertanyaan') }}</textarea>
@@ -112,22 +123,15 @@
                                                                 </div>
                                                             @endforeach
                                                         </div>
-                                                        <!-- Button to add more options -->
                                                         <div class="col-md-12">
-                                                            <div class="d-inline-block mt-1">
-                                                                <button type="button" class="btn btn-dark"
-                                                                    id="addOptionButton"><i
-                                                                        class="bi bi-plus me-1 fs-6"></i>Opsi</button>
-                                                            </div>
+                                                            <button type="button" class="btn ripple btn-success"
+                                                                id="addOptionButton">Tambah Opsi</button>
                                                         </div>
-                                                        <div class="col-md-12">
-                                                            <div class="d-md-flex d-grid align-items-center gap-3 mt-3">
-                                                                <button type="submit"
-                                                                    class="btn ripple btn-primary px-2">Save
-                                                                    Changes</button>
-                                                                <button type="button" class="btn ripple btn-secondary px-2"
-                                                                    data-bs-dismiss="modal">Batal</button>
-                                                            </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Tutup</button>
+                                                            <button type="submit" class="btn btn-primary">Simpan
+                                                                Perubahan</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -139,10 +143,8 @@
                         </div>
                     @endforeach
                 @else
-                    <div class="col-md-8">
-                        <div class="card pt-2 px-2">
-                            <p class="mt-2">Belum ada Soal ditambahkan</p>
-                        </div>
+                    <div class="card pt-2 px-2">
+                        <p class="mt-2">Belum ada Soal ditambahkan</p>
                     </div>
                 @endif
             </div>
@@ -242,10 +244,8 @@
 
     <!-- JavaScript to handle dynamic option addition -->
     <script>
-        // Initialize index for dynamic answers for editing
         let jawabanIndexEdit = 1; // Index for editing existing answers
 
-        // Add new answer option when clicking the button in the edit modal
         document.getElementById('addOptionButton').addEventListener('click', function() {
             jawabanIndexEdit++;
             const jawabanContainer = document.getElementById('jawabanContainer');
@@ -256,13 +256,13 @@
             newRow.id = 'row_' + jawabanIndexEdit;
 
             newRow.innerHTML = `
-        <input id="opsi_${jawabanIndexEdit}" type="text" class="form-control me-2" placeholder="Masukkan jawaban" name="jawaban[${jawabanIndexEdit}][opsi]" required>
-        <div class="form-check">
-            <input id="is_correct_${jawabanIndexEdit}" class="form-check-input" type="checkbox" value="1" name="jawaban[${jawabanIndexEdit}][is_correct]">
-            <label class="form-check-label me-2" for="is_correct_${jawabanIndexEdit}">Benar</label>
-        </div>
-        <button type="button" class="btn ripple btn-danger px-2" onclick="removeRow(this)">Hapus</button>
-    `;
+                <input id="opsi_${jawabanIndexEdit}" type="text" class="form-control me-2" placeholder="Masukkan jawaban" name="jawaban[${jawabanIndexEdit}][opsi]" required>
+                <div class="form-check">
+                    <input id="is_correct_${jawabanIndexEdit}" class="form-check-input" type="checkbox" value="1" name="jawaban[${jawabanIndexEdit}][is_correct]">
+                    <label class="form-check-label me-2" for="is_correct_${jawabanIndexEdit}">Benar</label>
+                </div>
+                <button type="button" class="btn ripple btn-danger px-2" onclick="removeRow(this)">Hapus</button>
+            `;
 
             jawabanContainer.appendChild(newRow); // Append new row to container
         });
@@ -302,13 +302,13 @@
                     const jawabanRow = document.createElement('div');
                     jawabanRow.classList.add('d-flex', 'mt-2', 'align-items-center', 'jawaban-row');
                     jawabanRow.innerHTML = `
-                <input id="opsi_${index + 1}" type="text" class="form-control me-2" placeholder="Masukkan jawaban" name="jawaban[${index + 1}][opsi]" value="${jawaban.opsi}" required>
-                <div class="form-check">
-                    <input id="is_correct_${index + 1}" class="form-check-input" type="checkbox" value="1" name="jawaban[${index + 1}][is_correct]" ${jawaban.is_correct ? 'checked' : ''}>
-                    <label class="form-check-label me-2" for="is_correct_${index + 1}">Benar</label>
-                </div>
-                <button type="button" class="btn ripple btn-danger px-2" onclick="removeRow(this)">Hapus</button>
-            `;
+                        <input id="opsi_${index + 1}" type="text" class="form-control me-2" placeholder="Masukkan jawaban" name="jawaban[${index + 1}][opsi]" value="${jawaban.opsi}" required>
+                        <div class="form-check">
+                            <input id="is_correct_${index + 1}" class="form-check-input" type="checkbox" value="1" name="jawaban[${index + 1}][is_correct]" ${jawaban.is_correct ? 'checked' : ''}>
+                            <label class="form-check-label me-2" for="is_correct_${index + 1}">Benar</label>
+                        </div>
+                        <button type="button" class="btn ripple btn-danger px-2" onclick="removeRow(this)">Hapus</button>
+                    `;
                     jawabanContainer.appendChild(jawabanRow);
                 });
 
@@ -316,8 +316,9 @@
                 jawabanIndexEdit = opsi.length; // Set to the current number of options
             });
         });
-
-        // JavaScript to dynamically add answer options in the create form
+    </script>
+    <!-- JavaScript for creating dynamic option addition -->
+    <script>
         let jawabanIndexCreate = 1; // Initialize index for dynamic answers in create form
 
         document.getElementById('addOptionButtonCreate').addEventListener('click', function() {
@@ -328,13 +329,13 @@
             const newJawabanRowCreate = document.createElement('div');
             newJawabanRowCreate.classList.add('d-flex', 'mt-2', 'align-items-center', 'jawaban-row-create');
             newJawabanRowCreate.innerHTML = `
-        <input id="opsi_${jawabanIndexCreate}" type="text" class="form-control me-2" placeholder="Masukkan jawaban" name="jawaban[${jawabanIndexCreate}][opsi]" required>
-        <div class="form-check">
-            <input id="is_correct_${jawabanIndexCreate}" class="form-check-input" type="checkbox" value="1" name="jawaban[${jawabanIndexCreate}][is_correct]">
-            <label class="form-check-label me-2" for="is_correct_${jawabanIndexCreate}">Benar</label>
-        </div>
-        <button type="button" class="btn ripple btn-danger px-2" onclick="removeRowCreate(this)">Hapus</button>
-    `;
+            <input id="opsi_${jawabanIndexCreate}" type="text" class="form-control me-2" placeholder="Masukkan jawaban" name="jawaban[${jawabanIndexCreate}][opsi]" required>
+            <div class="form-check">
+                <input id="is_correct_${jawabanIndexCreate}" class="form-check-input" type="checkbox" value="1" name="jawaban[${jawabanIndexCreate}][is_correct]">
+                <label class="form-check-label me-2" for="is_correct_${jawabanIndexCreate}">Benar</label>
+            </div>
+            <button type="button" class="btn ripple btn-danger px-2" onclick="removeRowCreate(this)">Hapus</button>
+        `;
             jawabanContainerCreate.appendChild(newJawabanRowCreate);
         });
 

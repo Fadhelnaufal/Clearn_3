@@ -151,16 +151,17 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'update' => 'guru.course-detail.update',
         'destroy' => 'guru.course-detail.destroy',
     ]);
-        Route::resource('/kelas/materi/{materi_id}/soal', SoalController::class)->names([
-            'create' => 'guru.soal.create',
-            'store' => 'guru.soal.store',
-            'show' => 'guru.soal.show',
-            'edit' => 'guru.soal.edit',
-            'update' => 'guru.soal.update',
-            'destroy' => 'guru.soal.destroy',
-        ])->parameters(['soal'=>'soal_id']);
+    Route::resource('/kelas/materi/{materi_id}/soal', SoalController::class)->names([
+        'create' => 'guru.soal.create',
+        'store' => 'guru.soal.store',
+        'show' => 'guru.soal.show',
+        'edit' => 'guru.soal.edit',
+        'destroy'=> 'guru.soal.destroy',
+        'update' => 'guru.soal.update',
+    ])->parameters(['soal'=>'soal_id']);
     Route::get('/kelas/materi/{materi_id}/soal/{soal_id}', [SoalController::class, 'index'])->name('guru.soal.index');
     Route::post('/kelas/materi/{materi_id}/soal/{soal_id}/store-pertanyaan', [SoalController::class, 'storePertanyaan'])->name('guru.soal.store.pertanyaan');
+    Route::delete('/kelas/materi/{materi_id}/soal/{soal_id}/pertanyaan/{pertanyaan_id}', [SoalController::class, 'destroyPertanyaan'])->name('guru.soal.destroy.pertanyaan');
 
     Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('sub-materi.show');

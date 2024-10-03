@@ -79,76 +79,42 @@ class SoalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $materi_id, $pertanyaan_id)
     {
-        // Find the existing question (PertanyaanSoal) by its ID
-        $pertanyaanSoal = PertanyaanSoal::findOrFail($id);
-
-        // Validate the input data
-        $this->validate($request, [
-            'pertanyaan' => 'required',
-            'jawaban.*.opsi' => 'required', // Validate each answer option
-            'jawaban.*.is_correct' => 'boolean', // Validate the correctness checkbox
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:4096',
+        // dd($request->all());
+        // Validate the incoming request data
+        $request->validate([
+            'pertanyaan_id'=>'required|integer|exists:pertanyaan_soals,id',
+            'pertanyaan' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'jawaban' => 'required|array',
+            'jawaban.*.opsi' => 'required|string',
+            'jawaban.*.is_correct' => 'boolean',
         ]);
 
         // dd($request->all());
 
-        // Retain the current image path if not updating
-        $filePath = $pertanyaanSoal->gambar;
-
-        // Check if a new image file is uploaded
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar'); // Get the uploaded file
-            // Generate a random file name
-            $fileName = str()->random(10) . '.' . $gambar->getClientOriginalExtension();
-            // Store the file in the specified path
-            $gambar->move(public_path('assets/images/soal'), $fileName);
-            $filePath = $fileName;
-        }
-
-        // Update the PertanyaanSoal record
-        $pertanyaanSoal->update([
+        $pertanyaan_id = $request->pertanyaan_id;
+        // dd($pertanyaan_id);
+        // Find the question and update its data
+        $pertanyaan = PertanyaanSoal::findOrFail($pertanyaan_id);
+        $pertanyaan->update([
             'pertanyaan' => $request->pertanyaan,
-            'gambar' => $filePath, // Update image if applicable
+            'gambar' => $request->file('gambar') ? $request->file('gambar')->store('soal', 'public') : $pertanyaan->gambar,
         ]);
 
-        // dd($pertanyaanSoal,$id);
+        // Delete existing answer options associated with the pertanyaan_id
+        $pertanyaan->opsiPertanyaan()->delete(); // Assuming there is a relationship defined for jawaban in PertanyaanSoal model
 
-        // Ensure you have the soal_id available
-        $soal_id = $request->soal_id; // Assuming soal_id is available in the request
-
-        // dd($soal_id);
-        // Find the associated SoalPertanyaan record
-        $pertanyaanId = 2;
-        $pertanyaan = PertanyaanSoal::findOrFail($pertanyaanId);
-        $soalPertanyaan = SoalPertanyaan::where('pertanyaan_id', $pertanyaan->id)->firstOrFail();
-
-        dd($soalPertanyaan,$id);
-        // If SoalPertanyaan does not exist, create it
-        if (!$soalPertanyaan) {
-            SoalPertanyaan::create([
-                'pertanyaan_id' => $pertanyaanSoal->id,
-                'soal_id' => $soal_id,
-            ]);
-        }
-
-        // Delete the existing options (jawaban) based on pertanyaan_id
-        OpsiPertanyaan::where('pertanyaan_id', $pertanyaanSoal->id)->delete();
-        // dd($request->jawaban);
-        // Save each answer option (jawaban)
+        // Update answer options
         foreach ($request->jawaban as $jawaban) {
             OpsiPertanyaan::create([
+                'pertanyaan_id' => $pertanyaan->id,
                 'opsi' => $jawaban['opsi'],
-                'is_correct' => isset($jawaban['is_correct']) ? 1 : 0, // Save as 1 if checkbox is checked
-                'pertanyaan_id' => $pertanyaanSoal->id, // Link to the updated question
+                'is_correct' => isset($jawaban['is_correct']) ? 1 : 0,
             ]);
         }
-
-        // dd($request->all());
-
-        // Log successful update
-        Log::info('Pertanyaan updated successfully:', ['pertanyaan_id' => $pertanyaanSoal->id]);
+        // dd($jawaban);
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Soal berhasil diupdate');
@@ -157,10 +123,52 @@ class SoalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $materi_id, string $soal_id)
     {
-        //
+        // dd($soal_id);
+        // Fetch all the related 'pertanyaan_id' records from 'SoalPertanyaan' using 'soal_id'
+        $pertanyaans = SoalPertanyaan::where('soal_id', $soal_id)->get();
+        // dd($pertanyaans,$soal_id);
+        // Find the 'PertanyaanSoal' records with 'pertanyaan_id' from 'pertanyaans'
+        $pertanyaanCollection = PertanyaanSoal::with('opsiPertanyaan')
+            ->whereIn('id', $pertanyaans->pluck('pertanyaan_id'))
+            ->get();
+
+        // dd($pertanyaanCollection, $soal_id, $pertanyaans);
+        // Loop through and delete each 'PertanyaanSoal' and its related 'opsiPertanyaan'
+        foreach ($pertanyaanCollection as $pertanyaan) {
+            // Delete related 'opsiPertanyaan' first
+            $pertanyaan->opsiPertanyaan('pertanyaan_id')->delete();
+            // Then delete the 'PertanyaanSoal'
+            $pertanyaan->delete();
+        }
+
+        // Redirect back with success message
+        return redirect()->back()->with('success', 'Pertanyaan and related options deleted successfully');
     }
+
+
+    public function destroyPertanyaan(string $materi_id, string $soal_id, string $pertanyaan_id)
+    {
+        // dd($pertanyaan_id);
+        // Find the 'PertanyaanSoal' record by the passed 'pertanyaan_id'
+        $pertanyaan = PertanyaanSoal::with('opsiPertanyaan')->find($pertanyaan_id);
+
+        if ($pertanyaan) {
+            // Delete related 'opsiPertanyaan' first
+            $pertanyaan->opsiPertanyaan()->delete();
+
+            // Then delete the 'PertanyaanSoal'
+            $pertanyaan->delete();
+
+            // Redirect back with success message
+            return redirect()->back()->with('success', 'Pertanyaan and related options deleted successfully');
+        }
+
+        // If the 'pertanyaan' is not found, return with error
+        return redirect()->back()->with('error', 'Pertanyaan not found');
+    }
+
 
     public function storePertanyaan(Request $request, $materi_id, $soal)
     {
