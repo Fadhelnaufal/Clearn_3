@@ -115,7 +115,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-7 ps-3">
                             <div class="d-flex align-items-center gap-3 mb-5">
-                                <img src="https://placehold.co/110x110/png" class="rounded-circle bg-grd-info p-1"
+                                <img src="{{asset('assets/images/avatar1.png')}}" class="rounded-circle bg-grd-info p-1"
                                     width="60" height="60" alt="user">
                                 <div class="">
                                     <p class="mb-0 fw-semibold">Selamat Datang</p>
@@ -128,7 +128,6 @@
                                     <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $level ?? 1 }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
-
                                 </div>
                                 <div class="">
                                     <p class="mb-3">EXP Points</p>
@@ -238,7 +237,7 @@
                         </div>
                     </div>
                     <div class="text-center mt-4">
-                        <span class="text-success">Senior Frontend Developer</span>
+                        <span class="text-success">Beginner</span>
                     </div>
                 </div>
             </div>
@@ -248,7 +247,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h4>
-                        Continue class
+                        Lanjutkan Kelas
                     </h4>
                 </div>
             </div>
@@ -258,9 +257,11 @@
                 <div class="col-sm-3">
                     <div class="card">
                         <img src="{{ asset('assets/images/logos/' . $course->logo) }}"
-                            class="card-img-top me-2 img-thumbnail" alt="...">
+                        class="card-img-top me-2 img-thumbnail"
+                        alt="..."
+                        style="height: 150px; object-fit: cover;">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $course->mapel }}</h5>
+                            <h6 class="card-title">{{ $course->mapel }}</h6>
                             <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
                             <a href="{{ route('siswa.course-detail.show', $course->id) }}"
                                 class="btn btn-primary">Lanjutkan</a>

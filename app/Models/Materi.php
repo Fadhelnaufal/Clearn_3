@@ -34,4 +34,8 @@ class Materi extends Model
     {
         return $this->hasMany(SoalTest::class, 'materi_id');
     }
+
+    public function soal(){
+        return $this->hasMany(Soal::class, 'materi_id');
+    }
 }

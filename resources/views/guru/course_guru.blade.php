@@ -3,7 +3,9 @@
     Widgets Data
 @endsection
 @section('content')
+<div class="row mb-4">
     <x-page-title title="Course" subtitle="Kelas" />
+</div>
 
     <div class="col-12 col-xl-6">
         <!-- Button trigger modal -->
@@ -64,7 +66,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $course->mapel }}</h5>
+                                <h6 class="card-title">{{ $course->mapel }}</h6>
                                 <p class="card-title">{{ $course->kelas }}</p>
                                 <p class="card-title">Token Kelas :{{ $course->token }}</p>
                                 <a href="{{ route('guru.course-detail.show', $course->id) }}" class="btn btn-primary">View

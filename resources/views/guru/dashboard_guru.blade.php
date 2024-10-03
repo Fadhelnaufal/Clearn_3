@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-7 ps-3">
                             <div class="d-flex align-items-center gap-3 mb-5">
-                                <img src="https://placehold.co/110x110/png" class="rounded-circle bg-grd-info p-1"
+                                <img src="{{asset('assets/images/avatar1.png')}}" class="rounded-circle bg-grd-info p-1"
                                     width="60" height="60" alt="user">
                                 <div class="">
                                     <p class="mb-0 fw-semibold">Selamat Datang</p>
@@ -30,14 +30,20 @@
                             <div class="d-flex align-items-center gap-5">
                                 <div class="">
                                     <p class="mb-3">Kelas</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">1<i
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $kelas->where('user_id', auth()->id())->count('id') }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
 
                                 </div>
                                 <div class="">
                                     <p class="mb-3">Siswa</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">1180<i
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ $kelas->where('user_id', auth()->id())->pluck('id')->flatMap(function ($kelas_id) {
+                                        return \App\Models\User::whereHas('roles', function ($query) {
+                                            $query->where('name', 'siswa');
+                                        })->whereHas('kelas', function ($query) use ($kelas_id) {
+                                            $query->where('kelas_id', $kelas_id);
+                                        })->get();
+                                    })->count() }}<i
                                             class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
                                     </h4>
                                 </div>
@@ -45,11 +51,10 @@
                             <div class="d-flex align-items-center gap-5">
                                 <div class="">
                                     <p class="mb-3">Materi</p>
-                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">4/15<i
-                                            class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
-                                    </h4>
-
-                                </div>
+                                    <h4 class="mb-1 fw-semibold d-flex align-content-center">{{ \App\Models\Kelas::where('user_id', auth()->id())->pluck('id')->flatMap(function ($kelas_id) {
+                                        return \App\Models\Materi::where('kelas_id', $kelas_id)->get();
+                                    })->count() }}<i class="ti ti-arrow-up-right fs-5 lh-base text-success"></i>
+                                    </h4>                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-5">
@@ -107,7 +112,7 @@
 
     <div class="continue">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 mb-2">
                 <h4>
                     Kelas Terbaru
                 </h4>
@@ -118,16 +123,21 @@
         @foreach ($kelas as $course)
             <div class="col-sm-3">
                 <div class="card">
-                    <img src=" {{ asset('assets/images/logos/' . $course->logo)}}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $course->mapel }}</h5>
-                        <p class="card-text"id="deskripsi">{{ $course->kelas }}</p>
-                        <a href="{{ route('guru.course-detail.show', $course->id) }}" class="btn btn-primary">Lanjutkan</a>
+                    <img src="{{ asset('assets/images/logos/' . $course->logo) }}"
+                         class="card-img-top me-2 img-thumbnail"
+                         alt="..."
+                         style="height: 150px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">{{ $course->mapel }}</h6>
+                        <p class="card-text" id="deskripsi">{{ $course->kelas }}</p>
+                        <a href="{{ route('guru.course-detail.show', $course->id) }}"
+                           class="btn btn-primary ">Lanjutkan</a>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+
 @endsection
 @push('script')
     <!-- JavaScript and jQuery -->

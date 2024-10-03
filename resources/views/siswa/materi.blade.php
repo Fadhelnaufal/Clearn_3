@@ -75,34 +75,59 @@
                 $('#completed_task').on('click', function() {
                     var url = $(this).data('url'); // Get the URL from the button
 
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}', // Laravel CSRF token for protection
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                alert(response.success); // Show success message
-                                window.location.href =
-                                    "{{ url()->previous() }}"; // Redirect back to previous page
-                                // window.location.href = response.redirect; // Redirect to the course detail page
-                            } else {
-                                alert(
-                                    `Error marking as completed! ${response.error}`
-                                ); // Show error message
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr.responseText); // Log error for debugging
-                            alert(
-                                'Error marking as completed! Please try again.'
-                            ); // Show error message
+                    // SweetAlert confirmation
+                    Swal.fire({
+                        title: 'Apakah kamu yakin telah menyelesaikan materi ini?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Selesaikan!',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // If confirmed, make the AJAX request
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}', // Laravel CSRF token
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        // Show success message with SweetAlert
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Materi berhasil diselesaikan!',
+                                            text: response.success,
+                                            showConfirmButton: false,
+                                            timer: 2000,
+                                        }).then(() => {
+                                            window.location.href = "{{ url()->previous() }}"; // Redirect to the previous page
+                                        });
+                                    } else {
+                                        // Show error message with SweetAlert
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal!',
+                                            text: `Error marking as completed! ${response.error}`,
+                                        });
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Terjadi kesalahan saat memproses permintaan!',
+                                    });
+                                }
+                            });
                         }
                     });
                 });
             });
         </script>
+
 
         <script>
             $(document).ready(function() {

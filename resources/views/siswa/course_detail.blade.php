@@ -3,7 +3,9 @@
     Widgets Data
 @endsection
 @section('content')
+<div class="row mb-4">
     <x-page-title title="Course" subtitle="Detail Kelas" />
+</div>
     <div class="row">
         <div class="container">
             <div class="card">
@@ -131,9 +133,13 @@
                         <div class="card text-center">
                             <div class="card-content">
                                 <h4 class="mt-3">Total Perolehan EXP</h4>
-                                <h5>{{ $totalPoints ?? 0 }}</h5>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <p class="lead mb-0" style="font-size: 1.5rem;">{{ $totalPoints ?? 0 }}</p>
+                                    <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 40px; height: 40px; margin-left: 10px;">
+                                </div>
                             </div>
                         </div>
+
                     </div>
                     <!-- Sidebar Section -->
                 </div>
@@ -144,18 +150,27 @@
                     <div class="col-md-7">
                         @if ($case_studies->isNotEmpty())
                             @foreach ($case_studies as $caseStudy)
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h2 class="card-title">{{ $caseStudy->title }}</h2>
-                                        <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}"
-                                            style="color: #7964EF">
-                                            <p class="card-text text-neutral-600">
-                                                <i class="bi bi-box-arrow-in-up-right ms-3 fs-6"></i>
-                                                {{ $caseStudy->description }}
-                                            </p>
-                                        </a>
+                            <div class="accordion mb-2" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading{{ $caseStudy->id }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $caseStudy->id }}" aria-expanded="false" aria-controls="collapse{{ $caseStudy->id }}">
+                                            {{ $caseStudy->title }}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse{{ $caseStudy->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $caseStudy->id }}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}" style="color: #7964EF">
+                                                <p class="card-text text-neutral-600">
+                                                    <i class="bi bi-caret-right-fill ms-3 fs-6"></i>
+                                                    {{ $caseStudy->description }}
+                                                </p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+
+
                             @endforeach
                         @else
                             <p>No Studi Kasus available for this class.</p>
@@ -165,7 +180,10 @@
                         <div class="card text-center">
                             <div class="card-content">
                                 <h4 class="mt-3">Total Perolehan EXP</h4>
-                                <h5>{{ $totalPoints ?? 0 }}</h5>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <p class="lead mb-0" style="font-size: 1.5rem;">{{ $totalPoints ?? 0 }}</p>
+                                    <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 40px; height: 40px; margin-left: 10px;">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -178,8 +196,8 @@
                     <div class="row mx-1">
                         <div class="col-md-7">
                             <div class="card px-2 py-2">
-                                <table class="table table-responsive">
-                                    <thead>
+                                <table class="table table-striped  table-hover text-center">
+                                    <thead class="thead-light">
                                         <tr>
                                             <th scope="col">Peringkat</th>
                                             <th scope="col">Nama</th>
@@ -194,14 +212,18 @@
                                             });
                                         @endphp
                                         @foreach ($sortedSiswas as $siswa)
-                                            <tr>
-                                                <th scope="row">{{ $loop->iteration }}</th>
-                                                <td>{{ $siswa->name }}</td>
-                                                <td>{{ $siswa->user_tasks->sum('points') }}</td>
-                                            </tr>
+                                        <tr>
+                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <td>{{ $siswa->name }}</td>
+                                            <td class="d-flex justify-content-center align-items-center">
+                                                <span>{{ $siswa->user_tasks->sum('points') }}</span>
+                                                <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 25px; height: 25px; margin-left: 10px;">
+                                            </td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                         <div class="col-md-5 d-flex justify-content-center">
@@ -262,7 +284,7 @@
             <div class="tab-pane fade target" id="info">
                 <div class="card ">
                     <div class="row">
-                        <div class="col-md-5  ms-3">
+                        <div class="col-md-5 mt-5 ms-3">
                             <div class="">
                                 <label for="input5" class="form-label mt-2">Nama Mata Pelajaran</label>
                                 <input disabled type="text" class="form-control" id="input5" name="judul"

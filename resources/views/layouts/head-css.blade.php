@@ -34,6 +34,7 @@
 <link href="{{ URL::asset('build/css/bordered-theme.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('build/css/responsive.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('livecode/css/style.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css" />
 {{-- <link href="{{ URL::asset('assets/ckeditor5-premium-features/ckeditor5-premium-features-editor.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/ckeditor5-premium-features/ckeditor5-premium-features-content.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('assets/ckeditor5-premium-features/ckeditor5-premium-features.css') }}" rel="stylesheet"> --}}

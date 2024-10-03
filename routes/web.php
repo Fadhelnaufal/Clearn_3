@@ -17,6 +17,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\StudentSubmissionController;
 use App\Http\Controllers\SubMateriController;
 use App\Http\Controllers\ResultCaseStudyController;
+use App\Http\Controllers\SoalController;
 use App\Models\SubMateri;
 use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -25,7 +26,13 @@ Route::get('/', function () {
     return view('landing');
 });
 Route::get('/soal', function () {
-    return view('siswa.soal');
+    return view('guru.tambah-soal');
+});
+Route::get('/hasil-soal', function () {
+    return view('guru.hasil-soal');
+});
+Route::get('/hasil-soal-siswa', function () {
+    return view('siswa.hasil-soal');
 });
 // Route::get('/tabel', function () {
 //     return view('table-datatable');
@@ -144,6 +151,17 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
         'update' => 'guru.course-detail.update',
         'destroy' => 'guru.course-detail.destroy',
     ]);
+        Route::resource('/kelas/materi/{materi_id}/soal', SoalController::class)->names([
+            'create' => 'guru.soal.create',
+            'store' => 'guru.soal.store',
+            'show' => 'guru.soal.show',
+            'edit' => 'guru.soal.edit',
+            'update' => 'guru.soal.update',
+            'destroy' => 'guru.soal.destroy',
+        ])->parameters(['soal'=>'soal_id']);
+    Route::get('/kelas/materi/{materi_id}/soal/{soal_id}', [SoalController::class, 'index'])->name('guru.soal.index');
+    Route::post('/kelas/materi/{materi_id}/soal/{soal_id}/store-pertanyaan', [SoalController::class, 'storePertanyaan'])->name('guru.soal.store.pertanyaan');
+
     Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('sub-materi.show');
     Route::get('/kelas/{kelasId}/sub-materi/create/{materiId}', [SubMateriController::class, 'createSubMateri'])

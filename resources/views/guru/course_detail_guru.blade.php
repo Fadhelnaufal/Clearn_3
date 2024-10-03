@@ -7,7 +7,7 @@
 @section('content')
     <div class="container d-flex align-items-center mb-5">
         <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
-        <x-page-title title="Course" subtitle="Detail Kelas {{ $kelas->mapel }}" />
+        <x-page-title title="Course" subtitle=" {{ $kelas->mapel }}" />
     </div>
     <div class="row">
         <div class="container">
@@ -103,20 +103,18 @@
                                                         @if ($subMateri->lampiran)
                                                             <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}"
                                                                 target="_blank">
-                                                                Download Lampiran
+                                                                | Download Lampiran
                                                             </a>
                                                         @endif
                                                     </div>
                                                 @endforeach
-                                                {{-- @if (isset($soalTests))
-                                                        @foreach ($soalTests as $soalTest)
-                                                            <div class="soal-test-item">
-                                                                <a href="">
-                                                                    <strong>Soal Test: </strong>
-                                                                </a>
-                                                            </div>
-                                                        @endforeach
-                                                    @endif --}}
+                                                    @foreach ($materi->soal as $soas)
+                                                        <div class="soal-test-item">
+                                                            <a href="{{route('guru.soal.index', ['materi_id' => $materi->id, 'soal_id' => $soas->id])}}">
+                                                                <strong>Soal Quiz: {{ $soas->nama }}</strong>
+                                                            </a>
+                                                        </div>
+                                                    @endforeach
                                                 <div class="row">
 
                                                 </div>
@@ -139,36 +137,44 @@
                                                     <div class="">
                                                         <button type="button" data-bs-toggle="modal"
                                                             data-bs-target="#tambahsoalModal"
-                                                            class="btn btn-secondary md-2"><i class="bi bi-plus-lg"></i>
-                                                            Tambah Soal</button>
-                                                        <div class="modal fade" id="tambahsoalModal" tabindex="-1"
-                                                            aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                                            data-bs-backdrop="static">
-                                                            <div class="modal-dialog modal-dialog-centered">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">
-                                                                            Tambah Soal</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <label for="judul" class="form-label">Nama
-                                                                            Soal</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="judul{{ $materi->id }}" name="judul"
-                                                                            required>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Batal</button>
-                                                                        <button type="button"
-                                                                            class="btn btn-primary">Tambah
-                                                                            Soal</button>
+                                                            class="btn btn-secondary md-2">
+                                                            <i class="bi bi-plus-lg"></i> Tambah Soal
+                                                        </button>
+                                                        <form id="add-soal-form-{{ $materi->id }}"
+                                                            action="{{ route('guru.soal.store', ['materi_id' => $materi->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <div class="modal fade" id="tambahsoalModal" tabindex="-1"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                                                data-bs-backdrop="static">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLabel">Tambah Soal</h5>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <label for="nama" class="form-label">Nama
+                                                                                Soal</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="nama{{ $materi->id }}"
+                                                                                name="nama" required>
+                                                                            <input type="hidden" name="materi_id"
+                                                                                value="{{ $materi->id }}">
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Batal</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Tambah
+                                                                                Soal</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </form>
                                                     </div>
-
                                                     <div class="">
                                                         <button type="button" class="btn btn-warning md-2"
                                                             data-bs-toggle="modal"
@@ -592,14 +598,16 @@
                                             <td>{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
                                             <td>{{ $siswa->user_tasks->sum('points') }}</td>
                                             <td>
-                                                <form action="{{ route('guru.course-detail.destroyJoinStudent', [$kelas->id, $siswa->id]) }}"
+                                                <form
+                                                    action="{{ route('guru.course-detail.destroyJoinStudent', [$kelas->id, $siswa->id]) }}"
                                                     method="POST">
                                                     @csrf
                                                     <input type="hidden" name="id" value="{{ $siswa->id }}">
                                                     <button type="submit" class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Apakah kamu yakin ingin menghapus siswa dari kelas ini?')"><i
                                                             class="bi bi-trash"></i>Keluarkan</button>
-                                                </form>                                            </td>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -629,6 +637,11 @@
                                     <label for="input5" class="form-label mt-2">Nama Kelas </label>
                                     <input type="text" class="form-control" id="input5" name="kelas"
                                         value="{{ $kelas->kelas }}">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="input5" class="form-label mt-2">Token </label>
+                                    <input type="text" class="form-control" id="input5" name="kelas"
+                                        value="{{ $kelas->token }}" disabled>
                                 </div>
                                 <div class="mb-2">
                                     <label for="input5" class="form-label">Logo Kelas</label>

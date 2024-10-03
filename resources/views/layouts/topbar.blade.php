@@ -449,7 +449,7 @@
                      </div>
                  </div>
              </li> --}}
-             <li class="nav-item dropdown">
+             {{-- <li class="nav-item dropdown">
                  <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative"
                      data-bs-auto-close="outside" data-bs-toggle="dropdown" href="javascript:;"><i
                          class="material-icons-outlined">notifications</i>
@@ -597,7 +597,7 @@
                          </div>
                      </div>
                  </div>
-             </li>
+             </li> --}}
              {{-- <li class="nav-item d-md-flex d-none">
           <a class="nav-link position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart"><i
               class="material-icons-outlined">shopping_cart</i>
@@ -607,13 +607,13 @@
              <li class="nav-item dropdown">
                  <a href="javascript:void(0);" class="dropdown-toggle dropdown-toggle-nocaret"
                      data-bs-toggle="dropdown">
-                     <img src="{{asset('build/images/aku.png')}}" class="rounded-circle p-1 border" width="45"
+                     <img src="{{ asset('assets/images/avatar1.png') }}" class="rounded-circle p-1 border" width="45"
                          height="45" alt="">
                  </a>
                  <div class="dropdown-menu dropdown-user dropdown-menu-end shadow">
                      <a class="dropdown-item  gap-2 py-2" href="javascript:;">
                          <div class="text-center">
-                             <img src="{{asset('build/images/aku.png')}}" class="rounded-circle p-1 shadow mb-3"
+                             <img src="{{ asset('build/images/aku.png') }}" class="rounded-circle p-1 shadow mb-3"
                                  width="90" height="90" alt="">
                              <h5 class="user-name mb-0 fw-bold">Hello, {{ Auth::user()->name }}</h5>
                          </div>

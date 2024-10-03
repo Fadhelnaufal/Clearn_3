@@ -220,7 +220,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h4>
-                        Continue class
+                        Lanjutkan Kelas
                     </h4>
                 </div>
             </div>

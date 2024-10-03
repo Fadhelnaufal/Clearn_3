@@ -3,7 +3,9 @@
     Widgets Data
 @endsection
 @section('content')
-    <x-page-title title="Course" subtitle="Kelas" />
+    <div class="row mb-4">
+        <x-page-title title="Course" subtitle="Kelas" />
+    </div>
     <div class="col-12 col-xl-6">
         <!-- Button trigger modal -->
         <button type="button" class="btn ripple btn-primary px-4 mb-4" data-bs-toggle="modal"
@@ -41,19 +43,19 @@
         </div>
     </div>
     <div class="row g-0">
-        @foreach ($kelas as $course)
-            <div class="col-md-4">
+        <div class="col-md-4">
+            @foreach ($kelas as $course)
                 <div class="card me-3">
                     <div class="row">
                         <div class="col-md-4 border-end">
                             <div class="p-3">
-                                <img src="{{ asset('assets/images/logos/' . $course->logo)}}" class="rounded-start" width="100%"
-                                    alt="...">
+                                <img src="{{ asset('assets/images/logos/' . $course->logo) }}" class="rounded-start"
+                                    width="100%" alt="...">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">{{ $course->mapel }}</h5>
+                                <h6 class="card-title">{{ $course->mapel }}</h6>
                                 <p class="card-title">{{ $course->kelas }}</p>
                                 <a href="{{ route('siswa.course-detail.show', $course->id) }}" class="btn btn-primary">View
                                     Details</a>
@@ -61,8 +63,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
+        <div class="col-md-8 d-flex justify-content-center">
+            <img src="{{ asset('assets/images/image-course.png') }}" alt="" class="img-fluid"
+                style="width: 50%; height: auto;">
+        </div>
+
+
     </div>
     <div class="col-md-8">
 

@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('course_id');
+            $table->foreign('course_id')
+            ->references('id')
+            ->on('kelas')
+            ->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('task_id');
             $table->string('task_type');
