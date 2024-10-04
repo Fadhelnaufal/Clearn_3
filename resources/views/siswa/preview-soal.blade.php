@@ -7,23 +7,57 @@
 @section('content')
     <div class="container d-flex align-items-center mb-5">
         <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
-        <x-page-title title="Materi" subtitle="Tambah Soal" />
+        <x-page-title title="Materi" subtitle="Preview Jawaban" />
     </div>
 
     <div class="container">
-        <div class="card">
-            <div class="row">
-                <!-- First column with image -->
-                <div class="col-md d-flex align-items-center justify-content-center">
-                    <img src="{{ asset('assets/images/soal.png') }}" width="80%">
-                </div>
-                <!-- Second column with content -->
-                <div class="col-md d-flex align-items-center">
-                    <div>
-                        <h3 class="mb-4">Judul Soal </h3>
-                        <p>Deskripsi tentang soal Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit sunt ipsum asperiores? Quo, labore at quisquam fugiat temporibus sequi nesciunt voluptatum aut reprehenderit inventore earum hic quasi, vel laborum sunt?</p>
-                        <button type="button" class="btn btn-primary">Kerjakan Soal</button>
+        <div class="row">
+            <div class="col-md-8">
+                @if ($pertanyaans->isNotEmpty())
+                    @foreach ($pertanyaans as $pertanyaan)
+                        <div class="card pt-2 px-2">
+                            <div class="ms-3">
+                                <strong>
+                                    <p class="mt-2">{{ $loop->iteration }}. {{ $pertanyaan->pertanyaan->pertanyaan }}</p>
+                                </strong>
+                            </div>
+                            @if ($pertanyaan->pertanyaan->gambar)
+                                <div class="ms-5 mb-2">
+                                    <img src="{{ asset('assets/images/soal/' . $pertanyaan->pertanyaan->gambar) }}"
+                                        alt="gambar" style="max-width: 40%; height: auto;">
+                                </div>
+                            @endif
+                            <div class="ms-5">
+                                @if ($pertanyaan->pertanyaan->opsiPertanyaan->isNotEmpty())
+                                    @foreach ($pertanyaan->pertanyaan->opsiPertanyaan as $index => $jawaban)
+                                        <p>
+                                            {{ chr(65 + $loop->index) }}. {{ $jawaban->opsi }}
+                                            @if ($jawaban->is_correct)
+                                                <span class="text-success">&#10004;</span>
+                                            @else
+                                                <span class="text-danger">&#10008;</span>
+                                            @endif
+                                        </p>
+                                    @endforeach
+                                @else
+                                    <p>No answer options available</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="card pt-2 px-2">
+                        <p class="mt-2">Belum ada Soal ditambahkan</p>
                     </div>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div class="card py-2 px-2 text-center">
+                    <h1>Preview</h1>
+                    <!-- Button trigger modal -->
+                    <p class="fs-4">Nilai: 80 / 100</p>
+                    <p>Jawaban benar: 4</p>
+                    <button type="button" class="btn btn-primary">Kembali</button>
                 </div>
             </div>
         </div>

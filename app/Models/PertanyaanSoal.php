@@ -19,4 +19,9 @@ class PertanyaanSoal extends Model
     {
         return $this->hasMany(OpsiPertanyaan::class, 'pertanyaan_id');
     }
+
+    public function soals()
+    {
+        return $this->belongsToMany(Soal::class, 'soal_pertanyaans', 'pertanyaan_id', 'soal_id');
+    }
 }

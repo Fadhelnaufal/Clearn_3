@@ -35,10 +35,9 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('guru.result.case.showSubmission', ['caseStudyId' => $caseStudyId, 'id' => $submissions->student_id]) }}"
-                                        class="btn btn-primary btn-sm me-2"><i class="bi bi-eye me-1"></i>Lihat</a>
-                                    {{-- <button href="" class="btn btn-success btn-sm"><i
-                                            class="bi bi-pencil-square me-1"></i>Nilai</button> --}}
-                                </td>
+                                        class="btn btn-primary btn-sm me-2">
+                                        <i class="bi bi-eye me-1"></i>Lihat
+                                    </a>                                </td>
                             </tr>
                         @endforeach
                         <!-- Add more rows as needed -->

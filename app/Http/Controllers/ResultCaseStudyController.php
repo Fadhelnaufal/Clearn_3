@@ -180,7 +180,7 @@ class ResultCaseStudyController extends Controller
             ]);
 
             // Redirect back with success message
-            return redirect()->back()->with('success', 'Nilai case study updated successfully.');
+            return redirect()->route('guru.hasil-studi-kasus')->with('success', 'Nilai case study updated successfully');
         }
 
         // If no record is found, return with an error message
@@ -196,8 +196,9 @@ class ResultCaseStudyController extends Controller
         //
     }
 
-    public function showSubmission(string $id)
+    public function showSubmission(string $caseStudyId, $id)
     {
+        // dd($caseStudyId,$id);
         $submission = StudiesSubmission::with(['caseStudy', 'user_tasks', 'nilai_case_studies']) // Add user_tasks if needed
         ->where('student_id', $id)
         ->firstOrFail();

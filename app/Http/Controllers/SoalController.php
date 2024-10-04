@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JawabanSoalSiswa;
 use App\Models\Kelas;
 use App\Models\Materi;
 use App\Models\OpsiPertanyaan;
@@ -9,6 +10,8 @@ use App\Models\PertanyaanSoal;
 use App\Models\Soal;
 use App\Models\SoalPertanyaan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SoalController extends Controller
@@ -214,4 +217,86 @@ class SoalController extends Controller
         return redirect()->back()->with('success', 'Soal berhasil ditambahkan');
     }
 
+    public function showSoal($materi_id, $soalId)
+    {
+        $materi = Materi::with('soal')->findOrFail($materi_id);
+        $soal = Soal::with('pertanyaanSoals')->find($soalId);
+        $pertanyaans = SoalPertanyaan::where('soal_id', $soalId)->get();
+        return view('siswa.soal', compact('soal', 'materi', 'pertanyaans'));
+    }
+
+    public function storeJawaban(Request $request)
+    {
+        // Debug data yang diterima untuk memastikan input benar
+        // dd($request->all());
+
+        // Validasi request
+        $request->validate([
+            'soal_id' => 'required|exists:soals,id',
+            'jawaban' => 'required|json', // Memastikan jawaban dalam format JSON
+            'pertanyaan_id' => 'required|array',
+            'pertanyaan_id.*' => 'exists:pertanyaan_soals,id', // Memastikan setiap ID pertanyaan valid
+        ]);
+
+        // Dekode jawaban menjadi array
+        $jawabanArray = json_decode($request->jawaban, true);
+
+        // dd($jawabanArray);
+
+        if (!$jawabanArray || !is_array($jawabanArray)) {
+            return back()->withErrors(['jawaban' => 'Jawaban tidak valid.']);
+        }
+
+        // Dapatkan opsi terkait dari database
+        $opsiIds = array_column($jawabanArray, 'opsi_id');
+        $opsiDetails = OpsiPertanyaan::whereIn('id', $opsiIds)->get()->keyBy('id');
+
+        // Mulai transaksi untuk memastikan semua jawaban disimpan dengan benar
+        DB::beginTransaction();
+
+        try {
+            foreach ($jawabanArray as $jawabanDetail) {
+                // Pastikan opsi yang dipilih valid
+                if (!isset($opsiDetails[$jawabanDetail['opsi_id']])) {
+                    throw new \Exception('Opsi yang dipilih tidak valid.');
+                }
+
+                // Ambil detail opsi
+                $opsi = $opsiDetails[$jawabanDetail['opsi_id']];
+
+                $isCorrect = $opsi->is_correct;
+
+                // Simpan jawaban siswa ke database
+                JawabanSoalSiswa::create([
+                    'siswa_id' => $jawabanDetail['siswa_id'],
+                    'soal_id' => $request->soal_id,
+                    'pertanyaan_id' => $jawabanDetail['pertanyaan_id'],
+                    'opsi_id' => $jawabanDetail['opsi_id'],
+                    'is_correct' => $isCorrect, // Menyimpan status benar/salah dari opsi
+                ]);
+            }
+
+            // Komit transaksi
+            DB::commit();
+
+            // Redirect ke halaman hasil soal dengan pesan sukses
+            return redirect()->route('siswa.soal.hasil', ['materi_id' => $request->materi_id, 'soalId' => $request->soal_id])
+                            ->with('success', 'Jawaban berhasil disimpan!');
+        
+        } catch (\Exception $e) {
+            // Rollback transaksi jika ada error
+            DB::rollBack();
+            return back()->withErrors(['jawaban' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+        }
+    }
+
+    public function hasilSoal($soalId, $materi_id)
+    {
+        $materi = Materi::with('soal')->findOrFail($materi_id);
+        $soal = Soal::findOrFail($soalId);
+        $pertanyaans = SoalPertanyaan::where('soal_id', $soalId)->get();
+        $jawabans = PertanyaanSoal::with('opsiPertanyaan')->whereIn('id', $pertanyaans->pluck('pertanyaan_id'))->get();
+        $jawabanSiswas = JawabanSoalSiswa::where('soal_id', $soalId)->get();
+        return view('siswa.preview-soal', compact('materi', 'soal', 'jawabanSiswas', 'pertanyaans', 'jawabans'));
+    }
 }

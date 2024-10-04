@@ -102,7 +102,7 @@ Route::get('/token_quiz', function () {
  });
 
 // Siswa Routes
-Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
+Route::prefix('siswa')->middleware(['role:siswa', 'auth', 'check_session'])->group(function () {
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
     Route::get('/compiler', [SiswaController::class, 'compiler'])->name('/siswa/compiler');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
@@ -126,6 +126,9 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
         'store' => 'siswa.case-submission.store',
         'update' => 'siswa.case-submission.update',
     ]);
+    Route::get('/kelas/materi/{materi_id}/soal/{soalId}/show', [SoalController::class, 'showSoal'])->name('siswa.soal.show.soal');
+    Route::post('/kelas/materi/{materi_id}/soal/{soalId}/store-jawaban', [SoalController::class, 'storeJawaban'])->name('siswa.soal.store.jawaban');
+    Route::get('/kelas/materi/{materi_id}/soal/{soalId}/hasil-soal', [SoalController::class, 'hasilSoal'])->name('siswa.soal.hasil');
     Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('siswa.sub-materi.show');
     Route::post('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/mark-as-read', [SubMateriController::class, 'markAsRead'])
@@ -135,7 +138,7 @@ Route::prefix('siswa')->middleware(['role:siswa'])->group(function () {
 });
 
 // Guru Routes
-Route::prefix('guru')->middleware(['role:guru'])->group(function () {
+Route::prefix('guru')->middleware(['role:guru', 'auth', 'check_session'])->group(function () {
     Route::get('/dashboard', [GuruController::class, 'index'])->name('guru.dashboard');
     Route::resource('/course', KelasController::class)->parameters([
         'course'=> 'id'
@@ -204,7 +207,7 @@ Route::prefix('guru')->middleware(['role:guru'])->group(function () {
 });
 
 // Admin Routes
-Route::prefix('admin')->middleware(['role:admin'])->group(function () {
+Route::prefix('admin')->middleware(['role:admin', 'auth', 'check_session'])->group(function () {
     Route::resource('/dashboard', AdminController::class)->names([
         'index' => 'admin.dashboard',
     ]);
