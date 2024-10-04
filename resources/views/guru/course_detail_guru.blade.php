@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <a href="{{ url('/guru/course') }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
         <x-page-title title="Course" subtitle=" {{ $kelas->mapel }}" />
     </div>
     <div class="row">
@@ -492,7 +492,7 @@
                                             <td>{{ $siswa->name }}</td>
                                             <td>{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
                                             <td>{{ $siswa->user_tasks->sum('points') }}</td>
-                                            <td>{{ $siswa->user_tasks->sum('points') }}</td>
+                                            <td>{{ $NilaiRataRata}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

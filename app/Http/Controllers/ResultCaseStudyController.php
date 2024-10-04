@@ -111,11 +111,12 @@ class ResultCaseStudyController extends Controller
         // Create or update the UserTask record
         $userTask = UserTask::updateOrCreate(
             [
+                'kelas_id' => $submission->caseStudy->kelas_id, // Match based on kelas_id
                 'student_id' => $submission->student_id, // Match based on student_id
                 'task_id' => $caseStudyId, // Match based on task_id (case study ID)
+                'task_type' => 'case_study', // Specify the task type if it's being set
             ],
             [
-                'task_type' => 'case_study', // Specify the task type if it's being set
                 'is_completed' => true, // Mark it as completed
                 'completed_at' => now(), // Set the completion time
                 'points' => $averagePoints, // Store the average points

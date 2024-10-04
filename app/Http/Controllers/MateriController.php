@@ -106,10 +106,26 @@ class MateriController extends Controller
         ->where('task_type', 'soal')
         ->where('is_completed', true)
         ->count();
-
     // Sum up completed challenges
     $completedChallenges = $completedSubMateris + $completedCaseStudies + $completedSoalTests;
+    $totalNilaiCaseStudies = $user->user_tasks()
+        ->where('task_type', 'case_study')
+        ->where('is_completed', true)
+        ->sum('points');
+    
+    $totalNilaiSoalTests = $user->user_tasks()
+        ->where('task_type', 'soal')
+        ->where('is_completed', true)
+        ->sum('points');
 
+    // Calculate total score and average score
+    $jumlahTotalNilai = $totalNilaiCaseStudies + $totalNilaiSoalTests;
+    $jumlahNilai = $totalCaseStudies + $totalSoalTests;
+    if ($jumlahNilai > 0) {
+        $NilaiRataRata = $jumlahTotalNilai / $jumlahNilai;
+    } else {
+        $NilaiRataRata = 0; // Handle the case where there are no tasks
+    }
     $userTasks = UserTask::where('student_id', Auth::id())
     ->whereIn('task_type', ['sub_materi', 'case_study', 'soal']) // Use whereIn for multiple values
     ->get()
@@ -130,7 +146,8 @@ class MateriController extends Controller
         'totalSubMateris', 'completedSubMateris', 
         'totalCaseStudies', 'completedCaseStudies', 
         'totalSoalTests', 'completedSoalTests',
-        'userTasks'
+        'userTasks', 'NilaiRataRata', 'totalNilaiCaseStudies', 'totalNilaiSoalTests',
+        'jumlahTotalNilai', 'jumlahNilai'
     ));
 }
 

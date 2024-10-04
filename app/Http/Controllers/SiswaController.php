@@ -20,38 +20,79 @@ class SiswaController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $questions = Question::all();
-        $kelas = Auth::user()->kelas;
-        $user = Auth::user();
-        $userType = $user->user_type_id ? UserType::find($user->user_type_id) : null;
-        $totalPoints = $user->user_tasks->sum('points');
+{
+    $questions = Question::all();
+    $user = Auth::user()->load('user_tasks');
+    $userType = $user->user_type_id ? UserType::find($user->user_type_id) : null;
+    $totalPoints = $user->user_tasks->sum('points');
+    $kelasCollection = $user->kelas; // Get the collection of classes for the authenticated user
 
-        // Fetch all materi related to the user's classes
-        $materisCollection = $kelas->flatMap(function ($kelas) {
-            return $kelas->materi; // Get all materi for each class
-        });
+    // Gather all materi from all classes
+    $materis = $kelasCollection->flatMap(function ($kelas) use ($user) {
+        return $kelas->materi()->with(['subMateris' => function($query) use ($user) {
+            $query->where('user_type_id', $user->user_type_id); // Filter for siswa
+        }])->get(); // Get materi for each class
+    });
 
-        // Count completed materi
-        $completedMaterisCount = $user->user_tasks()
-        ->where('is_completed', true)
-        ->whereHas('materi', function ($query) use ($user) {
-            $query->whereExists(function ($subQuery) use ($user) {
-                $subQuery->selectRaw(1)
-                    ->from('user_tasks')
-                    ->whereColumn('user_tasks.task_id', 'materis.id') // Correct the table name to 'materis'
-                    ->where('user_tasks.student_id', $user->id)
-                    ->where('user_tasks.is_completed', true);
-            });
-        })
-        ->count();
-        
-        // Determine whether the user has a user_type_id
-        $hasUserType = !is_null($user->user_type_id);
+    // Initialize total subMateris and completed tasks counters
+    $totalSubMateris = 0;
+    $completedSubMateris = 0;
 
-        // Pass the necessary variables to the view
-        return view('siswa.dashboard', compact('questions', 'kelas', 'hasUserType', 'userType', 'totalPoints', 'completedMaterisCount', 'materisCollection'));
+    // Prepare completion status for all subMateris and count them
+    foreach ($materis as $materi) {
+        $subMateris = $materi->subMateris;
+
+        // Count the total subMateris
+        $totalSubMateris += $subMateris->count();
+
+        // Check completion status for each subMateri
+        foreach ($subMateris as $subMateri) {
+            // Check if the task type for the subMateri is completed
+            $subMateri->is_completed = $user->user_tasks()->where('task_type', 'sub_materi')->where('task_id', $subMateri->id)->exists();
+            if ($subMateri->is_completed) {
+                $completedSubMateris++;
+            }
+        }
     }
+
+    // Retrieve case studies and soal tests related to all classes
+    $caseStudies = $kelasCollection->flatMap(function ($kelas) {
+        return $kelas->case_studies; // Collect all case studies from each class
+    });
+
+    $soalTests = $kelasCollection->flatMap(function ($kelas) {
+        return $kelas->materi()->with('soal')->get(); // Collect all soal tests from each class
+    });
+
+    // Calculate total challenges (subMateris, case studies, soal tests)
+    $totalCaseStudies = $caseStudies->count();
+    $totalSoalTests = $soalTests->pluck('soal')->flatten()->count();
+    $totalChallenges = $totalSubMateris + $totalCaseStudies + $totalSoalTests;
+
+    // Count completed tasks for case studies and soal tests based on task_type
+    $completedCaseStudies = $user->user_tasks()
+        ->where('task_type', 'case_study')
+        ->where('is_completed', true)
+        ->count();
+
+    $completedSoalTests = $user->user_tasks()
+        ->where('task_type', 'soal')
+        ->where('is_completed', true)
+        ->count();
+
+    // Sum up completed challenges
+    $completedChallenges = $completedSubMateris + $completedCaseStudies + $completedSoalTests;
+        
+    // Determine whether the user has a user_type_id
+    $hasUserType = !is_null($user->user_type_id);
+
+    // Pass the necessary variables to the view
+    return view('siswa.dashboard', compact(
+        'user', 'materis', 'questions', 'kelasCollection', 'hasUserType', 
+        'userType', 'totalPoints', 'totalChallenges', 'completedChallenges'
+    ));
+}
+
 
     /**
      * Show the form for creating a new resource.

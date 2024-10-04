@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <a href="{{ url()->previous() }}" class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <a href="{{ url('/siswa/course-detail/'.$materi->kelas_id) }}" class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></a>
         <x-page-title title="Materi" subtitle="Preview Soal" />
     </div>
 

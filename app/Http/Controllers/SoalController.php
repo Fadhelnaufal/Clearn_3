@@ -245,6 +245,7 @@ class SoalController extends Controller
 
         // Validasi request
         $request->validate([
+            'kelas_id' => 'required|exists:kelas,id',
             'soal_id' => 'required|exists:soals,id',
             'jawaban' => 'required|json', // Memastikan jawaban dalam format JSON
             'pertanyaan_id' => 'required|array',
@@ -302,6 +303,7 @@ class SoalController extends Controller
             $user = Auth::user();
             $userTask = \App\Models\UserTask::firstOrCreate(
                 [
+                    'kelas_id' => $request->kelas_id,
                     'student_id' => $user->id,
                     'task_id' => $request->soal_id, // Set the task ID from case study ID or subMateri
                     'task_type' => 'soal', // Ensure this matches your task type logic

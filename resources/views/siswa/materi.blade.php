@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <a href="{{ url('/siswa/course-detail/'.$kelas->id) }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
         <x-page-title title="{{ $subMateri->materi->judul }}" subtitle="Materi{{ $subMateri->judul }}" />
     </div>
     <div class="container">
@@ -15,17 +15,16 @@
                     <h1 class="text-center">{{ $subMateri->judul }}</h1>
                     <p class="mx-2 my-2 text-justify">{!! $subMateri->isi !!}</p>
                     <div class="d-grid ">
+                    <input type="text" hidden id="kelas_id" name="kelas_id" value="{{ $kelas->id }}">
                         @if ($task === null)
                             <button id="completed_task" class="btn btn-primary" type="button"
                                 data-submateri-id="{{ $subMateri->id }}" data-materi-id="{{ $materi->id }}"
-                                data-kelas-id="{{ $kelas->id }}"
                                 data-url="{{ route('siswa.sub-materi.mark-as-read', ['id' => $kelas->id, 'materiId' => $materi->id, 'subMateriId' => $subMateri->id]) }}">
                                 Saya Telah Menyelesaikan Materi
                             </button>
                         @elseif (!$task->is_completed)
                             <button id="completed_task" class="btn btn-primary" type="button"
                                 data-submateri-id="{{ $subMateri->id }}" data-materi-id="{{ $materi->id }}"
-                                data-kelas-id="{{ $kelas->id }}"
                                 data-url="{{ route('siswa.sub-materi.mark-as-read', ['id' => $kelas->id, 'materiId' => $materi->id, 'subMateriId' => $subMateri->id]) }}">
                                 Saya Telah Menyelesaikan Materi
                             </button>
@@ -75,6 +74,8 @@
             $(document).ready(function() {
                 $('#completed_task').on('click', function() {
                     var url = $(this).data('url'); // Get the URL from the button
+                    var kelasId = $('#kelas_id').val(); // Get the kelas ID from the button
+                    console.log('Kelas ID:', kelasId);
 
                     // SweetAlert confirmation
                     Swal.fire({
@@ -92,7 +93,8 @@
                                 url: url,
                                 type: 'POST',
                                 data: {
-                                    _token: '{{ csrf_token() }}', // Laravel CSRF token
+                                    _token: '{{ csrf_token() }}',
+                                    kelas_id: kelasId // Laravel CSRF token
                                 },
                                 success: function(response) {
                                     if (response.success) {

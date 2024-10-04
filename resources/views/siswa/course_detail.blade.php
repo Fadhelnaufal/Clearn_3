@@ -219,6 +219,7 @@
                                         <tr>
                                             <th scope="col">Peringkat</th>
                                             <th scope="col">Nama</th>
+                                            <th scope="col">Tipe</th>
                                             <th scope="col">Perolehan EXP</th>
                                         </tr>
                                     </thead>
@@ -232,8 +233,9 @@
                                         @foreach ($sortedSiswas as $siswa)
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
-                                            <td>{{ $siswa->name }}</td>
-                                            <td class="d-flex justify-content-center align-items-center">
+                                            <td scope="row">{{ $siswa->name }}</td>
+                                            <td scope="row">{{ $siswa->userType->name }}</td>
+                                            <td scope="row" class="d-flex justify-content-center align-items-center">
                                                 <span>{{ $siswa->user_tasks->sum('points') }}</span>
                                                 <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 25px; height: 25px; margin-left: 10px;">
                                             </td>

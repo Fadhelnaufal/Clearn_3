@@ -73,8 +73,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Course</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i
-                                        class='bx bx-right-arrow-alt'></i></button>
+                                <a href="{{ url('guru/course') }}" class="btn btn-primary w-100 raised">Mulai <i
+                                        class='bx bx-right-arrow-alt'></i></a>
                             </div>
                         </div>
                     </div>
@@ -92,8 +92,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-4">Live Code</h5>
-                                <button class="btn btn-primary w-100 raised">Mulai <i
-                                        class='bx bx-right-arrow-alt'></i></button>
+                                <a href="{{ url('guru/compiler') }}" class="btn btn-primary w-100 raised">Mulai <i
+                                        class='bx bx-right-arrow-alt'></i></a>
                             </div>
                         </div>
                     </div>

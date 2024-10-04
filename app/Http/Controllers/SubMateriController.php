@@ -210,11 +210,20 @@ class SubMateriController extends Controller
     public function markAsRead(Request $request, $kelasId, $materiId, $subMateriId)
 {
     $user = Auth::user();
-
+    $kelasId = $request->input('kelas_id');
+    \Log::info('Kelas ID: ' . $kelasId);
+    // dd($kelasId);
     // Find or create the user task
+    // Validasi kelas_id
+    try {
+        $kelas = Kelas::findOrFail($kelasId);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json(['error' => 'Kelas tidak ditemukan!'], 404);
+    }
     try {
         $userTask = UserTask::firstOrCreate(
             [
+                'kelas_id' => $kelasId,
                 'student_id' => $user->id,
                 'task_id' => $subMateriId,
                 'task_type' => 'sub_materi',

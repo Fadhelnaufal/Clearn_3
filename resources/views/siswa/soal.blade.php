@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <a href="{{ url('/siswa/kelas/materi/'.$materi->id.'/soal/'.$soal->id.'/preview') }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
         <x-page-title title="Materi" subtitle="Kerjakan Soal" />
     </div>
 
@@ -30,6 +30,7 @@
                                 <div>
                                     <h3 class="mb-4">{{ $pertanyaan->pertanyaan->pertanyaan }}</h3>
                                     <!-- Input tersembunyi untuk pertanyaan_id -->
+                                    <input type="hidden" name="kelas_id" value="{{ $materi->kelas->id }}">
                                     <input type="hidden" name="pertanyaan_id[]" value="{{ $pertanyaan->pertanyaan->id }}">
                                     <div class="d-grid gap-2 me-2">
                                         @foreach ($pertanyaan->pertanyaan->opsiPertanyaan as $opsi)
@@ -88,6 +89,7 @@
                 if (existingJawabanIndex === -1) {
                     // If not exist, push a new answer object
                     jawaban.push({
+                        kelas_id: '{{ $materi->kelas->kelas_id }}',
                         soal_id: '{{ $soal->id }}',
                         opsi_id: opsiId,
                         pertanyaan_id: pertanyaanId,

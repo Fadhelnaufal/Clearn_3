@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <a href="{{ url()->previous() }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <a href="{{ url('/guru/kelas/materi/'.$kelas->id) }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
         <x-page-title title="{{ $subMateri->materi->judul }}" subtitle="Materi {{ $subMateri->userType->name }}" />
     </div>
     <div class="container">
