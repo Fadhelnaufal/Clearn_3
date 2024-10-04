@@ -10,9 +10,6 @@
     <div class="row mb-4 mt-2">
         <x-page-title title="Dashboard" subtitle="Dashboard {{ ucfirst($role) }}" />
     </div>
-
-
-
     <div class="row">
         <div class="col-xxl-8   align-items-stretch">
             <div class="card w-100 overflow-hidden rounded-4">
