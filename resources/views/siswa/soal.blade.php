@@ -88,6 +88,7 @@
                 if (existingJawabanIndex === -1) {
                     // If not exist, push a new answer object
                     jawaban.push({
+                        soal_id: '{{ $soal->id }}',
                         opsi_id: opsiId,
                         pertanyaan_id: pertanyaanId,
                         siswa_id: '{{ Auth::user()->id }}', // Getting siswa_id directly from the template
@@ -107,17 +108,24 @@
             });
         });
 
+        // Handle the "Next" button click
         nextBtn.addEventListener('click', (event) => {
             event.preventDefault(); // Prevent default form submission
 
+            // Get the current question ID
             const currentQuestionId = slides[currentSlide].querySelector('.pilih-opsi').getAttribute('data-pertanyaan-id');
 
             // Cek apakah ada jawaban untuk pertanyaan saat ini
             if (!jawaban.find(j => j.pertanyaan_id === currentQuestionId)) {
-                alert('Silakan pilih jawaban sebelum melanjutkan!');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Silakan pilih jawaban sebelum melanjutkan!',
+                });
                 return;
             }
 
+            // Sembunyikan slide saat ini dan tampilkan slide selanjutnya
             slides[currentSlide].style.display = 'none';
             currentSlide++;
 
@@ -126,6 +134,7 @@
                 restoreSelectedAnswer(slides[currentSlide].querySelector('.pilih-opsi').getAttribute('data-pertanyaan-id'));
             }
 
+            // Jika berada di slide terakhir, sembunyikan tombol "Next" dan tampilkan tombol submit
             if (currentSlide === slides.length - 1) {
                 nextBtn.style.display = 'none';
                 submitBtn.style.display = 'inline-block';

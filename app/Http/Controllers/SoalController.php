@@ -11,6 +11,7 @@ use App\Models\Soal;
 use App\Models\SoalPertanyaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SoalController extends Controller
@@ -226,43 +227,67 @@ class SoalController extends Controller
 
     public function storeJawaban(Request $request)
     {
-        // Debug the request to see the incoming data
-        dd($request->all());
+        // Debug data yang diterima untuk memastikan input benar
+        // dd($request->all());
 
-        // Validasi data
-    $request->validate([
-        'soal_id' => 'required|exists:soals,id',
-        'jawaban' => 'required|json', // Memastikan jawaban adalah string JSON
-    ]);
-
-    // Dekode jawaban menjadi array
-    $jawabanArray = json_decode($request->jawaban, true);
-
-    if (!$jawabanArray || !is_array($jawabanArray)) {
-        return back()->withErrors(['jawaban' => 'Jawaban tidak valid.']);
-    }
-
-    // Loop untuk setiap jawaban
-    $opsiIds = array_column($jawabanArray, 'opsi_id');
-    $opsiDetails = OpsiPertanyaan::whereIn('id', $opsiIds)->get()->keyBy('id');
-
-    foreach ($jawabanArray as $jawabanDetail) {
-        if (!isset($opsiDetails[$jawabanDetail['opsi_id']])) {
-            return back()->withErrors(['jawaban' => 'Opsi yang dipilih tidak valid.']);
-        }
-        $opsi = $opsiDetails[$jawabanDetail['opsi_id']];
-        JawabanSoalSiswa::create([
-            'siswa_id' => $jawabanDetail['siswa_id'],
-            'soal_id' => $request->soal_id,
-            'pertanyaan_id' => $jawabanDetail['pertanyaan_id'],
-            'opsi_id' => $jawabanDetail['opsi_id'],
-            'is_correct' => $opsi->is_correct,
+        // Validasi request
+        $request->validate([
+            'soal_id' => 'required|exists:soals,id',
+            'jawaban' => 'required|json', // Memastikan jawaban dalam format JSON
+            'pertanyaan_id' => 'required|array',
+            'pertanyaan_id.*' => 'exists:pertanyaan_soals,id', // Memastikan setiap ID pertanyaan valid
         ]);
-    }
 
-    return redirect()->route('siswa.soal.hasil', ['materi_id' => $request->materi_id, 'soalId' => $request->soal_id])
-                 ->with('success', 'Jawaban berhasil disimpan!');
+        // Dekode jawaban menjadi array
+        $jawabanArray = json_decode($request->jawaban, true);
 
+        // dd($jawabanArray);
+
+        if (!$jawabanArray || !is_array($jawabanArray)) {
+            return back()->withErrors(['jawaban' => 'Jawaban tidak valid.']);
+        }
+
+        // Dapatkan opsi terkait dari database
+        $opsiIds = array_column($jawabanArray, 'opsi_id');
+        $opsiDetails = OpsiPertanyaan::whereIn('id', $opsiIds)->get()->keyBy('id');
+
+        // Mulai transaksi untuk memastikan semua jawaban disimpan dengan benar
+        DB::beginTransaction();
+
+        try {
+            foreach ($jawabanArray as $jawabanDetail) {
+                // Pastikan opsi yang dipilih valid
+                if (!isset($opsiDetails[$jawabanDetail['opsi_id']])) {
+                    throw new \Exception('Opsi yang dipilih tidak valid.');
+                }
+
+                // Ambil detail opsi
+                $opsi = $opsiDetails[$jawabanDetail['opsi_id']];
+
+                $isCorrect = $opsi->is_correct;
+
+                // Simpan jawaban siswa ke database
+                JawabanSoalSiswa::create([
+                    'siswa_id' => $jawabanDetail['siswa_id'],
+                    'soal_id' => $request->soal_id,
+                    'pertanyaan_id' => $jawabanDetail['pertanyaan_id'],
+                    'opsi_id' => $jawabanDetail['opsi_id'],
+                    'is_correct' => $isCorrect, // Menyimpan status benar/salah dari opsi
+                ]);
+            }
+
+            // Komit transaksi
+            DB::commit();
+
+            // Redirect ke halaman hasil soal dengan pesan sukses
+            return redirect()->route('siswa.soal.hasil', ['materi_id' => $request->materi_id, 'soalId' => $request->soal_id])
+                            ->with('success', 'Jawaban berhasil disimpan!');
+        
+        } catch (\Exception $e) {
+            // Rollback transaksi jika ada error
+            DB::rollBack();
+            return back()->withErrors(['jawaban' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+        }
     }
 
     public function hasilSoal($soalId, $materi_id)
