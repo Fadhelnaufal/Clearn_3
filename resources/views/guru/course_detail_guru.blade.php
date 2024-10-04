@@ -487,6 +487,7 @@
                                     <tr>
                                         <th scope="col">Nomor</th>
                                         <th scope="col">Nama</th>
+                                        <th scope="col">Tipe</th>
                                         <th scope="col">Exp</th>
                                         <th scope="col">Nilai</th>
                                     </tr>
@@ -502,6 +503,7 @@
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $siswa->name }}</td>
+                                            <td>{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
                                             <td>{{ $siswa->user_tasks->sum('points') }}</td>
                                             <td>{{ $siswa->user_tasks->sum('points') }}</td>
                                         </tr>

@@ -294,7 +294,9 @@ class SoalController extends Controller
     {
         $materi = Materi::with('soal')->findOrFail($materi_id);
         $soal = Soal::findOrFail($soalId);
+        $pertanyaans = SoalPertanyaan::where('soal_id', $soalId)->get();
+        $jawabans = PertanyaanSoal::with('opsiPertanyaan')->whereIn('id', $pertanyaans->pluck('pertanyaan_id'))->get();
         $jawabanSiswas = JawabanSoalSiswa::where('soal_id', $soalId)->get();
-        return view('siswa.preview-soal', compact('materi', 'soal', 'jawabanSiswas'));
+        return view('siswa.preview-soal', compact('materi', 'soal', 'jawabanSiswas', 'pertanyaans', 'jawabans'));
     }
 }
