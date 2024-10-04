@@ -42,49 +42,84 @@ class MateriController extends Controller
         return view('materi.create');
     }
     public function show($id)
-    {
-        // Retrieve the course details based on the ID
-        $kelas = Kelas::findOrFail($id); // Assuming you have a Kelas model
-        // $materi = Materi::get()->all();
-        $user = Auth::user()->load('user_tasks');
-        $totalPoints = $user->user_tasks->sum('points');
-        // dd($totalPoints);
-        // dd($totalPoints, $user->user_tasks);
-        if ($user->hasRole('siswa')) {
-            foreach ($kelas->materi as $materis) {
-                // Filter subMateris based on the user's user_type_id
-                $materis->subMateris = $materis->subMateris->where('user_type_id', $user->user_type_id);
-            }
-        }
+{
+    // Retrieve the course details based on the ID
+    $kelas = Kelas::findOrFail($id); 
+    $user = Auth::user()->load('user_tasks');
+    $totalPoints = $user->user_tasks->sum('points');
+
+    // Retrieve materis based on user role
+    if ($user->hasRole('siswa')) {
+        // For 'siswa', filter subMateris based on user_type_id
+        $materis = $kelas->materi()->with(['subMateris' => function($query) use ($user) {
+            $query->where('user_type_id', $user->user_type_id); // Filter for siswa
+        }])->get();
+    } else {
+        // For 'guru', retrieve all materis with all subMateris
         $materis = $kelas->materi()->with('subMateris')->get();
-        // Prepare completion status for subMateris
-        foreach ($materis as $materi) {
-            foreach ($materi->subMateris as $subMateri) {
-                $subMateri->is_completed = $user->user_tasks()->where('task_id', $subMateri->id)->exists();
+    }
+
+    // Initialize total subMateris and completed tasks counters
+    $totalSubMateris = 0;
+    $completedSubMateris = 0;
+
+    // Prepare completion status for all subMateris and count them
+    foreach ($materis as $materi) {
+        $subMateris = $materi->subMateris;
+
+        // Count the total subMateris
+        $totalSubMateris += $subMateris->count();
+
+        // Check completion status for each subMateri
+        foreach ($subMateris as $subMateri) {
+            // Check if the task type for the subMateri is completed
+            $subMateri->is_completed = $user->user_tasks()->where('task_type', 'sub_materi')->where('task_id', $subMateri->id)->exists();
+            if ($subMateri->is_completed) {
+                $completedSubMateris++;
             }
         }
-        $completedMaterisCount = $user->user_tasks()
+    }
+
+    // Retrieve case studies and soal tests related to the kelas
+    $case_studies = $kelas->case_studies()->get();
+    $soalTests = $kelas->materi()->with('soal')->get();
+
+    // Calculate total challenges (subMateris, case_studies, soalTests)
+    $totalCaseStudies = $case_studies->count();
+    $totalSoalTests = $soalTests->pluck('soal')->flatten()->count();
+    $totalChallenges = $totalSubMateris + $totalCaseStudies + $totalSoalTests;
+
+    // Count completed tasks for case studies and soal tests based on task_type
+    $completedCaseStudies = $user->user_tasks()
+        ->where('task_type', 'case_study')
         ->where('is_completed', true)
         ->count();
-        $subMateris = SubMateri::with('UserType')->get();
-        $case_studies = $kelas->case_studies()->get();
-        $soalTests = $kelas->materi()->with('soalTests')->get();
 
-        if ($materis === null) {
-            return abort(404, 'Materis not found');
-        }
+    $completedSoalTests = $user->user_tasks()
+        ->where('task_type', 'soal')
+        ->where('is_completed', true)
+        ->count();
 
-        $materi = $materis->first();
+    // Sum up completed challenges
+    $completedChallenges = $completedSubMateris + $completedCaseStudies + $completedSoalTests;
 
-        $siswas = $kelas->users()->whereHas('roles', function ($query) {
-            $query->where('role_id', 3); // Assuming role_id 2 is for 'siswa'
-        })->get();
+    // Retrieve all students in the class
+    $siswas = $kelas->users()->whereHas('roles', function ($query) {
+        $query->where('role_id', 3); // Assuming role_id 3 is for 'siswa'
+    })->get();
 
-        $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
+    // Determine which view to use based on the user's role
+    $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
 
-        return view($view, compact('user','siswas','kelas', 'materi', 'materis' , 'case_studies', 'soalTests', 'subMateris', 'totalPoints', 'completedMaterisCount'));
-
-    }
+    return view($view, compact(
+        'user', 'siswas', 'kelas', 'materis', 
+        'case_studies', 'soalTests', 'totalPoints', 
+        'totalChallenges', 'completedChallenges', 
+        'totalSubMateris', 'completedSubMateris', 
+        'totalCaseStudies', 'completedCaseStudies', 
+        'totalSoalTests', 'completedSoalTests'
+    ));
+}
 
     /**
      * Store a newly created resource in storage.

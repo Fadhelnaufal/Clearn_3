@@ -135,40 +135,27 @@
                                                         @endif
                                                     </div>
                                                     <div class="">
-                                                        <button type="button" data-bs-toggle="modal"
-                                                            data-bs-target="#tambahsoalModal"
-                                                            class="btn btn-secondary md-2">
+                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#tambahsoalModal{{ $materi->id }}" class="btn btn-secondary md-2">
                                                             <i class="bi bi-plus-lg"></i> Tambah Soal
                                                         </button>
-                                                        <form id="add-soal-form-{{ $materi->id }}"
-                                                            action="{{ route('guru.soal.store', ['materi_id' => $materi->id]) }}"
-                                                            method="POST">
+                                                        
+                                                        <form id="add-soal-form-{{ $materi->id }}" action="{{ route('guru.soal.store', ['materi_id' => $materi->id]) }}" method="POST">
                                                             @csrf
-                                                            <div class="modal fade" id="tambahsoalModal" tabindex="-1"
-                                                                aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                                                data-bs-backdrop="static">
+                                                            
+                                                            <div class="modal fade" id="tambahsoalModal{{ $materi->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
                                                                 <div class="modal-dialog modal-dialog-centered">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title"
-                                                                                id="exampleModalLabel">Tambah Soal</h5>
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Tambah Soal</h5>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <label for="nama" class="form-label">Nama
-                                                                                Soal</label>
-                                                                            <input type="text" class="form-control"
-                                                                                id="nama{{ $materi->id }}"
-                                                                                name="nama" required>
-                                                                            <input type="hidden" name="materi_id"
-                                                                                value="{{ $materi->id }}">
+                                                                            <label for="nama" class="form-label">Nama Soal</label>
+                                                                            <input type="text" class="form-control" id="nama{{ $materi->id }}" name="nama" required>
+                                                                            <input type="hidden" name="materi_id" value="{{ $materi->id }}">
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button"
-                                                                                class="btn btn-secondary"
-                                                                                data-bs-dismiss="modal">Batal</button>
-                                                                            <button type="submit"
-                                                                                class="btn btn-primary">Tambah
-                                                                                Soal</button>
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                                            <button type="submit" class="btn btn-primary">Tambah Soal</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>

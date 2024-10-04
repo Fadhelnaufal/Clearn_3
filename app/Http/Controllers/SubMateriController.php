@@ -208,25 +208,26 @@ class SubMateriController extends Controller
     }
 
     public function markAsRead(Request $request, $kelasId, $materiId, $subMateriId)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        // Find or create the user task
+    // Find or create the user task
+    try {
         $userTask = UserTask::firstOrCreate(
             [
                 'student_id' => $user->id,
                 'task_id' => $subMateriId,
-                'task_type' => 'sub_materi', // Ensure this is consistent
-                'user_type_id' => $user->user_type_id, // Add user type id
+                'task_type' => 'sub_materi',
+                'user_type_id' => $user->user_type_id,
             ],
             [
-                'is_completed' => false, // Default to incomplete if creating a new record
+                'is_completed' => false,
                 'completed_at' => null,
                 'points' => 0,
             ]
         );
 
-        // Make sure the task is not already completed
+        // Check if the task is not already completed
         if (!$userTask->is_completed) {
             // Update the task to mark it as completed
             $userTask->update([
@@ -237,10 +238,12 @@ class SubMateriController extends Controller
         }
 
         return response()->json(['success' => 'Materi sudah dibaca']);
-        // return response()->json([
-        //     'success' => 'Materi sudah dibaca',
-        //     'redirect' => route('siswa.course-detail.show', ['kelasId' => $kelasId])
-        // ]);
+    } catch (\Exception $e) {
+        // Log the error message
+        \Log::error('Error marking subMateri as read: ' . $e->getMessage());
+        return response()->json(['error' => 'Terjadi kesalahan saat memproses permintaan!'], 500);
     }
+}
+
 
 }

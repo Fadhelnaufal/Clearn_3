@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <h2 class="mb-1">{{ $completedMaterisCount }}/{{ $materis->count()+ $case_studies->count() }}</h2>
+                                        <h2 class="mb-1">{{ $completedChallenges }}/{{ $totalChallenges }}</h2>
                                         <h6 class="mb-0">Tantangan</h6>
                                     </div>
                                 </div>

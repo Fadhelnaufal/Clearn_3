@@ -57,6 +57,7 @@
                 </div>
             </div>
         </div>
+    </div>
     @endsection
     @push('script')
         <!--plugins-->
@@ -95,7 +96,6 @@
                                 },
                                 success: function(response) {
                                     if (response.success) {
-                                        // Show success message with SweetAlert
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Materi berhasil diselesaikan!',
@@ -106,7 +106,6 @@
                                             window.location.href = "{{ url()->previous() }}"; // Redirect to the previous page
                                         });
                                     } else {
-                                        // Show error message with SweetAlert
                                         Swal.fire({
                                             icon: 'error',
                                             title: 'Gagal!',
