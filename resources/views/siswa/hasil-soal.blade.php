@@ -1,53 +1,67 @@
 @extends('layouts.app')
 
 @section('title')
-    Hasil Soal
+    Widgets Data
 @endsection
 
 @section('content')
     <div class="container d-flex align-items-center mb-5">
         <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
-        <x-page-title title="Materi" subtitle="Hasil Soal" />
+        <x-page-title title="Materi" subtitle="Preview Jawaban" />
     </div>
 
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <div class="card pt-2 px-2">
-                    <p class="mt-2">1. Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nulla aspernatur
-                        enim nam mollitia ipsam! Eos et, cupiditate necessitatibus repudiandae minus pariatur? Corporis,
-                        odio. Atque delectus minima voluptate aliquid necessitatibus.</p>
-                    <div class="ms-5">
-                        <p>A.wkwkwk<i class="bi bi-x ms-2 fs-6"></i></p>
-                        <p>B.ahaha<i class="bi bi-check ms-2 fs-6 text-success"></i></p>
-                        <p> c.jajaja<i class="bi bi-x ms-2 fs-6"></i></p>
-                        <p> D.lukuluku<i class="bi bi-x ms-2 fs-6"></i></p>
+                @if ($pertanyaans->isNotEmpty())
+                    @foreach ($pertanyaans as $pertanyaan)
+                        <div class="card pt-2 px-2">
+                            <div class="ms-3">
+                                <strong>
+                                    <p class="mt-2">{{ $loop->iteration }}. {{ $pertanyaan->pertanyaan->pertanyaan }}</p>
+                                </strong>
+                            </div>
+                            @if ($pertanyaan->pertanyaan->gambar)
+                                <div class="ms-5 mb-2">
+                                    <img src="{{ asset('assets/images/soal/' . $pertanyaan->pertanyaan->gambar) }}"
+                                        alt="gambar" style="max-width: 40%; height: auto;">
+                                </div>
+                            @endif
+                            <div class="ms-5">
+                                @if ($pertanyaan->pertanyaan->opsiPertanyaan->isNotEmpty())
+                                    @foreach ($pertanyaan->pertanyaan->opsiPertanyaan as $index => $jawaban)
+                                        <p style="{{ $jawaban->is_correct ? 'background-color: rgba(76, 175, 80, 0.5);' : '' }}">
+                                            {{ chr(65 + $loop->index) }}. {{ $jawaban->opsi }}
+                                            @if ($jawaban->is_correct && in_array($jawaban->id, $jawabanSiswaIds)) 
+                                                <span class="text-success">&#10004;</span>
+                                            @elseif (! $jawaban->is_correct && in_array($jawaban->id, $jawabanSiswaIds)) 
+                                                <span class="text-danger">&#10008;</span>
+                                            @endif
+                                        </p>
+                                    @endforeach
+                                @else
+                                    <p>No answer options available</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="card pt-2 px-2">
+                        <p class="mt-2">Belum ada Soal ditambahkan</p>
                     </div>
-                </div>
-                <div class="card pt-2 px-2">
-                    <p class="mt-2">2. Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nulla aspernatur
-                        enim nam mollitia ipsam! Eos et, cupiditate necessitatibus repudiandae minus pariatur? Corporis,
-                        odio. Atque delectus minima voluptate aliquid necessitatibus.</p>
-                    <div class="ms-5">
-                        <p>A.wkwkwk<i class="bi bi-check ms-2 fs-6 text-success"></i></p>
-                        <p>B.ahaha<i class="bi bi-x ms-2 fs-6 "></i></p>
-                        <p> c.jajaja<i class="bi bi-x ms-2 fs-6"></i></p>
-                        <p> D.lukuluku<i class="bi bi-x ms-2 fs-6"></i></p>
-                    </div>
-                </div>
+                @endif
             </div>
             <div class="col-md-4">
                 <div class="card py-2 px-2 text-center">
-                    <h3>Jawaban</h3>
-                    <h4>4/5</h4>
-                    <p>total EXP yang diperoleh adalah <b>80 EXP</b></p>
+                    <h1>Preview</h1>
+                    <!-- Button trigger modal -->
+                    <p class="fs-4">Nilai: {{ $userTask->points }} / 100</p>
+                    <p>Jawaban benar: {{ $jawabanBenars }}</p>
+                    <a href="{{ url('/siswa/course-detail/'. $soal->materi->kelas_id) }}" type="button" class="btn btn-primary">Kembali</a>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
-    <!-- Modal -->
 @endsection
 
 @push('script')

@@ -9,10 +9,13 @@ use App\Models\OpsiPertanyaan;
 use App\Models\PertanyaanSoal;
 use App\Models\Soal;
 use App\Models\SoalPertanyaan;
+use App\Models\UserTask;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+use function Symfony\Component\Clock\now;
 
 class SoalController extends Controller
 {
@@ -217,6 +220,16 @@ class SoalController extends Controller
         return redirect()->back()->with('success', 'Soal berhasil ditambahkan');
     }
 
+    public function previewSoal($materi_id, $soalId)
+    {
+        $siswaId = Auth::user()->id;
+        $userTask = UserTask::where('student_id', $siswaId)->where('task_id', $soalId)->where('task_type', 'soal')->first();
+        $materi = Materi::with('soal')->findOrFail($materi_id);
+        $soal = Soal::with('pertanyaanSoals')->find($soalId);
+        $pertanyaans = SoalPertanyaan::where('soal_id', $soalId)->get();
+        return view('siswa.preview-soal', compact('soal', 'materi', 'pertanyaans', 'userTask'));
+    }
+
     public function showSoal($materi_id, $soalId)
     {
         $materi = Materi::with('soal')->findOrFail($materi_id);
@@ -255,6 +268,8 @@ class SoalController extends Controller
         DB::beginTransaction();
 
         try {
+            $totalJawaban = 0;
+            $jumlahBenar = 0;
             foreach ($jawabanArray as $jawabanDetail) {
                 // Pastikan opsi yang dipilih valid
                 if (!isset($opsiDetails[$jawabanDetail['opsi_id']])) {
@@ -274,9 +289,31 @@ class SoalController extends Controller
                     'opsi_id' => $jawabanDetail['opsi_id'],
                     'is_correct' => $isCorrect, // Menyimpan status benar/salah dari opsi
                 ]);
+                // Hitung total jawaban dan jumlah jawaban benar
+                $totalJawaban++;
+                if ($isCorrect) {
+                    $jumlahBenar++;
+                }
             }
 
-            // Komit transaksi
+            // Hitung persentase jawaban benar
+            $persentaseBenar = ($totalJawaban > 0) ? ($jumlahBenar / $totalJawaban) * 100 : 0;
+
+            $user = Auth::user();
+            $userTask = \App\Models\UserTask::firstOrCreate(
+                [
+                    'student_id' => $user->id,
+                    'task_id' => $request->soal_id, // Set the task ID from case study ID or subMateri
+                    'task_type' => 'soal', // Ensure this matches your task type logic
+                    'user_type_id' => $user->user_type_id, // Add user type ID
+                ],
+                [
+                    'is_completed' => true, // Set task as completed after submission
+                    'completed_at' => now(), // Mark the completion time
+                    'points' => $persentaseBenar,
+                ]
+            );
+            $userTask->save();
             DB::commit();
 
             // Redirect ke halaman hasil soal dengan pesan sukses
@@ -292,11 +329,20 @@ class SoalController extends Controller
 
     public function hasilSoal($soalId, $materi_id)
     {
+        $siswaId = Auth::user()->id;
+        $userTask = UserTask::where('student_id', $siswaId)->where('task_id', $soalId)->where('task_type', 'soal')->first();
         $materi = Materi::with('soal')->findOrFail($materi_id);
+        $kelas = $materi->kelas->kelas_id;
         $soal = Soal::findOrFail($soalId);
         $pertanyaans = SoalPertanyaan::where('soal_id', $soalId)->get();
         $jawabans = PertanyaanSoal::with('opsiPertanyaan')->whereIn('id', $pertanyaans->pluck('pertanyaan_id'))->get();
-        $jawabanSiswas = JawabanSoalSiswa::where('soal_id', $soalId)->get();
-        return view('siswa.preview-soal', compact('materi', 'soal', 'jawabanSiswas', 'pertanyaans', 'jawabans'));
+        $jawabanSiswas = JawabanSoalSiswa::where('soal_id', $soalId)->where('siswa_id',$siswaId)->get();
+        $jawabanBenars = $jawabanSiswas->where('is_correct', 1)->count();
+        $jawabanSiswaIds = JawabanSoalSiswa::where('siswa_id', $siswaId)
+        ->where('soal_id', $soalId)
+        ->pluck('opsi_id')
+        ->toArray();
+
+        return view('siswa.hasil-soal', compact('kelas', 'materi', 'soal', 'jawabanSiswas', 'pertanyaans', 'jawabans', 'userTask', 'jawabanBenars', 'jawabanSiswaIds'));
     }
 }

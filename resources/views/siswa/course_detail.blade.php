@@ -107,7 +107,7 @@
                                                 @endforeach
                                                 @foreach ($materi->soal as $soas)
                                                     <div class="soal-test-item">
-                                                        <a href="{{route('siswa.soal.show.soal', ['materi_id' => $materi->id, 'soalId' => $soas->id])}}">
+                                                        <a href="{{route('siswa.soal.preview', ['materi_id' => $materi->id, 'soalId' => $soas->id])}}">
                                                             <strong>Soal Quiz: {{ $soas->nama }}</strong>
                                                         </a>
                                                     </div>

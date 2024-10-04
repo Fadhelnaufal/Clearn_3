@@ -129,6 +129,7 @@ Route::prefix('siswa')->middleware(['role:siswa', 'auth', 'check_session'])->gro
     Route::get('/kelas/materi/{materi_id}/soal/{soalId}/show', [SoalController::class, 'showSoal'])->name('siswa.soal.show.soal');
     Route::post('/kelas/materi/{materi_id}/soal/{soalId}/store-jawaban', [SoalController::class, 'storeJawaban'])->name('siswa.soal.store.jawaban');
     Route::get('/kelas/materi/{materi_id}/soal/{soalId}/hasil-soal', [SoalController::class, 'hasilSoal'])->name('siswa.soal.hasil');
+    Route::get('/kelas/materi/{materi_id}/soal/{soalId}/preview', [SoalController::class, 'previewSoal'])->name('siswa.soal.preview');
     Route::get('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/{userTypeId?}', [SubMateriController::class, 'showSubMateri'])
     ->name('siswa.sub-materi.show');
     Route::post('/kelas/{id}/materi/{materiId}/submateri/{subMateriId}/mark-as-read', [SubMateriController::class, 'markAsRead'])
