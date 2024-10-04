@@ -12,42 +12,47 @@
 
     <div class="container">
         <form action="{{ route('siswa.soal.store.jawaban', ['materi_id' => $materi->id, 'soalId' => $soal->id]) }}" method="POST" id="quiz-form">
-            @csrf
-            <input type="hidden" name="soal_id" value="{{ $soal->id }}">
-            @if($pertanyaans && $pertanyaans->isNotEmpty())
-                <div id="pertanyaan-container">
-                    @foreach ($pertanyaans as $index => $pertanyaan)
-                        <div class="card pertanyaan-slide" style="display: {{ $index == 0 ? 'block' : 'none' }};">
-                            <div class="row">
-                                <div class="col-md d-flex align-items-center justify-content-center">
-                                    <img src="{{ asset('assets/images/soal.png') }}" width="80%">
-                                </div>
-                                <div class="col-md d-flex align-items-center me-3">
-                                    <div>
-                                        <h3 class="mb-4">{{ $pertanyaan->pertanyaan->pertanyaan }}</h3>
-                                        <!-- Input tersembunyi untuk pertanyaan_id -->
-                                        <input type="hidden" name="pertanyaan_id[]" value="{{ $pertanyaan->id }}">
-                                        <div class="d-grid gap-2 me-2">
-                                            @foreach ($pertanyaan->pertanyaan->opsiPertanyaan as $opsi)
-                                                <button type="button" class="btn btn-outline-primary pilih-opsi" data-pertanyaan-id="{{ $pertanyaan->id }}" data-opso-id="{{ $opsi->id }}">
-                                                    {{ $opsi->opsi }}
-                                                </button>
-                                            @endforeach
-                                        </div>
+        @csrf
+        <input type="hidden" name="soal_id" value="{{ $soal->id }}">
+
+        <!-- Input hidden untuk menyimpan data jawaban dalam format JSON -->
+        <input type="hidden" name="jawaban" id="jawaban-input">
+
+        @if($pertanyaans && $pertanyaans->isNotEmpty())
+            <div id="pertanyaan-container">
+                @foreach ($pertanyaans as $index => $pertanyaan)
+                    <div class="card pertanyaan-slide" style="display: {{ $index == 0 ? 'block' : 'none' }};">
+                        <div class="row">
+                            <div class="col-md d-flex align-items-center justify-content-center">
+                                <img src="{{ asset('assets/images/soal.png') }}" width="80%">
+                            </div>
+                            <div class="col-md d-flex align-items-center me-3">
+                                <div>
+                                    <h3 class="mb-4">{{ $pertanyaan->pertanyaan->pertanyaan }}</h3>
+                                    <!-- Input tersembunyi untuk pertanyaan_id -->
+                                    <input type="hidden" name="pertanyaan_id[]" value="{{ $pertanyaan->pertanyaan->id }}">
+                                    <div class="d-grid gap-2 me-2">
+                                        @foreach ($pertanyaan->pertanyaan->opsiPertanyaan as $opsi)
+                                            <button type="button" name="opsi_id[]" value="{{ $opsi->id }}" class="btn btn-outline-primary pilih-opsi" data-pertanyaan-id="{{ $pertanyaan->pertanyaan->id }}" data-opso-id="{{ $opsi->id }}">
+                                                {{ $opsi->opsi }}
+                                            </button>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-                <div class="d-flex justify-content-end mt-4 gap-2">
-                    <button id="next-btn" class="btn btn-primary">Selanjutnya</button>
-                    <button id="submit-btn" class="btn btn-success" style="display: none;">Submit</button>
-                </div>
-            @else
-                <p>No questions available for this section.</p>
-            @endif
-        </form>
+                    </div>
+                @endforeach
+            </div>
+            <div class="d-flex justify-content-end mt-4 gap-2">
+                <button id="next-btn" class="btn btn-primary" type="button">Selanjutnya</button>
+                <button id="submit-btn" class="btn btn-success" style="display: none;" type="submit">Submit</button>
+            </div>
+        @else
+            <p>No questions available for this section.</p>
+        @endif
+    </form>
+
     </div>
 @endsection
 
@@ -55,6 +60,14 @@
     <script src="{{ URL::asset('build/plugins/jquery/jquery.min.js') }}"></script>
     <script src="{{ URL::asset('build/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'Silakan pilih jawaban sebelum melanjutkan!',
+        });
+    </script>
 
     <script>
         let currentSlide = 0;
@@ -95,10 +108,11 @@
         });
 
         nextBtn.addEventListener('click', (event) => {
-            event.preventDefault();
+            event.preventDefault(); // Prevent default form submission
 
             const currentQuestionId = slides[currentSlide].querySelector('.pilih-opsi').getAttribute('data-pertanyaan-id');
 
+            // Cek apakah ada jawaban untuk pertanyaan saat ini
             if (!jawaban.find(j => j.pertanyaan_id === currentQuestionId)) {
                 alert('Silakan pilih jawaban sebelum melanjutkan!');
                 return;
@@ -118,6 +132,7 @@
             }
         });
 
+        // Function to restore the selected answer for a given question
         function restoreSelectedAnswer(pertanyaanId) {
             const selectedJawaban = jawaban.find(j => j.pertanyaan_id === pertanyaanId);
             if (selectedJawaban) {
@@ -130,24 +145,24 @@
             }
         }
 
+        // Event listener for submit button
         submitBtn.addEventListener('click', (event) => {
             event.preventDefault(); // Prevent default form submission
 
             // Check if there are answers before submitting
             if (jawaban.length === 0) {
-                alert('Please answer at least one question.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Silakan jawab setidaknya satu pertanyaan!',
+                });
                 return;
             }
 
-            // Create a hidden input to hold the structured answers
-            const jawabanInput = document.createElement('input');
-            jawabanInput.type = 'hidden';
-            jawabanInput.name = 'jawaban'; // Ensure this is named correctly
-            jawabanInput.value = JSON.stringify(jawaban); // Convert to JSON string
+            // Assign the jawaban array to hidden input in JSON format
+            document.getElementById('jawaban-input').value = JSON.stringify(jawaban);
 
-            document.getElementById('quiz-form').appendChild(jawabanInput);
-
-            // Submit the form
+            // Submit the form directly
             document.getElementById('quiz-form').submit();
         });
     </script>

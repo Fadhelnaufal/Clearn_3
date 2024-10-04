@@ -4,6 +4,9 @@
     Login
 @endsection
 @section('content')
+@if(session('message'))
+    <div class="alert alert-warning">{{ session('message') }}</div>
+@endif
     <div class="section-authentication-cover">
         <div class="">
             <div class="row g-0">

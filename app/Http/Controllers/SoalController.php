@@ -238,28 +238,38 @@ class SoalController extends Controller
     // Dekode jawaban menjadi array
     $jawabanArray = json_decode($request->jawaban, true);
 
+    if (!$jawabanArray || !is_array($jawabanArray)) {
+        return back()->withErrors(['jawaban' => 'Jawaban tidak valid.']);
+    }
+
     // Loop untuk setiap jawaban
+    $opsiIds = array_column($jawabanArray, 'opsi_id');
+    $opsiDetails = OpsiPertanyaan::whereIn('id', $opsiIds)->get()->keyBy('id');
+
     foreach ($jawabanArray as $jawabanDetail) {
-        $opsi_id = $jawabanDetail['opsi_id'];
-        $pertanyaan_id = $jawabanDetail['pertanyaan_id'];
-        $siswa_id = $jawabanDetail['siswa_id'];
-
-        // Validasi data
-        if (empty($pertanyaan_id) || empty($opsi_id) || empty($siswa_id)) {
-            return redirect()->back()->withErrors(['jawaban' => 'Data jawaban tidak lengkap.']);
+        if (!isset($opsiDetails[$jawabanDetail['opsi_id']])) {
+            return back()->withErrors(['jawaban' => 'Opsi yang dipilih tidak valid.']);
         }
-
-        // Simpan jawaban
+        $opsi = $opsiDetails[$jawabanDetail['opsi_id']];
         JawabanSoalSiswa::create([
-            'siswa_id' => $siswa_id,
+            'siswa_id' => $jawabanDetail['siswa_id'],
             'soal_id' => $request->soal_id,
-            'pertanyaan_id' => $pertanyaan_id,
-            'opsi_id' => $opsi_id,
-            'is_correct' => OpsiPertanyaan::find($opsi_id)->is_correct,
+            'pertanyaan_id' => $jawabanDetail['pertanyaan_id'],
+            'opsi_id' => $jawabanDetail['opsi_id'],
+            'is_correct' => $opsi->is_correct,
         ]);
     }
 
-    return redirect()->route('hasil.quiz', $request->soal_id)
-                     ->with('success', 'Jawaban berhasil disimpan!');
+    return redirect()->route('siswa.soal.hasil', ['materi_id' => $request->materi_id, 'soalId' => $request->soal_id])
+                 ->with('success', 'Jawaban berhasil disimpan!');
+
+    }
+
+    public function hasilSoal($soalId, $materi_id)
+    {
+        $materi = Materi::with('soal')->findOrFail($materi_id);
+        $soal = Soal::findOrFail($soalId);
+        $jawabanSiswas = JawabanSoalSiswa::where('soal_id', $soalId)->get();
+        return view('siswa.preview-soal', compact('materi', 'soal', 'jawabanSiswas'));
     }
 }
