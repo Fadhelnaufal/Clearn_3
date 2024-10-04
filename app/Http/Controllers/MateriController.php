@@ -8,6 +8,7 @@ use App\Models\Materi;
 use App\Models\Kelas;
 use App\Models\SubMateri;
 use App\Models\SoalTest;
+use App\Models\UserTask;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,9 +28,15 @@ class MateriController extends Controller
             $materi = Materi::all();
         }
 
+        // Retrieve user's tasks for the specific materi
+        $userTasks = UserTask::where('student_id', Auth::id())
+            ->where('task_type', 'sub_materi')
+            ->get()
+            ->keyBy('task_id'); // Key by task_id for easy access
+
         $kelas = Kelas::all();
         $view = $user->hasRole('guru') ? 'guru.course_detail_guru' : 'siswa.course_detail';
-        return view($view, compact('kelas','materi'));
+        return view($view, compact('kelas','materi', 'userTasks'));
         // $materi = Materi::get()->all();
         // return view('guru.materi', compact('materi'));
     }
@@ -103,6 +110,11 @@ class MateriController extends Controller
     // Sum up completed challenges
     $completedChallenges = $completedSubMateris + $completedCaseStudies + $completedSoalTests;
 
+    $userTasks = UserTask::where('student_id', Auth::id())
+    ->whereIn('task_type', ['sub_materi', 'case_study', 'soal']) // Use whereIn for multiple values
+    ->get()
+    ->keyBy('task_id'); // Key by task_id for easy access
+
     // Retrieve all students in the class
     $siswas = $kelas->users()->whereHas('roles', function ($query) {
         $query->where('role_id', 3); // Assuming role_id 3 is for 'siswa'
@@ -117,7 +129,8 @@ class MateriController extends Controller
         'totalChallenges', 'completedChallenges', 
         'totalSubMateris', 'completedSubMateris', 
         'totalCaseStudies', 'completedCaseStudies', 
-        'totalSoalTests', 'completedSoalTests'
+        'totalSoalTests', 'completedSoalTests',
+        'userTasks'
     ));
 }
 

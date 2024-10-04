@@ -3,7 +3,10 @@
     Widgets Data
 @endsection
 @section('content')
-    <x-page-title title="Course" subtitle="Hasil Studi Kasus" />
+    <div class="container d-flex align-items-center mb-5">
+        <a href="{{ url('/guru/kelas/materi/'.$kelasId) }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
+        <x-page-title title="Course" subtitle="Hasil Studi Kasus" />
+    </div>
     <div class="container mt-4">
         {{-- <h4>Results for Case Study ID: {{ $caseStudyId ?? 'Not Provided' }}</h4> --}}
         <div class="row">

@@ -96,19 +96,27 @@
                                             <div class="accordion-body">
                                                 @foreach ($materi->subMateris->where('user_type_id', $user->user_type_id) as $subMateri)
                                                     <div class="sub-materi-item">
-                                                        <a href="{{ route('siswa.sub-materi.show', [$kelas->id, $materi->id, $subMateri->id, $subMateri->user_type_id]) }}"
-                                                            style="color: #7964EF"><strong>Materi: {{ $subMateri->judul }}</strong></a>
+                                                        <a href="{{ route('siswa.sub-materi.show', [$kelas->id, $materi->id, $subMateri->id, $subMateri->user_type_id]) }}" style="color: #7964EF">
+                                                            <strong>Materi: {{ $subMateri->judul }}</strong>
+                                                            @if (isset($userTasks[$subMateri->id]) && $userTasks[$subMateri->id]->is_completed)
+                                                                <span class="text-success">&#10004;</span> <!-- Checkmark if completed -->
+                                                            @endif
+                                                        </a>
                                                         @if ($subMateri->lampiran)
-                                                            <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}"
-                                                                target="_blank" style="color: #7964EF"><i
-                                                                    class="bi bi-file-earmark-arrow-down"></i></a>
+                                                            <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}" target="_blank" style="color: #7964EF">
+                                                                <i class="bi bi-file-earmark-arrow-down"></i>
+                                                            </a>
                                                         @endif
                                                     </div>
                                                 @endforeach
+
                                                 @foreach ($materi->soal as $soas)
                                                     <div class="soal-test-item">
-                                                        <a href="{{route('siswa.soal.preview', ['materi_id' => $materi->id, 'soalId' => $soas->id])}}">
+                                                        <a href="{{ route('siswa.soal.preview', ['materi_id' => $materi->id, 'soalId' => $soas->id]) }}" style="color: #7964EF">
                                                             <strong>Soal Quiz: {{ $soas->nama }}</strong>
+                                                            @if (isset($userTasks[$soas->id]) && $userTasks[$soas->id]->is_completed)
+                                                                <span class="text-success">&#10004;</span> <!-- Checkmark if completed -->
+                                                            @endif
                                                         </a>
                                                     </div>
                                                 @endforeach
@@ -170,6 +178,9 @@
                                                 <p class="card-text text-neutral-600">
                                                     <i class="bi bi-caret-right-fill ms-3 fs-6"></i>
                                                     {{ $caseStudy->description }}
+                                                    @if (isset($userTasks[$caseStudy->id]) && $userTasks[$caseStudy->id]->is_completed)
+                                                        <span class="text-success">&#10004;</span> <!-- Checkmark if completed -->
+                                                    @endif
                                                 </p>
                                             </a>
                                         </div>

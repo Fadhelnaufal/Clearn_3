@@ -21,6 +21,8 @@ class ResultCaseStudyController extends Controller
     {
         // Assuming you want to filter by case_study_id
         $caseStudyId = $request->query('case_study_id', null);
+        $caseStudy = CaseStudies::find($caseStudyId);
+        $kelasId = $caseStudy ? $caseStudy->kelas_id : null;
         
         $submission = StudiesSubmission::with(['users', 'user_tasks', 'nilai_case_studies'])->where('case_study_id', $caseStudyId)->get();
 
@@ -36,7 +38,7 @@ class ResultCaseStudyController extends Controller
             }
         }
 
-        return view('guru.hasil-studi-kasus', compact('submission', 'caseStudyId'));
+        return view('guru.hasil-studi-kasus', compact('submission', 'caseStudyId', 'caseStudy', 'kelasId'));
     }
 
     /**
@@ -130,7 +132,8 @@ class ResultCaseStudyController extends Controller
     {
         $caseStudy = CaseStudies::findOrFail($id);
         $submissions = $caseStudy->submissions()->where('student_id', Auth::user()->id)->get();
-        return view('guru.hasil-studi-kasus', compact('caseStudy', 'submissions'));
+        $kelasId = $caseStudy->kelas_id;
+        return view('guru.hasil-studi-kasus', compact('caseStudy', 'submissions', 'kelasId'));
     }
 
     /**
@@ -199,9 +202,10 @@ class ResultCaseStudyController extends Controller
     public function showSubmission(string $caseStudyId, $id)
     {
         // dd($caseStudyId,$id);
+        $caseStudy = CaseStudies::findOrFail($caseStudyId);
         $submission = StudiesSubmission::with(['caseStudy', 'user_tasks', 'nilai_case_studies']) // Add user_tasks if needed
         ->where('student_id', $id)
         ->firstOrFail();
-        return view('guru.lihat-studi-kasus', compact('submission'));
+        return view('guru.lihat-studi-kasus', compact('submission', 'caseStudy'));
     }
 }
