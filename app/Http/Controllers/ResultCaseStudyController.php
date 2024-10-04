@@ -180,7 +180,7 @@ class ResultCaseStudyController extends Controller
             ]);
 
             // Redirect back with success message
-            return redirect()->route('guru.hasil-studi-kasus')->with('success', 'Nilai case study updated successfully');
+            return redirect()->back()->with('success', 'Nilai case study updated successfully.');
         }
 
         // If no record is found, return with an error message
