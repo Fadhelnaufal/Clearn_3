@@ -192,12 +192,14 @@ Route::prefix('guru')->middleware(['role:guru', 'auth', 'check_session'])->group
     ]);
 
     Route::resource('/result/case-study', ResultCaseStudyController::class)->names([
-        'index' => 'guru.result.case.index',
         'create' => 'guru.result.case.create',
-        'show' => 'guru.result.case.show',
         'edit' => 'guru.result.case.edit',
         'destroy' => 'guru.result.case.destroy',
     ]);
+    Route::get('/result/case-study/{caseStudyId}', [ResultCaseStudyController::class, 'index'])
+        ->name('guru.result.case.index');
+    Route::get('/result/case-study/{caseStudyId}', [ResultCaseStudyController::class, 'show'])
+        ->name('guru.result.case.show');
     Route::post('/result/case-study/siswa/{id}/store', [ResultCaseStudyController::class, 'store'])
         ->name('guru.result.case.store');
     Route::put('/result/case-study/siswa/{id}/update', [ResultCaseStudyController::class, 'update'])

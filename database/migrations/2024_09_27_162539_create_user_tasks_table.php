@@ -18,7 +18,11 @@ return new class extends Migration
             ->references('id')
             ->on('kelas')
             ->onDelete('cascade');
-            
+            $table->unsignedBigInteger('materi_id')->nullable();
+            $table->foreign('materi_id')
+            ->references('id')
+            ->on('materis')
+            ->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('task_id');
             $table->string('task_type');

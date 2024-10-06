@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <button class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></button>
+        <a href="{{ url('/guru/kelas/materi/'.$materi->kelas->id) }}" class="btn "><i class='bx bx-left-arrow-alt fs-2'></i></a>
         <x-page-title title="Materi" subtitle="Tambah Soal" />
     </div>
 

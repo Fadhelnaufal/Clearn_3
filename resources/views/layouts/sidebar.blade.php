@@ -41,7 +41,7 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                           <a href="{{ url('/guru/compiler') }}">
+                           <a href="{{ url('/guru/livecode') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
                                <div class="menu-title">Live Code</div>
                            </a>
@@ -79,7 +79,7 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                           <a href="{{ route('/siswa/compiler') }}">
+                           <a href="{{ url('/siswa/compiler') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
                                <div class="menu-title">Live Code</div>
                            </a>

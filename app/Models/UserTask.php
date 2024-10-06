@@ -11,6 +11,7 @@ class UserTask extends Model
 
     protected $fillable = [
         'kelas_id',
+        'materi_id',
         'student_id',
         'task_id',
         'task_type',
