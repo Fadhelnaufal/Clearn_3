@@ -630,7 +630,7 @@
             <!-- Anggota Kelas Tab -->
             <div class="tab-pane fade target" id="anggota">
                 <div class="row">
-                    <div class="col d-flex justify-content-center">
+                    <div class="col justify-content-center">
                         <div class="card mx-3 px-3 table-responsive">
                             <table class="table" id="anggota-kelas">
                                 <thead>

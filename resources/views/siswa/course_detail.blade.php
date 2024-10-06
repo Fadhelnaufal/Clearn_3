@@ -209,8 +209,7 @@
             {{-- leaderboard --}}
             <div class="tab-pane fade target" id="leaderboard">
                 <div class="container">
-                    <div class="row mx-1">
-                        {{-- Overachiever Leaderboard --}}
+                    {{-- Overachiever Leaderboard --}}
                         @if ($siswas->where('user_type_id',1)->isNotEmpty())
                         <div class="col-md-12 justify-content-center">
                             <div class="card px-2 py-2 table-responsive mx-3 my-3">
@@ -631,8 +630,7 @@
                             </div>
                         </div>
                     @endif
-                        <!-- Sidebar Section -->
-                    </div>
+                    <!-- Sidebar Section -->
                 </div>
             </div>
 
@@ -658,7 +656,7 @@
             </div>
 
             {{-- anggota kelas --}}
-            <div class="tab-pane fade target d-flex justify-content-center" id="anggota_siswa">
+            <div class="tab-pane fade target justify-content-center" id="anggota_siswa">
                 <div class="card px-2 py-2 table-responsive">
                     <table id="anggota-kelas" class="table">
                         <thead>
