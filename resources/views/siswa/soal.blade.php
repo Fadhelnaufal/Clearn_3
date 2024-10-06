@@ -27,8 +27,10 @@
                                 <img src="{{ asset('assets/images/soal.png') }}" width="80%">
                             </div>
                             <div class="col-md d-flex align-items-center me-3">
-                                <div>
+                                <div class="card-body justify-center">
                                     <h3 class="mb-4">{{ $pertanyaan->pertanyaan->pertanyaan }}</h3>
+                                    <img class="mb-3 gap-1 align-items-center" src="{{ asset('assets/images/soal/' . $pertanyaan->pertanyaan->gambar) }}"
+                                        alt="gambar" style="max-width: 40%; height: auto;">
                                     <!-- Input tersembunyi untuk pertanyaan_id -->
                                     <input type="hidden" name="kelas_id" value="{{ $materi->kelas->id }}">
                                     <input type="hidden" name="materi_id" value="{{ $materi->id }}">
