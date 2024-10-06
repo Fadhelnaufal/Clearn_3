@@ -304,6 +304,7 @@ class SoalController extends Controller
             $userTask = \App\Models\UserTask::firstOrCreate(
                 [
                     'kelas_id' => $request->kelas_id,
+                    'materi_id' => $request->materi_id,
                     'student_id' => $user->id,
                     'task_id' => $request->soal_id, // Set the task ID from case study ID or subMateri
                     'task_type' => 'soal', // Ensure this matches your task type logic

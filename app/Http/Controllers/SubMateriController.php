@@ -195,24 +195,34 @@ class SubMateriController extends Controller
     {
         $subMateri = SubMateri::findOrFail($subMateriId);
 
-        // Delete file if exists
-        if ($subMateri->lampiran) {
+        // Delete attached file if it exists
+        if ($subMateri->lampiran && Storage::disk('public')->exists($subMateri->lampiran)) {
             Storage::disk('public')->delete($subMateri->lampiran);
         }
 
-        $materiId = $subMateri->materi_id;
+        $subMateri->userTasks()->delete();
+        // Delete the sub-materi record
         $subMateri->delete();
 
-        return redirect()->route('materi.show', $materiId)
+        // Redirect to the course or specific class page if necessary
+        return redirect()->route('course.index')
             ->with('success', 'Sub Materi berhasil dihapus');
     }
 
     public function markAsRead(Request $request, $kelasId, $materiId, $subMateriId)
 {
+    $request->validate([
+        'kelas_id' => 'required|integer',
+        'materi_id' => 'required|integer',
+    ]);
+
+    // dd($request->all());
+
     $user = Auth::user();
     $kelasId = $request->input('kelas_id');
-    \Log::info('Kelas ID: ' . $kelasId);
-    // dd($kelasId);
+    $materiId = $request->input('materi_id');
+
+    // dd($kelasId, $materiId);
     // Find or create the user task
     // Validasi kelas_id
     try {
@@ -224,28 +234,18 @@ class SubMateriController extends Controller
         $userTask = UserTask::firstOrCreate(
             [
                 'kelas_id' => $kelasId,
+                'materi_id' => $materiId,
                 'student_id' => $user->id,
                 'task_id' => $subMateriId,
                 'task_type' => 'sub_materi',
                 'user_type_id' => $user->user_type_id,
             ],
             [
-                'is_completed' => false,
-                'completed_at' => null,
-                'points' => 0,
-            ]
-        );
-
-        // Check if the task is not already completed
-        if (!$userTask->is_completed) {
-            // Update the task to mark it as completed
-            $userTask->update([
                 'is_completed' => true,
                 'completed_at' => Carbon::now(),
                 'points' => 50,
-            ]);
-        }
-
+            ]
+        );
         return response()->json(['success' => 'Materi sudah dibaca']);
     } catch (\Exception $e) {
         // Log the error message

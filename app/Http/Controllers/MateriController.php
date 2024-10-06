@@ -100,6 +100,7 @@ class MateriController extends Controller
     $completedCaseStudies = $user->user_tasks()
         ->where('task_type', 'case_study')
         ->where('is_completed', true)
+        ->pluck('task_id')
         ->count();
 
     $completedSoalTests = $user->user_tasks()
@@ -131,6 +132,13 @@ class MateriController extends Controller
     ->get()
     ->keyBy('task_id'); // Key by task_id for easy access
 
+    $CaseValues = $user->user_tasks()
+        ->where('task_type', 'case_study')
+        ->where('kelas_id', $kelas->id)
+        ->pluck('points')
+        ->toArray();
+
+    \Log::info($CaseValues);
     // Retrieve all students in the class
     $siswas = $kelas->users()->whereHas('roles', function ($query) {
         $query->where('role_id', 3); // Assuming role_id 3 is for 'siswa'
@@ -147,7 +155,7 @@ class MateriController extends Controller
         'totalCaseStudies', 'completedCaseStudies', 
         'totalSoalTests', 'completedSoalTests',
         'userTasks', 'NilaiRataRata', 'totalNilaiCaseStudies', 'totalNilaiSoalTests',
-        'jumlahTotalNilai', 'jumlahNilai'
+        'jumlahTotalNilai', 'jumlahNilai', 'CaseValues'
     ));
 }
 
@@ -210,6 +218,9 @@ class MateriController extends Controller
     public function destroy(string $id)
     {
         $materi = Materi::findOrFail($id);
+
+        $materi->soal()->delete();
+        $materi->subMateris()->delete();
 
         $materi->delete();
 

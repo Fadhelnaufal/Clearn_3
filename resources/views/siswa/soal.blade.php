@@ -31,6 +31,7 @@
                                     <h3 class="mb-4">{{ $pertanyaan->pertanyaan->pertanyaan }}</h3>
                                     <!-- Input tersembunyi untuk pertanyaan_id -->
                                     <input type="hidden" name="kelas_id" value="{{ $materi->kelas->id }}">
+                                    <input type="hidden" name="materi_id" value="{{ $materi->id }}">
                                     <input type="hidden" name="pertanyaan_id[]" value="{{ $pertanyaan->pertanyaan->id }}">
                                     <div class="d-grid gap-2 me-2">
                                         @foreach ($pertanyaan->pertanyaan->opsiPertanyaan as $opsi)

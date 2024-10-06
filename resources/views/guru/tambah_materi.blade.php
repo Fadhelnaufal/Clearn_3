@@ -183,7 +183,7 @@
                 if (xhr.status === 200) {
                     // If the request was successful, redirect to the desired route
                     //window.location.href = "{{ route('guru.dashboard') }}"; // Change to your success route
-                    window.location.href = "{{ route('guru.dashboard') }}";
+                    window.location.href = "{{ route('course.index') }}";
                 } else {
                     // Handle the error if needed
                     console.error('Form submission failed: ', xhr.responseText);

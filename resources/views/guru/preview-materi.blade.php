@@ -38,8 +38,14 @@
                         <a href="{{ route('sub-materi.edit', ['kelasId' => $kelas->id, 'userTypeId' => $userTypeId, 'materiId'=> $materi->id, 'subMateriId' => $subMateri->id]) }}"
                             class="btn btn-success" type="button"><i class="bi bi-pencil-square me-2"></i>Edit
                             Materi</a>
-                        <button class="btn btn-danger" type="button"><i class="bi bi-trash me-2"></i>Hapus Materi</button>
-                    </div>
+
+                    <form action="{{ route('sub-materi.destroy', ['subMateriId' => $subMateri->id]) }}" method="POST" class="d-inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?')">
+                            <i class="bi bi-trash me-2"></i> Hapus Materi
+                        </button>
+                    </form>                    </div>
                 </div>
 
             </div>

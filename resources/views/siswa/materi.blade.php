@@ -16,6 +16,7 @@
                     <p class="mx-2 my-2 text-justify">{!! $subMateri->isi !!}</p>
                     <div class="d-grid ">
                     <input type="text" hidden id="kelas_id" name="kelas_id" value="{{ $kelas->id }}">
+                    <input type="hidden" id="materi_id" name="materi_id" value="{{ $materi->id }}">
                         @if ($task === null)
                             <button id="completed_task" class="btn btn-primary" type="button"
                                 data-submateri-id="{{ $subMateri->id }}" data-materi-id="{{ $materi->id }}"
@@ -75,7 +76,10 @@
                 $('#completed_task').on('click', function() {
                     var url = $(this).data('url'); // Get the URL from the button
                     var kelasId = $('#kelas_id').val(); // Get the kelas ID from the button
+                    var materiId = $(this).data('materi-id');
+
                     console.log('Kelas ID:', kelasId);
+                    console.log('Materi ID:', materiId);
 
                     // SweetAlert confirmation
                     Swal.fire({
@@ -94,7 +98,8 @@
                                 type: 'POST',
                                 data: {
                                     _token: '{{ csrf_token() }}',
-                                    kelas_id: kelasId // Laravel CSRF token
+                                    kelas_id: kelasId,
+                                    materi_id: materiId
                                 },
                                 success: function(response) {
                                     if (response.success) {
@@ -116,6 +121,9 @@
                                     }
                                 },
                                 error: function(xhr, status, error) {
+                                    console.log("XHR:", xhr);
+                                    console.log("Status:", status);
+                                    console.log("Error:", error);
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Error!',

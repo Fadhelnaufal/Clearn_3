@@ -72,6 +72,7 @@ class StudentSubmissionController extends Controller
         $userTask = \App\Models\UserTask::firstOrCreate(
             [
                 'kelas_id' => $caseStudy->kelas_id,
+                'materi_id' => null,
                 'student_id' => $user->id,
                 'task_id' => $subMateriId, // Set the task ID from case study ID or subMateri
                 'task_type' => 'case_study', // Ensure this matches your task type logic

@@ -1,55 +1,51 @@
 @extends('layouts.app')
-@section('title')
-    Widgets Data
-@endsection
+@section('title', 'Lihat Semua Pengajuan Studi Kasus')
+
 @section('content')
-    <div class="container d-flex align-items-center mb-5">
-        <a href="{{ url('/guru/kelas/materi/'.$kelasId) }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>
-        <x-page-title title="Course" subtitle="Hasil Studi Kasus" />
-    </div>
-    <div class="container mt-4">
-        {{-- <h4>Results for Case Study ID: {{ $caseStudyId ?? 'Not Provided' }}</h4> --}}
-        <div class="row">
-            <div class="card">
-                <table class="table table-responsive">
-                    <thead>
+<div class="container d-flex align-items-center mb-5">
+    <a href="{{ url('guru/kelas/materi/'.$caseStudy->kelas_id) }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>        
+    <x-page-title title="Studi Kasus" subtitle="{{ $caseStudy->title }}" />
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Email</th>
+                        <th>Diselesaikan pada</th>
+                        <th>Nilai</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($submissions as $submission)
                         <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Nama Lengkap</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Diselesaikan pada</th>
-                            <th scope="col">Nilai</th>
-                            <th scope="col">Aksi</th>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $submission->users->name }}</td>
+                            <td>{{ $submission->users->email }}</td>
+                            <td>{{ $submission->completed_at ?? '-'}}</td>
+                            <td>
+                                @if ($submission->average_score === 'Belum Dinilai')
+                                    {{ $submission->average_score }}
+                                @else
+                                    {{ $submission->average_score }}
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{ route('guru.result.case.showSubmission', ['caseStudyId' => $caseStudy->id, 'id' => $submission->student_id]) }}" class="btn btn-primary">Lihat Detail</a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($submission as $submissions)
-                            <tr>
-                                <th scope="row">{{ $loop->iteration }}</th>
-                                <td>{{ $submissions->users->name }}</td>
-                                <td>{{ $submissions->users->email }}</td>
-                                <td>{{ $submissions->completed_at ?? '-' }}</td>
-                                <td>
-                                    @if ($submissions->score_message === 'Belum Dinilai')
-                                        {{ $submissions->score_message }}
-                                    @else
-                                        {{ $submissions->score_message ?? '-' }}
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('guru.result.case.showSubmission', ['caseStudyId' => $caseStudyId, 'id' => $submissions->student_id]) }}"
-                                        class="btn btn-primary btn-sm me-2">
-                                        <i class="bi bi-eye me-1"></i>Lihat
-                                    </a>                                </td>
-                            </tr>
-                        @endforeach
-                        <!-- Add more rows as needed -->
-                    </tbody>
-                </table>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 @endsection
+
 @push('script')
     <!--plugins-->
     <script src="{{ URL::asset('build/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>

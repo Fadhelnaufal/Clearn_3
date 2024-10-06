@@ -4,8 +4,8 @@
 @endsection
 @section('content')
     <div class="container d-flex align-items-center mb-5">
-        <a href="{{ route('guru.result.case.index', ['case_study_id' => $submission->caseStudy->id])}}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>        
-        <x-page-title title="Studi Kasus" subtitle="Nama Studi Kasus" />
+        <a href="{{ url('guru/result/case-study/'.$submission->caseStudy->id) }}" class="btn"><i class='bx bx-left-arrow-alt fs-2'></i></a>        
+        <x-page-title title="Studi Kasus" subtitle="{{ $submission->caseStudy->title }}" />
     </div>
     <div class="container">
         <div class="mb-3">
@@ -63,39 +63,37 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <form action="{{ isset($submission->nilai_case_studies) ? route('guru.result.case.update', $submission->student_id) : route('guru.result.case.store', $submission->student_id) }}" method="POST">
-                        @csrf
-                        @if(isset($submission->nilai_case_studies))
-                            @method('PUT') <!-- Add this line for the update method -->
-                        @endif
-                
-                        <div class="mb-3">
-                            <input type="hidden" name="case_study_id" value="{{ $submission->caseStudy->id }}">
-                            <input type="hidden" name="student_id" value="{{ $submission->student_id }}">
-                            
-                            <label for="kategori_1" class="form-label"><strong>Kesesuaian dengan Studi Kasus</strong></label>
-                            <input type="number" class="form-control" id="kategori_1" name="kategori_1" min="0" max="100"
-                                value="{{ old('kategori_1', $submission->nilai_case_studies->kategori_1 ?? '') }}">
-                                
-                            <label for="kategori_2" class="form-label"><strong>Desain dan Tata Letak</strong></label>
-                            <input type="number" class="form-control" id="kategori_2" name="kategori_2" min="0" max="100"
-                                value="{{ old('kategori_2', $submission->nilai_case_studies->kategori_2 ?? '') }}">
-                                
-                            <label for="kategori_3" class="form-label"><strong>Fungsionalitas</strong></label>
-                            <input type="number" class="form-control" id="kategori_3" name="kategori_3" min="0" max="100"
-                                value="{{ old('kategori_3', $submission->nilai_case_studies->kategori_3 ?? '') }}">
-                                
-                            <label for="kategori_4" class="form-label"><strong>Kualitas Kode</strong></label>
-                            <input type="number" class="form-control" id="kategori_4" name="kategori_4" min="0" max="100"
-                                value="{{ old('kategori_4', $submission->nilai_case_studies->kategori_4 ?? '') }}">
-                                
-                            <label for="kategori_5" class="form-label"><strong>Inovasi dan Kreativitas</strong></label>
-                            <input type="number" class="form-control" id="kategori_5" name="kategori_5" min="0" max="100"
-                                value="{{ old('kategori_5', $submission->nilai_case_studies->kategori_5 ?? '') }}">
-                        </div>
+                    <form action="{{ isset($nilai_case_studies) ? route('guru.result.case.update', $submission->student_id) : route('guru.result.case.store', $submission->student_id) }}" method="POST">
+                    @csrf
+                    @if(isset($nilai_case_studies))
+                        @method('PUT')
+                    @endif
+
+                    <input type="hidden" name="case_study_id" value="{{ $submission->caseStudy->id }}">
+                    <input type="hidden" name="student_id" value="{{ $submission->student_id }}">
+
+                    <label for="kategori_1" class="form-label"><strong>Kesesuaian dengan Studi Kasus</strong></label>
+                    <input type="number" class="form-control" id="kategori_1" name="kategori_1" min="0" max="100"
+                        value="{{ old('kategori_1', $nilai_case_studies->kategori_1 ?? '') }}">
                         
-                        <button type="submit" class="btn btn-primary">{{ isset($submission->nilai_case_studies) ? 'Update' : 'Simpan' }}</button>
-                    </form>
+                    <label for="kategori_2" class="form-label"><strong>Desain dan Tata Letak</strong></label>
+                    <input type="number" class="form-control" id="kategori_2" name="kategori_2" min="0" max="100"
+                        value="{{ old('kategori_2', $nilai_case_studies->kategori_2 ?? '') }}">
+                        
+                    <label for="kategori_3" class="form-label"><strong>Fungsionalitas</strong></label>
+                    <input type="number" class="form-control" id="kategori_3" name="kategori_3" min="0" max="100"
+                        value="{{ old('kategori_3', $nilai_case_studies->kategori_3 ?? '') }}">
+                        
+                    <label for="kategori_4" class="form-label"><strong>Kualitas Kode</strong></label>
+                    <input type="number" class="form-control" id="kategori_4" name="kategori_4" min="0" max="100"
+                        value="{{ old('kategori_4', $nilai_case_studies->kategori_4 ?? '') }}">
+                        
+                    <label for="kategori_5" class="form-label"><strong>Inovasi dan Kreativitas</strong></label>
+                    <input type="number" class="form-control" id="kategori_5" name="kategori_5" min="0" max="100"
+                        value="{{ old('kategori_5', $nilai_case_studies->kategori_5 ?? '') }}">
+                        
+                    <button type="submit" class="btn btn-primary">{{ isset($nilai_case_studies) ? 'Update' : 'Simpan' }}</button>
+                </form>
                 </div>
                                
             </div>

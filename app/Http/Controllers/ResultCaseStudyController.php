@@ -17,29 +17,36 @@ class ResultCaseStudyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        // Assuming you want to filter by case_study_id
-        $caseStudyId = $request->query('case_study_id', null);
-        $caseStudy = CaseStudies::find($caseStudyId);
-        $kelasId = $caseStudy ? $caseStudy->kelas_id : null;
-        
-        $submission = StudiesSubmission::with(['users', 'user_tasks', 'nilai_case_studies'])->where('case_study_id', $caseStudyId)->get();
+    public function index($caseStudyId)
+{
+    // Ambil studi kasus berdasarkan ID
+    $caseStudy = CaseStudies::findOrFail($caseStudyId);
+    $kelasId = $caseStudy->kelas_id;
 
-        foreach ($submission as $submissions) {
-            if ($submissions->nilai_case_studies) {
-                // If nilai_case_studies exists, calculate the average score
-                $submissions->average_score = $submissions->nilai_case_studies->total / 5;
-                $submissions->score_message = $submissions->nilai_case_studies->total/5; // Keep the total score
-            } else {
-                // If there's no related nilai_case_studies, set average_score to null
-                $submissions->average_score = null; 
-                $submissions->score_message = 'Belum Dinilai'; // Default message
-            }
+    // Ambil semua pengajuan berdasarkan case_study_id
+    $submissions = StudiesSubmission::with(['user', 'nilai_case_studies'])
+        ->where('case_study_id', $caseStudyId)
+        ->where('is_submitted', true)
+        ->get();
+    
+
+    foreach ($submissions as $submission) {
+        // Cek jika ada nilai_case_studies terkait
+        if ($submission->nilai_case_studies) {
+            // Jika ada, hitung nilai rata-rata
+            $submission->average_score = $submission->nilai_case_studies->total / 5;
+            $submission->score_message = $submission->nilai_case_studies->total; // Menyimpan total nilai
+        } else {
+            // Jika tidak ada, set nilai rata-rata menjadi null
+            $submission->average_score = null; 
+            $submission->score_message = 'Belum Dinilai'; // Pesan default
         }
-
-        return view('guru.hasil-studi-kasus', compact('submission', 'caseStudyId', 'caseStudy', 'kelasId'));
     }
+
+    // Kembalikan view dengan data yang telah diolah
+    return view('guru.hasil-studi-kasus', compact('submissions', 'caseStudyId', 'caseStudy', 'kelasId'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -66,8 +73,8 @@ class ResultCaseStudyController extends Controller
             'kategori_5' => 'nullable|numeric',
             'total' => 'nullable|numeric',
         ]);
-
         // dd($request->all());
+
         $total = $request->input('kategori_1', 0) +
          $request->input('kategori_2', 0) +
          $request->input('kategori_3', 0) +
@@ -76,6 +83,7 @@ class ResultCaseStudyController extends Controller
 
         $caseStudyId = $request->input('case_study_id');
         $studentId = $request->input('student_id');
+
         $submission = StudiesSubmission::where('case_study_id', $caseStudyId)
             ->where('student_id', $studentId)
             ->first();
@@ -86,7 +94,7 @@ class ResultCaseStudyController extends Controller
 
         $data = [
             'case_study_id' => $caseStudyId,
-            'student_id' => $submission->student_id,
+            'student_id' => $studentId,
             'kategori_1' => $request->input('kategori_1'),
             'kategori_2' => $request->input('kategori_2'),
             'kategori_3' => $request->input('kategori_3'),
@@ -95,24 +103,27 @@ class ResultCaseStudyController extends Controller
             'total' => $total, // Use the calculated total
         ];
 
+        // dd($data);
+
         $nilai = NilaiCaseStudy::updateOrCreate(
             [
                 'case_study_id' => $caseStudyId,
-                'student_id' => $submission->student_id,
+                'student_id' => $studentId,
             ],
             $data
         );
-
+        // dd($nilai);
         $nilai->save();
 
         // Calculate average points
         $averagePoints = $total / 5;
-
+        // dd($averagePoints);
         // Create or update the UserTask record
         $userTask = UserTask::updateOrCreate(
             [
                 'kelas_id' => $submission->caseStudy->kelas_id, // Match based on kelas_id
-                'student_id' => $submission->student_id, // Match based on student_id
+                'materi_id' =>null,
+                'student_id' => $studentId, // Match based on student_id
                 'task_id' => $caseStudyId, // Match based on task_id (case study ID)
                 'task_type' => 'case_study', // Specify the task type if it's being set
             ],
@@ -122,6 +133,7 @@ class ResultCaseStudyController extends Controller
                 'points' => $averagePoints, // Store the average points
             ]
         );
+        // dd($userTask);
 
         return redirect()->back()->with('success', 'Nilai case study updated successfully');
     }
@@ -129,13 +141,37 @@ class ResultCaseStudyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $caseStudy = CaseStudies::findOrFail($id);
-        $submissions = $caseStudy->submissions()->where('student_id', Auth::user()->id)->get();
-        $kelasId = $caseStudy->kelas_id;
-        return view('guru.hasil-studi-kasus', compact('caseStudy', 'submissions', 'kelasId'));
+    public function show($caseStudyId)
+{
+    // Ambil case study berdasarkan ID
+    $caseStudy = CaseStudies::findOrFail($caseStudyId);
+
+    // Ambil semua submission untuk case_study_id tersebut
+    $submissions = StudiesSubmission::with(['users', 'nilai_case_studies'])
+        ->where('case_study_id', $caseStudyId)
+        // ->where('student_id', Auth::user()->id)
+        ->get();
+
+    // Proses data submissions untuk menghitung nilai jika sudah dinilai
+    foreach ($submissions as $submission) {
+        // Load the nilai_case_studies based on the student_id and case_study_id
+        $nilaiCaseStudy = NilaiCaseStudy::where('student_id', $submission->student_id)
+            ->where('case_study_id', $caseStudyId)
+            ->first();
+        
+        if ($nilaiCaseStudy) {
+            $submission->average_score = $nilaiCaseStudy->total / 5;
+        } else {
+            $submission->average_score = 'Belum Dinilai';
+        }
     }
+
+    // dd($submission->average_score);
+
+    // Kembalikan view dengan data caseStudy dan submissions
+    return view('guru.hasil-studi-kasus', compact('submissions', 'caseStudy'));
+}
+
 
     /**
      * Show the form for editing the specified resource.
@@ -201,12 +237,22 @@ class ResultCaseStudyController extends Controller
     }
 
     public function showSubmission(string $caseStudyId, $id)
-    {
-        // dd($caseStudyId,$id);
-        $caseStudy = CaseStudies::findOrFail($caseStudyId);
-        $submission = StudiesSubmission::with(['caseStudy', 'user_tasks', 'nilai_case_studies']) // Add user_tasks if needed
+{
+    // Ambil case study berdasarkan ID
+    $caseStudy = CaseStudies::findOrFail($caseStudyId);
+
+    // Ambil submission berdasarkan student_id dan case_study_id
+    $submission = StudiesSubmission::with(['caseStudy', 'user_tasks', 'nilai_case_studies'])
         ->where('student_id', $id)
+        ->where('case_study_id', $caseStudyId)
         ->firstOrFail();
-        return view('guru.lihat-studi-kasus', compact('submission', 'caseStudy'));
-    }
+
+    // Ambil nilai berdasarkan student_id dan case_study_id
+    $nilai_case_studies = NilaiCaseStudy::where('case_study_id', $caseStudyId)
+        ->where('student_id', $id)
+        ->first();
+
+    return view('guru.lihat-studi-kasus', compact('submission', 'caseStudy', 'nilai_case_studies'));
+}
+
 }
