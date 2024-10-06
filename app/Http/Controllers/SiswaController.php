@@ -82,13 +82,13 @@ class SiswaController extends Controller
 
     // Sum up completed challenges
     $completedChallenges = $completedSubMateris + $completedCaseStudies + $completedSoalTests;
-        
+
     // Determine whether the user has a user_type_id
     $hasUserType = !is_null($user->user_type_id);
 
     // Pass the necessary variables to the view
     return view('siswa.dashboard', compact(
-        'user', 'materis', 'questions', 'kelasCollection', 'hasUserType', 
+        'user', 'materis', 'questions', 'kelasCollection', 'hasUserType',
         'userType', 'totalPoints', 'totalChallenges', 'completedChallenges'
     ));
 }
@@ -276,6 +276,12 @@ class SiswaController extends Controller
     }
     public function compiler(){
         return view('compiler.compiler');
+    }
+    public function quiz(){
+        return view('siswa.quiz');
+    }
+    public function join_quiz(){
+        return view('siswa.join-quiz');
     }
 
 }

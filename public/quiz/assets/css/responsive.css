@@ -1,0 +1,98 @@
+@media (min-width: 1600px) {
+  .container {
+    max-width: 755px;
+  }
+}
+
+@media (max-width: 1440px) {
+}
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 25px;
+  }
+  .logo img {
+    width: 25px;
+  }
+  .totalQuiz {
+    font-size: 20px;
+    width: 140px;
+  }
+  .totalQuiz span {
+    font-size: 16px;
+  }
+  .quizDetail {
+    font-size: 15px;
+  }
+  .mainHeading span {
+    font-size: 20px;
+    min-width: 60px;
+    height: 60px;
+  }
+  .mainHeading {
+    font-size: 20px;
+  }
+  footer {
+    font-size: 16px;
+    width: 100%;
+  }
+}
+@media (max-width: 576px) {
+  header {
+    height: 60px;
+  }
+  main {
+    padding: 30px 20px;
+  }
+  .HorizontalQuiz {
+    padding: 20px 20px;
+  }
+  .totalQuiz {
+    display: none;
+  }
+  .timer {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    border-width: 5px;
+  }
+  main {
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .quizDetail {
+    display: none;
+  }
+  main {
+    border-radius: 0;
+    padding: 20px 0;
+  }
+  .mainHeading {
+    flex-wrap: wrap;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  .timer {
+    display: none;
+  }
+  .radioField {
+    height: 65px;
+  }
+  .radioField label {
+    font-size: 20px;
+  }
+  footer {
+    font-size: 12px;
+    gap: 15px;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+  }
+}

@@ -25,9 +25,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('landing');
 });
-Route::get('/soal', function () {
-    return view('guru.tambah-soal');
-});
+
 Route::get('/hasil-soal', function () {
     return view('guru.hasil-soal');
 });
@@ -94,9 +92,7 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/register', [RegisterController::class, 'create']);
-Route::get('/quizku', function () {
-     return view('quiz.quiz');
- });
+
 Route::get('/token_quiz', function () {
      return view('quiz.token-quiz');
  });
@@ -104,6 +100,8 @@ Route::get('/token_quiz', function () {
 // Siswa Routes
 Route::prefix('siswa')->middleware(['role:siswa', 'auth', 'check_session'])->group(function () {
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
+    Route::get('/quiz', [SiswaController::class, 'quiz'])->name('siswa.quiz');
+    Route::get('/join-quiz', [SiswaController::class, 'join_quiz'])->name('siswa.join-quiz');
     Route::get('/compiler', [SiswaController::class, 'compiler'])->name('/siswa/compiler');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
     Route::get('/user-type-result', [SiswaController::class, 'getUserTypeResult'])->name('siswa.result');
