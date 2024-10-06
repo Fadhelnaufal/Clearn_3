@@ -154,9 +154,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <!-- Sidebar Section -->
                 </div>
             </div>
             <!-- studi kasus Section -->
@@ -214,9 +212,9 @@
                     <div class="row mx-1">
                         {{-- Overachiever Leaderboard --}}
                         @if ($siswas->where('user_type_id',1)->isNotEmpty())
-                        <div class="col-md-12">
-                            <h4>Overachiever Leaderboard</h4>
-                            <div class="card px-2 py-2">
+                        <div class="col-md-12 justify-content-center">
+                            <div class="card px-2 py-2 table-responsive mx-3 my-3">
+                                <h4>Overachiever Leaderboard</h4>
                                 <table id="tabel-leader" class="table table-striped table-bordered  table-hover text-center">
                                     <thead class="thead-light text-center align-middle" style="text-align: center; vertical-align: middle;">
                                         <tr>
@@ -362,9 +360,9 @@
 
                         {{-- Mastery-Expert Leaderboard --}}
                         @if ($siswas->where('user_type_id', 2)->isNotEmpty())
-                        <div class="col-md-12">
+                        <div class="col-md-12 d-flex justify-content-center">
                             <h4>Mastery-Expert Leaderboard</h4>
-                            <div class="card px-2 py-2">
+                            <div class="card px-2 py-2 table-responsive">
                                 <table id="tabel-leader" class="table table-striped table-bordered table-hover text-center">
                                     <thead class="thead-light" style="text-align: center; vertical-align: middle;">
                                         <tr>
@@ -481,9 +479,9 @@
                     @endif
                         {{-- Best-Performance Leaderboard --}}
                         @if ($siswas->where('user_type_id',3)->isNotEmpty())
-                        <div class="col-md-12">
+                        <div class="col-md-12 d-flex justify-content-center">
                             <h4>Best-Performance Leaderboard</h4>
-                            <div class="card px-2 py-2">
+                            <div class="card px-2 py-2 table-responsive">
                                 <table id="tabel-leader" class="table table-striped table-bordered table-hover text-center">
                                     <thead class="thead-light" style="text-align: center; vertical-align: middle;">
                                         <tr>
@@ -511,7 +509,7 @@
                                         @endphp
                                         @foreach ($bestPerformers as $siswa)
                                         <tr>
-                                            <th scope="row">{{ $loop->iteration }}</th>
+                                            <td scope="row">{{ $loop->iteration }}</td>
                                             <td scope="row">{{ $siswa->name }}</td>
                                             @foreach ($materis as $materi )
                                                 <td scope="row">
@@ -562,9 +560,9 @@
 
                         {{-- Non-Achiever Leaderboard --}}
                         @if ($siswas->where('user_type_id', 4)->isNotEmpty())
-                        <div class="col-md-12">
+                        <div class="col-md-12 d-flex justify-content-center">
                             <h4>Non-Achiever Leaderboard</h4>
-                            <div class="card px-2 py-2">
+                            <div class="card px-2 py-2 table-responsive">
                                 <table id="tabel-leader" class="table table-striped table-hover text-center">
                                     <thead class="thead-light" style="text-align: center; vertical-align: middle;">
                                         <tr>
@@ -660,8 +658,8 @@
             </div>
 
             {{-- anggota kelas --}}
-            <div class="tab-pane fade target" id="anggota_siswa">
-                <div class="card px-2 py-2">
+            <div class="tab-pane fade target d-flex justify-content-center" id="anggota_siswa">
+                <div class="card px-2 py-2 table-responsive">
                     <table id="anggota-kelas" class="table">
                         <thead>
                             <tr>
@@ -673,7 +671,7 @@
                         <tbody>
                             @foreach ($siswas as $siswa)
                                 <tr>
-                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <td scope="row">{{ $loop->iteration }}</td>
                                     <td>{{ $siswa->name }}</td>
                                     <td>{{ $siswa->userType->name }}</td>
                                 </tr>
@@ -761,10 +759,12 @@
 
             /* Colorful alternating rows for tabel-leader */
             #tabel-leader tbody tr:nth-child(odd) {
-                background-color: #f2f2f2; /* Light grey */
+                background-color: #DDDDEA; /* Light grey */
+                color: grey;
             }
             #tabel-leader tbody tr:nth-child(even) {
-                background-color: #e6ffe6; /* Light green */
+                background-color: #afb0c9; /* Light green */
+                color: white;
             }
 
             /* Colorful alternating rows for anggota-kelas */
@@ -772,12 +772,12 @@
                 background-color: #f9f9f9; /* Light grey */
             }
             #anggota-kelas tbody tr:nth-child(even) {
-                background-color: #ffe6e6; /* Light pink */
+                background-color: #999ab6; /* Light pink */
             }
 
             /* Customize badge colors */
             .badge.bg-success {
-                background-color: #28a745 !important; /* Green */
+                background-color: #28a745; !important; /* Green */
                 color: white;
             }
             .badge.bg-danger {

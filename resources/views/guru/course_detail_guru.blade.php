@@ -467,8 +467,8 @@
             <!-- Leaderboard Tab -->
             <div class="tab-pane fade target" id="leaderboard">
                 <div class="row ">
-                    <div class="col">
-                        <div class="card mx-3 px-3">
+                    <div class="col justify-content-center">
+                        <div class="card mx-3 px-3 table-responsive">
                             <table class="table table-responsive table-bordered" id="tabel-leader" style="text-align: center; vertical-align: middle;">
                                 <thead style="text-align: center; vertical-align: middle; justify-content: center">
                                     <tr>
@@ -630,8 +630,8 @@
             <!-- Anggota Kelas Tab -->
             <div class="tab-pane fade target" id="anggota">
                 <div class="row">
-                    <div class="col">
-                        <div class="card mx-3 px-3">
+                    <div class="col d-flex justify-content-center">
+                        <div class="card mx-3 px-3 table-responsive">
                             <table class="table" id="anggota-kelas">
                                 <thead>
                                     <tr>

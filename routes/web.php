@@ -177,6 +177,8 @@ Route::prefix('guru')->middleware(['role:guru', 'auth', 'check_session'])->group
     ->name('sub-materi.edit');
     Route::put('/kelas/{kelasId}/sub-materi/update/{userTypeId}', [SubMateriController::class, 'updateSubMateri'])
     ->name('sub-materi.update');
+    Route::delete('/sub-materi/{subMateriId}', [SubMateriController::class, 'destroySubMateri']) 
+    ->name('sub-materi.destroy');
     Route::get('/ckeditor', [CkeditorController::class, 'index']);
     Route::post('/upload', [CkeditorController::class, 'upload'])
     ->name('ckeditor.upload');

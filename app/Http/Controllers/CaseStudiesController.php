@@ -120,6 +120,9 @@ class CaseStudiesController extends Controller
     public function destroy(string $id)
     {
         $caseStudy = CaseStudies::findOrFail($id);
+        $caseStudy->submissions()->delete();
+        $caseStudy->nilaiCaseStudy()->delete();
+        $caseStudy->userTasks()->delete();
         $caseStudy->delete();
 
         return redirect()->back()->with('success', 'Studi Kasus berhasil dihapus');

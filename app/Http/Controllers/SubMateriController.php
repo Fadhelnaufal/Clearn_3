@@ -195,15 +195,17 @@ class SubMateriController extends Controller
     {
         $subMateri = SubMateri::findOrFail($subMateriId);
 
-        // Delete file if exists
-        if ($subMateri->lampiran) {
+        // Delete attached file if it exists
+        if ($subMateri->lampiran && Storage::disk('public')->exists($subMateri->lampiran)) {
             Storage::disk('public')->delete($subMateri->lampiran);
         }
 
-        $materiId = $subMateri->materi_id;
+        $subMateri->userTasks()->delete();
+        // Delete the sub-materi record
         $subMateri->delete();
 
-        return redirect()->route('materi.show', $materiId)
+        // Redirect to the course or specific class page if necessary
+        return redirect()->route('course.index')
             ->with('success', 'Sub Materi berhasil dihapus');
     }
 

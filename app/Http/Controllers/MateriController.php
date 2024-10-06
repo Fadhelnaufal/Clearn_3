@@ -219,6 +219,9 @@ class MateriController extends Controller
     {
         $materi = Materi::findOrFail($id);
 
+        $materi->soal()->delete();
+        $materi->subMateris()->delete();
+
         $materi->delete();
 
         return redirect()->route('guru.course-detail.show', $materi->kelas_id)
