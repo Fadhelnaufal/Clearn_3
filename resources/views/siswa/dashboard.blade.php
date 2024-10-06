@@ -178,36 +178,36 @@
                     <div class="row mt-5">
                         <div class="col">
                             <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" 
-                                    title="Beginner" 
-                                    data-bs-content="{{ $totalPoints >= 1000 ? 'Anda Telah Mencapai 1000 EXP' : 'Anda Belum Mencapai 1000 EXP' }}" 
+                                <span data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                    title="Beginner"
+                                    data-bs-content="{{ $totalPoints >= 1000 ? 'Anda Telah Mencapai 1000 EXP' : 'Anda Belum Mencapai 1000 EXP' }}"
                                     data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/beginner.png') }}" 
-                                        class="{{ $totalPoints >= 1000 ? '' : 'grayscale' }}" 
+                                    <img src="{{ URL::asset('build/images/beginner.png') }}"
+                                        class="{{ $totalPoints >= 1000 ? '' : 'grayscale' }}"
                                         width="50" alt="">
                                 </span>
                             </div>
                         </div>
                         <div class="col">
                             <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" 
-                                    title="Intermediate" 
-                                    data-bs-content="{{ $totalPoints >= 2000 ? 'Anda Telah Mencapai 2000 EXP' : 'Anda Belum Mencapai 2000 EXP' }}" 
+                                <span data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                    title="Intermediate"
+                                    data-bs-content="{{ $totalPoints >= 2000 ? 'Anda Telah Mencapai 2000 EXP' : 'Anda Belum Mencapai 2000 EXP' }}"
                                     data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/intermediate.png') }}" 
-                                        class="{{ $totalPoints >= 2000 ? '' : 'grayscale' }}" 
+                                    <img src="{{ URL::asset('build/images/intermediate.png') }}"
+                                        class="{{ $totalPoints >= 2000 ? '' : 'grayscale' }}"
                                         width="50" alt="">
                                 </span>
                             </div>
                         </div>
                         <div class="col">
                             <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" 
-                                    title="High" 
-                                    data-bs-content="{{ $totalPoints >= 3000 ? 'Anda Telah Mencapai 3000 EXP' : 'Anda Belum Mencapai 3000 EXP' }}" 
+                                <span data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                    title="High"
+                                    data-bs-content="{{ $totalPoints >= 3000 ? 'Anda Telah Mencapai 3000 EXP' : 'Anda Belum Mencapai 3000 EXP' }}"
                                     data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/high.png') }}" 
-                                        class="{{ $totalPoints >= 3000 ? '' : 'grayscale' }}" 
+                                    <img src="{{ URL::asset('build/images/high.png') }}"
+                                        class="{{ $totalPoints >= 3000 ? '' : 'grayscale' }}"
                                         width="50" alt="">
                                 </span>
                             </div>
@@ -216,36 +216,36 @@
                     <div class="row mt-5">
                         <div class="col">
                             <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" 
-                                    title="Platinum" 
-                                    data-bs-content="{{ $totalPoints >= 4000 ? 'Anda Telah Mencapai 4000 EXP' : 'Anda Belum Mencapai 4000 EXP' }}" 
+                                <span data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                    title="Platinum"
+                                    data-bs-content="{{ $totalPoints >= 4000 ? 'Anda Telah Mencapai 4000 EXP' : 'Anda Belum Mencapai 4000 EXP' }}"
                                     data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/platinum.png') }}" 
-                                        class="{{ $totalPoints >= 4000 ? '' : 'grayscale' }}" 
+                                    <img src="{{ URL::asset('build/images/platinum.png') }}"
+                                        class="{{ $totalPoints >= 4000 ? '' : 'grayscale' }}"
                                         width="50" alt="">
                                 </span>
                             </div>
                         </div>
                         <div class="col">
                             <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" 
-                                    title="Diamond" 
-                                    data-bs-content="{{ $totalPoints >= 5000 ? 'Anda Telah Mencapai 5000 EXP' : 'Anda Belum Mencapai 5000 EXP' }}" 
+                                <span data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                    title="Diamond"
+                                    data-bs-content="{{ $totalPoints >= 5000 ? 'Anda Telah Mencapai 5000 EXP' : 'Anda Belum Mencapai 5000 EXP' }}"
                                     data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/diamond.png') }}" 
-                                        class="{{ $totalPoints >= 5000 ? '' : 'grayscale' }}" 
+                                    <img src="{{ URL::asset('build/images/diamond.png') }}"
+                                        class="{{ $totalPoints >= 5000 ? '' : 'grayscale' }}"
                                         width="50" alt="">
                                 </span>
                             </div>
                         </div>
                         <div class="col">
                             <div class="d-flex justify-content-center">
-                                <span data-bs-toggle="popover" data-bs-trigger="hover focus" 
-                                    title="Master" 
-                                    data-bs-content="{{ $totalPoints >= 6000 ? 'Anda Telah Mencapai 6000 EXP' : 'Anda Belum Mencapai 6000 EXP' }}" 
+                                <span data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                    title="Master"
+                                    data-bs-content="{{ $totalPoints >= 6000 ? 'Anda Telah Mencapai 6000 EXP' : 'Anda Belum Mencapai 6000 EXP' }}"
                                     data-bs-placement="top">
-                                    <img src="{{ URL::asset('build/images/master.png') }}" 
-                                        class="{{ $totalPoints >= 6000 ? '' : 'grayscale' }}" 
+                                    <img src="{{ URL::asset('build/images/master.png') }}"
+                                        class="{{ $totalPoints >= 6000 ? '' : 'grayscale' }}"
                                         width="50" alt="">
                                 </span>
                             </div>
@@ -253,20 +253,20 @@
                     </div>
                     <div class="text-center mt-4">
                         <span class="text-success">
-                            @if($totalPoints >= 1000) 
-                                Beginner 
-                            @elseif($totalPoints >= 2000) 
-                                Intermediate 
-                            @elseif($totalPoints >= 3000) 
-                                High 
-                            @elseif($totalPoints >= 4000) 
-                                Platinum 
-                            @elseif($totalPoints >= 5000) 
-                                Diamond 
-                            @elseif($totalPoints >= 6000) 
-                                Master 
-                            @else 
-                                No Badge 
+                            @if($totalPoints >= 1000 && $totalPoints < 2000)
+                                Beginner
+                            @elseif($totalPoints >= 2000 && $totalPoints < 3000)
+                                Intermediate
+                            @elseif($totalPoints >= 3000 && $totalPoints < 4000)
+                                High
+                            @elseif($totalPoints >= 4000 && $totalPoints < 5000)
+                                Platinum
+                            @elseif($totalPoints >= 5000 && $totalPoints < 6000)
+                                Diamond
+                            @elseif($totalPoints >= 6000)
+                                Master
+                            @else
+                                No Badge
                             @endif
                         </span>
                     </div>
