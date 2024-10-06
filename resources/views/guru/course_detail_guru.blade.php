@@ -108,13 +108,14 @@
                                                         @endif
                                                     </div>
                                                 @endforeach
-                                                    @foreach ($materi->soal as $soas)
-                                                        <div class="soal-test-item">
-                                                            <a href="{{route('guru.soal.index', ['materi_id' => $materi->id, 'soal_id' => $soas->id])}}">
-                                                                <strong>Soal Quiz: {{ $soas->nama }}</strong>
-                                                            </a>
-                                                        </div>
-                                                    @endforeach
+                                                @foreach ($materi->soal as $soas)
+                                                    <div class="soal-test-item">
+                                                        <a
+                                                            href="{{ route('guru.soal.index', ['materi_id' => $materi->id, 'soal_id' => $soas->id]) }}">
+                                                            <strong>Soal Quiz: {{ $soas->nama }}</strong>
+                                                        </a>
+                                                    </div>
+                                                @endforeach
                                                 <div class="row">
 
                                                 </div>
@@ -135,27 +136,43 @@
                                                         @endif
                                                     </div>
                                                     <div class="">
-                                                        <button type="button" data-bs-toggle="modal" data-bs-target="#tambahsoalModal{{ $materi->id }}" class="btn btn-secondary md-2">
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#tambahsoalModal{{ $materi->id }}"
+                                                            class="btn btn-secondary md-2">
                                                             <i class="bi bi-plus-lg"></i> Tambah Soal
                                                         </button>
-                                                        
-                                                        <form id="add-soal-form-{{ $materi->id }}" action="{{ route('guru.soal.store', ['materi_id' => $materi->id]) }}" method="POST">
+
+                                                        <form id="add-soal-form-{{ $materi->id }}"
+                                                            action="{{ route('guru.soal.store', ['materi_id' => $materi->id]) }}"
+                                                            method="POST">
                                                             @csrf
-                                                            
-                                                            <div class="modal fade" id="tambahsoalModal{{ $materi->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+
+                                                            <div class="modal fade"
+                                                                id="tambahsoalModal{{ $materi->id }}" tabindex="-1"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                                                data-bs-backdrop="static">
                                                                 <div class="modal-dialog modal-dialog-centered">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title" id="exampleModalLabel">Tambah Soal</h5>
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLabel">Tambah Soal</h5>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <label for="nama" class="form-label">Nama Soal</label>
-                                                                            <input type="text" class="form-control" id="nama{{ $materi->id }}" name="nama" required>
-                                                                            <input type="hidden" name="materi_id" value="{{ $materi->id }}">
+                                                                            <label for="nama" class="form-label">Nama
+                                                                                Soal</label>
+                                                                            <input type="text" class="form-control"
+                                                                                id="nama{{ $materi->id }}"
+                                                                                name="nama" required>
+                                                                            <input type="hidden" name="materi_id"
+                                                                                value="{{ $materi->id }}">
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                                            <button type="submit" class="btn btn-primary">Tambah Soal</button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Batal</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Tambah
+                                                                                Soal</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -469,18 +486,20 @@
                 <div class="row ">
                     <div class="col justify-content-center">
                         <div class="card mx-3 px-3 table-responsive">
-                            <table class="table table-responsive table-bordered" id="tabel-leader" style="text-align: center; vertical-align: middle;">
+                            <table class="table table-responsive table-bordered" id="tabel-leader"
+                                style="text-align: center; vertical-align: middle;">
                                 <thead style="text-align: center; vertical-align: middle; justify-content: center">
                                     <tr>
                                         <th scope="col" rowspan="2">Nomor</th>
                                         <th scope="col" rowspan="2">Nama</th>
                                         <th scope="col" rowspan="2">Tipe</th>
-                                        <th scope="col" colspan="{{ $materis->count() + $case_studies->count() }}">Tantangan</th>
+                                        <th scope="col" colspan="{{ $materis->count() + $case_studies->count() ?? 1 }}">
+                                            Tantangan</th>
                                         <th scope="col" rowspan="2">Exp</th>
                                         <th scope="col" rowspan="2">Nilai</th>
                                     </tr>
                                     <tr>
-                                        @foreach ($materis as $materi )
+                                        @foreach ($materis as $materi)
                                             <th scope="col">{{ $materi->judul }}</th>
                                         @endforeach
                                         @foreach ($case_studies as $caseStudy)
@@ -496,66 +515,89 @@
                                         });
                                     @endphp
                                     @foreach ($sortedSiswas as $siswa)
-                                    @php
-                                        $jumlahSubmateri = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->where('user_type_id', $siswa->user_type_id)->count();
-                                        $jumlahSoal = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->where('user_type_id', $siswa->user_type_id)->count();
-                                        $maxPointSubMateri = 50 * $jumlahSubmateri;
-                                        $maxPointSoal = 100 * $jumlahSoal;
-                                        $pointSubMateri = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0;
-                                        $pointSoal = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0;
-                                        $jumlahCaseStudy = $siswa->user_tasks->where('task_type', 'case_study')->count();
-                                        $maxPointCaseStudy = 100 * $jumlahCaseStudy;
-                                        $pointCaseStudy = $siswa->user_tasks->where('task_type', 'case_study')->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0;
-                                        $rataCaseStudy = $maxPointCaseStudy > 0 ? ($pointCaseStudy / $maxPointCaseStudy) * 100 : 0;
-
-
-
-                                        $pointMateri = $pointSubMateri + $pointSoal;
-
-                                        $rataSubmateri = $maxPointSubMateri > 0 ? ($pointSubMateri / $maxPointSubMateri) * 100 : 0;
-                                        $rataSoal = $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
-
-                                        $average = ($rataSubmateri + $rataSoal) / 2;
-                                        $averageTotal = ($average + $rataCaseStudy) / 2;
-                                    @endphp
                                         <tr>
                                             <td scope="row">{{ $loop->iteration }}</td>
                                             <td scope="row">{{ $siswa->name }}</td>
-                                            <td scope="row">{{ optional($siswa->userType)->name ?? 'No UserType' }}</td>
-                                                @foreach ($materis as $materi)
-                                                    <td scope="row">
-                                                        @if ($siswa->user_tasks->where('materi_id', $materi->id)->sum('points') > 0)
-                                                            <span
-                                                                class="badge bg-success">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
-                                                        @else
-                                                            <span
-                                                                class="badge bg-danger">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
-                                                        @endif
-                                                    </td>
-                                                @endforeach
-                                                @foreach ($case_studies as $caseStudy) 
-                                                    <td scope="row">
-                                                        @if ($siswa->user_tasks->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('student_id', $siswa->id)->where('kelas_id', $kelas->id)->sum('points') > 0)
-                                                            <span
-                                                                class="badge bg-success">{{ $siswa->user_tasks->where('student_id', $siswa->id)
-                                                                ->where('task_type', 'case_study')
-                                                                ->where('task_id', $caseStudy->id)
-                                                                ->where('kelas_id', $kelas->id)
-                                                                ->where('user_type_id', $siswa->user_type_id)
-                                                                ->sum('points')}}</span>
-                                                        @else
-                                                            <span
-                                                                class="badge bg-danger">{{ $siswa->user_tasks->where('student_id', $siswa->id)
-                                                                ->where('task_type', 'case_study')
-                                                                ->where('task_id', $caseStudy->id)
-                                                                ->where('kelas_id', $kelas->id)
-                                                                ->where('user_type_id', $siswa->user_type_id)
-                                                                ->sum('points') ?? 0}}</span>
-                                                        @endif  
-                                                    </td>   
-                                                @endforeach
+                                            <td scope="row">{{ optional($siswa->userType)->name ?? 'No UserType' }}
+                                            </td>
+                                            @foreach ($materis as $materi)
+                                                @php
+                                                    $jumlahSubmateri = $siswa->user_tasks
+                                                        ->where('materi_id', $materi->id)
+                                                        ->where('task_type', 'sub_materi')
+                                                        ->where('user_type_id', $siswa->user_type_id)
+                                                        ->count();
+                                                    $jumlahSoal = $siswa->user_tasks
+                                                        ->where('materi_id', $materi->id)
+                                                        ->where('task_type', 'soal')
+                                                        ->where('user_type_id', $siswa->user_type_id)
+                                                        ->count();
+                                                    $maxPointSubMateri = 50 * $jumlahSubmateri;
+                                                    $maxPointSoal = 100 * $jumlahSoal;
+                                                    $pointSubMateri =
+                                                        $siswa->user_tasks
+                                                            ->where('materi_id', $materi->id)
+                                                            ->where('task_type', 'sub_materi')
+                                                            ->where('user_type_id', $siswa->user_type_id)
+                                                            ->sum('points') ?? 0;
+                                                    $pointSoal =
+                                                        $siswa->user_tasks
+                                                            ->where('materi_id', $materi->id)
+                                                            ->where('task_type', 'soal')
+                                                            ->where('user_type_id', $siswa->user_type_id)
+                                                            ->sum('points') ?? 0;
+                                                    $jumlahCaseStudy = $siswa->user_tasks
+                                                        ->where('task_type', 'case_study')
+                                                        ->count();
+                                                    $maxPointCaseStudy = 100 * $jumlahCaseStudy;
+                                                    $pointCaseStudy =
+                                                        $siswa->user_tasks
+                                                            ->where('task_type', 'case_study')
+                                                            ->where('kelas_id', $kelas->id)
+                                                            ->where('user_type_id', $siswa->user_type_id)
+                                                            ->sum('points') ?? 0;
+                                                    $rataCaseStudy =
+                                                        $maxPointCaseStudy > 0
+                                                            ? ($pointCaseStudy / $maxPointCaseStudy) * 100
+                                                            : 0;
+
+                                                    $pointMateri = $pointSubMateri + $pointSoal;
+
+                                                    $rataSubmateri =
+                                                        $maxPointSubMateri > 0
+                                                            ? ($pointSubMateri / $maxPointSubMateri) * 100
+                                                            : 0;
+                                                    $rataSoal =
+                                                        $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
+
+                                                    $average = ($rataSubmateri + $rataSoal) / 2;
+                                                    $averageTotal = ($average + $rataCaseStudy) / 2;
+
+                                                @endphp
+
+                                                <td scope="row">
+                                                    @if ($siswa->user_tasks->where('materi_id', $materi->id)->sum('points') > 0)
+                                                        <span
+                                                            class="badge bg-success">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge bg-danger">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
+                                                    @endif
+                                                </td>
+                                            @endforeach
+                                            @foreach ($case_studies as $caseStudy)
+                                                <td scope="row">
+                                                    @if ($siswa->user_tasks->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('student_id', $siswa->id)->where('kelas_id', $kelas->id)->sum('points') > 0)
+                                                        <span
+                                                            class="badge bg-success">{{ $siswa->user_tasks->where('student_id', $siswa->id)->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge bg-danger">{{ $siswa->user_tasks->where('student_id', $siswa->id)->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0 }}</span>
+                                                    @endif
+                                                </td>
+                                            @endforeach
                                             <td scope="row">{{ $siswa->user_tasks->sum('points') }}</td>
-                                            <td scope="row">{{ $averageTotal}}</td>
+                                            <td scope="row">{{ $averageTotal ?? 0 }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -782,71 +824,89 @@
         });
     </script>
     <style>
-            /* Center text and items */
-            #tabel-leader th, #tabel-leader td,
-            #anggota-kelas th, #anggota-kelas td {
-                text-align: center;
-                vertical-align: middle;
-            }
+        /* Center text and items */
+        #tabel-leader th,
+        #tabel-leader td,
+        #anggota-kelas th,
+        #anggota-kelas td {
+            text-align: center;
+            vertical-align: middle;
+        }
 
-            /* Make header text bold and colorful */
-            #tabel-leader th, #anggota-kelas th {
-                font-weight: bold;
-                background-color: #535794; /* Green background */
-                color: white; /* White text */
-            }
+        /* Make header text bold and colorful */
+        #tabel-leader th,
+        #anggota-kelas th {
+            font-weight: bold;
+            background-color: #535794;
+            /* Green background */
+            color: white;
+            /* White text */
+        }
 
-            /* Colorful alternating rows for tabel-leader */
-            #tabel-leader tbody tr:nth-child(odd) {
-                background-color: #f2f2f2; /* Light grey */
-            }
-            #tabel-leader tbody tr:nth-child(even) {
-                background-color: #e6ffe6; /* Light green */
-            }
+        /* Colorful alternating rows for tabel-leader */
+        #tabel-leader tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+            /* Light grey */
+        }
 
-            /* Colorful alternating rows for anggota-kelas */
-            #anggota-kelas tbody tr:nth-child(odd) {
-                background-color: #f9f9f9; /* Light grey */
-            }
-            #anggota-kelas tbody tr:nth-child(even) {
-                background-color: #ffe6e6; /* Light pink */
-            }
+        #tabel-leader tbody tr:nth-child(even) {
+            background-color: #e6ffe6;
+            /* Light green */
+        }
 
-            /* Customize badge colors */
-            .badge.bg-success {
-                background-color: #28a745 !important; /* Green */
-                color: white;
-            }
-            .badge.bg-danger {
-                background-color: #dc3545 !important; /* Red */
-                color: white;
-            }
+        /* Colorful alternating rows for anggota-kelas */
+        #anggota-kelas tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+            /* Light grey */
+        }
 
-            /* Customize Exp image size */
-            img.exp-image {
-                width: 25px;
-                height: 25px;
-                margin-left: 10px;
-            }
-        </style>
+        #anggota-kelas tbody tr:nth-child(even) {
+            background-color: #ffe6e6;
+            /* Light pink */
+        }
 
-        <script>
-            // Initialize DataTable for #tabel-leader with responsive feature and centered content
-            let tableLeader = new DataTable('#tabel-leader', {
-                responsive: true,
-                columnDefs: [
-                    { targets: '_all', className: 'dt-center' }  // Center content in all columns
-                ]
-            });
+        /* Customize badge colors */
+        .badge.bg-success {
+            background-color: #28a745 !important;
+            /* Green */
+            color: white;
+        }
 
-            // Initialize DataTable for #anggota-kelas with responsive feature and centered content
-            let tableKelas = new DataTable('#anggota-kelas', {
-                responsive: true,
-                columnDefs: [
-                    { targets: '_all', className: 'dt-center' }  // Center content in all columns
-                ]
-            });
-        </script>
+        .badge.bg-danger {
+            background-color: #dc3545 !important;
+            /* Red */
+            color: white;
+        }
+
+        /* Customize Exp image size */
+        img.exp-image {
+            width: 25px;
+            height: 25px;
+            margin-left: 10px;
+        }
+    </style>
+
+    <script>
+        // Initialize DataTable for #tabel-leader with responsive feature and centered content
+        let tableLeader = new DataTable('#tabel-leader', {
+            responsive: true,
+            columnDefs: [{
+                    targets: '_all',
+                    className: 'dt-center'
+                } // Center content in all columns
+            ]
+        });
+
+        // Initialize DataTable for #anggota-kelas with responsive feature and centered content
+        let tableKelas = new DataTable('#anggota-kelas', {
+            responsive: true,
+            columnDefs: [{
+                    targets: '_all',
+                    className: 'dt-center'
+                } // Center content in all columns
+            ]
+        });
+    </script>
     <script>
         function confirmDelete(id) {
             Swal.fire({

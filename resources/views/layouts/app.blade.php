@@ -29,7 +29,7 @@
     <div class="overlay btn-toggle"></div>
     <!--end overlay-->
 
-    @include('layouts.extra')
+    {{-- @include('layouts.extra') --}}
 
     @include('layouts.common-scripts')
 </body>

@@ -102,6 +102,9 @@ Route::prefix('siswa')->middleware(['role:siswa', 'auth', 'check_session'])->gro
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
     Route::get('/quiz', [SiswaController::class, 'quiz'])->name('siswa.quiz');
     Route::get('/join-quiz', [SiswaController::class, 'join_quiz'])->name('siswa.join-quiz');
+    Route::get('/study-quiz', [SiswaController::class, 'study_quiz'])->name('siswa.study-quiz');
+    Route::get('/preview-quiz', [SiswaController::class, 'preview_quiz'])->name('siswa.preview-quiz');
+    Route::get('/leaderboard-quiz', [SiswaController::class, 'leaderboard_quiz'])->name('siswa.leaderboard-quiz');
     Route::get('/compiler', [SiswaController::class, 'compiler'])->name('/siswa/compiler');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
     Route::get('/user-type-result', [SiswaController::class, 'getUserTypeResult'])->name('siswa.result');
@@ -175,7 +178,7 @@ Route::prefix('guru')->middleware(['role:guru', 'auth', 'check_session'])->group
     ->name('sub-materi.edit');
     Route::put('/kelas/{kelasId}/sub-materi/update/{userTypeId}', [SubMateriController::class, 'updateSubMateri'])
     ->name('sub-materi.update');
-    Route::delete('/sub-materi/{subMateriId}', [SubMateriController::class, 'destroySubMateri']) 
+    Route::delete('/sub-materi/{subMateriId}', [SubMateriController::class, 'destroySubMateri'])
     ->name('sub-materi.destroy');
     Route::get('/ckeditor', [CkeditorController::class, 'index']);
     Route::post('/upload', [CkeditorController::class, 'upload'])

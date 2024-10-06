@@ -283,5 +283,14 @@ class SiswaController extends Controller
     public function join_quiz(){
         return view('siswa.join-quiz');
     }
+    public function study_quiz(){
+        return view('siswa.study-quiz');
+    }
+    public function preview_quiz(){
+        return view('siswa.preview-quiz');
+    }
+    public function leaderboard_quiz(){
+        return view('siswa.leaderboard-quiz');
+    }
 
 }

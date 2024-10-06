@@ -34,14 +34,14 @@
                                <div class="menu-title">Kelas</div>
                            </a>
                        </li>
-                       <li class="mt-3">
+                       {{-- <li class="mt-3">
                            <a href="{{ url('/guru/discussion') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-chat"></i></div>
                                <div class="menu-title">Discussion</div>
                            </a>
-                       </li>
+                       </li> --}}
                        <li class="mt-3">
-                           <a href="{{ url('/guru/livecode') }}">
+                           <a href="{{ url('/guru/compiler') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>
                                <div class="menu-title">Live Code</div>
                            </a>
@@ -66,18 +66,17 @@
                            </a>
                        </li>
                        <li class="mt-3">
-                        <a href="{{ url('/siswa/course') }}">
-                            <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
-                            <div class="menu-title">Kelas</div>
-                        </a>
-                    </li>
+                           <a href="{{ url('/siswa/course') }}">
+                               <div class="font-20"><i class="fadeIn animated bx bx-book"></i></div>
+                               <div class="menu-title">Kelas</div>
+                           </a>
                        </li>
-                       <li class="mt-3">
+                       {{-- <li class="mt-3">
                            <a href="{{ url('/siswa/discussion') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-chat"></i></div>
                                <div class="menu-title">Discussion</div>
                            </a>
-                       </li>
+                       </li> --}}
                        <li class="mt-3">
                            <a href="{{ url('/siswa/compiler') }}">
                                <div class="font-20"><i class="fadeIn animated bx bx-code-alt"></i></div>

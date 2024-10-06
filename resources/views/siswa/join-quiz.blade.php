@@ -9,24 +9,24 @@
     <div class="col-12 col-xl-6">
         <!-- Button trigger modal -->
         <button type="button" class="btn ripple btn-primary px-4 mb-4" data-bs-toggle="modal"
-            data-bs-target="#FormModal">Tambah Kelas
+            data-bs-target="#FormModal">Gabung Quiz
         </button>
         <!-- Modal -->
         <div class="modal fade" id="FormModal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header border-bottom-0 py-2">
-                        <h5 class="modal-title">Tambah Kelas</h5>
+                        <h5 class="modal-title">Gabung Quiz</h5>
                         <a href="javascript:;" class="primary-menu-close" data-bs-dismiss="modal">
                             <i class="material-icons-outlined">close</i>
                         </a>
                     </div>
                     <div class="modal-body">
                         <div class="form-body">
-                            <form class="row g-3" method="POST" action="{{ route('siswa.course.join') }}">
+                            <form class="row g-3" method="POST" action="">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="token" class="form-label">Masukkan Token Kelas</label>
+                                    <label for="token" class="form-label">Masukkan Kode Quiz</label>
                                     <input type="text" name="token" class="form-control" id="token" required>
                                 </div>
                                 <div class="d-md-flex d-grid align-items-center gap-3">
@@ -45,37 +45,13 @@
     <div class="row">
         <div class="col-sm-3 mb-3 mb-sm-0">
             <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 mb-3 mb-sm-0">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div class="card-body"><dotlottie-player  src="https://lottie.host/d38ebfe1-b80a-4422-8ab8-c287edbab88b/gsKn7K93Sw.json"
+                    background="transparent" speed="1" style="width: 180px; height: 180px;" loop autoplay
+                    class="d-flex mx-auto"></dotlottie-player>
+
+                    <h5 class="card-title">Judul Quiz</h5>
+                    <p class="card-text">Deskripsi Quiz</p>
+                    <a href="{{Route('siswa.preview-quiz')}}" class="btn btn-sm btn-primary">Masuk</a>
                 </div>
             </div>
         </div>

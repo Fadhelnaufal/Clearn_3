@@ -14,9 +14,8 @@
                         <dotlottie-player src="https://lottie.host/b1f20903-e770-4c11-8805-8b614309ba01/wBJwaFw6XF.json"
                             background="transparent" speed="1" style="width: 300px; height: 300px;" loop
                             autoplay></dotlottie-player>
-                        <h5 class="card-title text-center">Gabung Quiz</h5>
-                        <p class="card-text text-center">Silahkan masukkan kode quiz yang telah diberikan oleh guru.</p>
-                        <a href="{{Route('siswa.join-quiz')}}" class="btn btn-primary">Gabung Quiz</a>
+                        <h5 class="card-title text-center">Quiz</h5>
+                        <a href="#" class="btn btn-primary">Lihat</a>
                     </div>
                 </div>
             </div>
@@ -29,7 +28,7 @@
                             autoplay></dotlottie-player>
                         <h5 class="card-title text-center">Check Leaderboard</h5>
                         <p class="card-text text-center">Lihat Leaderboard terkini</p>
-                        <a href="{{Route('siswa.leaderboard-quiz')}}" class="btn btn-primary">Lihat Leaderboard</a>
+                        <a href="#" class="btn btn-primary">Lihat Leaderboard</a>
                     </div>
                 </div>
             </div>
