@@ -71,4 +71,16 @@ class GuruController extends Controller
     {
         return view('compiler.compiler');
     }
+    public function quiz()
+    {
+        return view('guru.quiz');
+    }
+    public function tambah_quiz()
+    {
+        return view('guru.tambah-quiz');
+    }
+    public function detail_quiz()
+    {
+        return view('guru.detail-quiz');
+    }
 }

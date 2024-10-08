@@ -123,294 +123,17 @@
             <div id="navigation">
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu nav-light">
-                    <li><a href="index.html" class="sub-menu-item">Home</a></li>
+                    <li><a href="" class="sub-menu-item">Home</a></li>
                     <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)">Landing</a><span class="menu-arrow"></span>
-                        <ul class="submenu megamenu">
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head"><i class="uil uil-book-open fs-6 align-middle"></i>
-                                        Landing Pages</li>
-                                    <li><a href="index-saas.html" class="sub-menu-item">Saas</a></li>
-                                    <li><a href="index-classic-saas.html" class="sub-menu-item">Classic Saas</a></li>
-                                    <li><a href="index-modern-saas.html" class="sub-menu-item">Modern Saas <span
-                                                class="badge text-bg-success ms-2">Animation</span></a></li>
-                                    <li><a href="index-agency.html" class="sub-menu-item">Agency</a></li>
-                                    <li><a href="index-apps.html" class="sub-menu-item">Application</a></li>
-                                    <li><a href="index-classic-app.html" class="sub-menu-item">Classic App</a></li>
-                                    <li><a href="index-modern-app.html" class="sub-menu-item">Modern App </a></li>
-                                    <li><a href="index-studio.html" class="sub-menu-item">Studio</a></li>
-                                    <li><a href="index-marketing.html" class="sub-menu-item">Marketing</a></li>
-                                    <li><a href="index-enterprise.html" class="sub-menu-item">Enterprise</a></li>
-                                    <li><a href="index-services.html" class="sub-menu-item">Service</a></li>
-                                    <li><a href="index-payments.html" class="sub-menu-item">Payments</a></li>
-                                    <li><a href="index-it-solution.html" class="sub-menu-item">IT Solution </a></li>
-                                    <li><a href="index-it-solution-two.html" class="sub-menu-item">IT Solution Two
-                                        </a></li>
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head"><i class="uil uil-book-open fs-6 align-middle"></i>
-                                        Landing Pages</li>
-                                    <li><a href="index-developer.html" class="sub-menu-item">Developer</a></li>
-                                    <li><a href="index-seo-agency.html" class="sub-menu-item">SEO Agency</a></li>
-                                    <li><a href="index-hospital.html" class="sub-menu-item">Hospital</a></li>
-                                    <li><a href="index-coworking.html" class="sub-menu-item">Coworking</a></li>
-                                    <li><a href="index-business.html" class="sub-menu-item">Business</a></li>
-
-                                    <li><a href="index-modern-business.html" class="sub-menu-item">Modern Business</a>
-                                    </li>
-                                    <li><a href="index-finance.html" class="sub-menu-item">Finance </a></li>
-                                    <li><a href="index-logistics.html" class="sub-menu-item">Delivery & Logistics </a>
-                                    </li>
-                                    <li><a href="index-social-marketing.html" class="sub-menu-item">Social Media</a>
-                                    </li>
-                                    <li><a href="index-digital-agency.html" class="sub-menu-item">Digital Agency</a>
-                                    </li>
-                                    <li><a href="index-customer.html" class="sub-menu-item">Customer</a></li>
-                                    <li><a href="index-software.html" class="sub-menu-item">Software</a></li>
-                                    <li><a href="index-yoga.html" class="sub-menu-item">Yoga </a></li>
-                                    <li><a href="index-gym.html" class="sub-menu-item">GYM & Fitness </a></li>
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head"><i class="uil uil-book-open fs-6 align-middle"></i>
-                                        Landing Pages</li>
-                                    <li><a href="index-consulting.html" class="sub-menu-item">Consulting <span
-                                                class="badge text-bg-danger ms-2">New</span></a></li>
-                                    <li><a href="index-hotel.html" class="sub-menu-item">Hotel</a></li>
-                                    <li><a href="index-restaurant.html" class="sub-menu-item">Restaurant </a></li>
-                                    <li><a href="index-construction.html" class="sub-menu-item">Construction</a></li>
-                                    <li><a href="index-videocall.html" class="sub-menu-item">Video Conference </a>
-                                    </li>
-                                    <li><a href="index-blockchain.html" class="sub-menu-item">Blockchain </a></li>
-                                    <li><a href="index-crypto-two.html" class="sub-menu-item">Cryptocurrency Two </a>
-                                    </li>
-                                    <li><a href="index-integration.html" class="sub-menu-item">Integration</a></li>
-                                    <li><a href="index-task-management.html" class="sub-menu-item">Task Management
-                                        </a></li>
-                                    <li><a href="index-email-inbox.html" class="sub-menu-item">Email Inbox </a></li>
-                                    <li><a href="index-travel.html" class="sub-menu-item">Travel </a></li>
-                                    <li><a href="index-course.html" class="sub-menu-item">Course</a></li>
-                                    <li><a href="index-online-learning.html" class="sub-menu-item">Online Learning</a>
-                                    </li>
-                                    <li><a href="index-insurance.html" class="sub-menu-item">Insurance</a></li>
-                                    <li><a href="index-furniture.html" class="sub-menu-item">Furniture </a></li>
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head"><i class="uil uil-book-open fs-6 align-middle"></i>
-                                        Landing Pages</li>
-                                    <li><a href="index-law-firm.html" class="sub-menu-item">Law Firm </a></li>
-                                    <li><a href="index-single-product.html" class="sub-menu-item">Product</a></li>
-                                    <li><a href="index-car-riding.html" class="sub-menu-item">Car Ride</a></li>
-                                    <li><a href="index-landing-one.html" class="sub-menu-item">Landing One </a></li>
-                                    <li><a href="index-landing-two.html" class="sub-menu-item">Landing Two </a></li>
-                                    <li><a href="index-landing-three.html" class="sub-menu-item">Landing Three </a>
-                                    </li>
-                                    <li><a href="index-landing-four.html" class="sub-menu-item">Landing Four</a></li>
-                                    <li><a href="index-charity.html" class="sub-menu-item">Charity </a></li>
-                                    <li><a href="index-personal.html" class="sub-menu-item">Personal</a></li>
-                                    <li><a href="index-creative-personal.html" class="sub-menu-item">Creative
-                                            Personal</a></li>
-
-                                    <li><a href="index-freelancer.html" class="sub-menu-item">Freelance </a></li>
-                                    <li><a href="index-event.html" class="sub-menu-item">Event</a></li>
-                                    <li><a href="index-ebook.html" class="sub-menu-item">E-Book</a></li>
-                                    <li><a href="index-onepage.html" class="sub-menu-item">Saas <span
-                                                class="badge text-bg-warning ms-2">Onepage</span></a></li>
-
-                                </ul>
-                            </li>
-
-                            <li>
-                                <ul>
-                                    <li class="megamenu-head"><i class="uil uil-cube fs-6 align-middle"></i> Full
-                                        Demos</li>
-                                    <li><a href="index-corporate.html" class="sub-menu-item">Corporate</a></li>
-                                    <li><a href="index-crypto.html" class="sub-menu-item">Cryptocurrency <span
-                                                class="badge text-bg-dark ms-2">Dark</span></a></li>
-                                    <li><a href="index-shop.html" class="sub-menu-item">Shop</a></li>
-                                    <li><a href="index-ai.html" class="sub-menu-item">AI Tools <span
-                                                class="badge text-bg-danger ms-2">New</span></a></li>
-                                    <li><a href="index-portfolio.html" class="sub-menu-item">Portfolio </a></li>
-                                    <li><a href="helpcenter-overview.html" class="sub-menu-item">Help Center</a></li>
-                                    <li><a href="index-hosting.html" class="sub-menu-item">Hosting & Domain</a></li>
-                                    <li><a href="index-job.html" class="sub-menu-item">Jobs & Careers</a></li>
-                                    <li><a href="index-video-studio.html" class="sub-menu-item">Video Studio </a></li>
-                                    <li><a href="index-real-estate.html" class="sub-menu-item">Real Estate</a></li>
-                                    <li><a href="forums.html" class="sub-menu-item">Forums</a></li>
-                                    <li><a href="index-blog.html" class="sub-menu-item">Blog or News</a></li>
-                                    <li><a href="index-nft.html" class="sub-menu-item">NFT Marketplace</a></li>
-                                    <li><a href="index-photography.html" class="sub-menu-item">Photography <span
-                                                class="badge text-bg-dark ms-2">Dark</span></a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                        <a href="">Features</a>
                     </li>
 
                     <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
-                        <ul class="submenu">
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Company </a><span
-                                    class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="page-aboutus.html" class="sub-menu-item"> About Us</a></li>
-                                    <li><a href="page-aboutus-two.html" class="sub-menu-item"> About Us Two </a></li>
-                                    <li><a href="page-services.html" class="sub-menu-item">Services</a></li>
-                                    <li><a href="page-history.html" class="sub-menu-item">History </a></li>
-                                    <li><a href="page-team.html" class="sub-menu-item"> Team</a></li>
-                                    <li><a href="page-pricing.html" class="sub-menu-item">Pricing</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Account </a><span
-                                    class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="account-profile.html" class="sub-menu-item">Profile</a></li>
-                                    <li><a href="account-members.html" class="sub-menu-item">Members </a></li>
-                                    <li><a href="account-works.html" class="sub-menu-item">Works </a></li>
-                                    <li><a href="account-messages.html" class="sub-menu-item">Messages </a></li>
-                                    <li><a href="account-chat.html" class="sub-menu-item">Chat </a></li>
-                                    <li><a href="account-payments.html" class="sub-menu-item">Payments </a></li>
-                                    <li><a href="account-setting.html" class="sub-menu-item">Setting</a></li>
-                                    <li><a href="page-invoice.html" class="sub-menu-item">Invoice</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Email
-                                    Template</a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="email-confirmation.html" class="sub-menu-item">Confirmation</a></li>
-                                    <li><a href="email-password-reset.html" class="sub-menu-item">Reset Password</a>
-                                    </li>
-                                    <li><a href="email-alert.html" class="sub-menu-item">Alert</a></li>
-                                    <li><a href="email-invoice.html" class="sub-menu-item">Invoice</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Blog </a><span
-                                    class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="blog-grid.html" class="sub-menu-item">Blog Grid</a></li>
-                                    <li><a href="blog-grid-sidebar.html" class="sub-menu-item">Blog with Sidebar</a>
-                                    </li>
-                                    <li><a href="blog-list.html" class="sub-menu-item">Blog Listing</a></li>
-                                    <li><a href="blog-list-sidebar.html" class="sub-menu-item">Blog List & Sidebar</a>
-                                    </li>
-                                    <li><a href="blog-detail.html" class="sub-menu-item">Blog Detail</a></li>
-                                    <li><a href="blog-detail-two.html" class="sub-menu-item">Blog Detail 2 </a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Case Study
-                                </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="page-cases.html" class="sub-menu-item">All Cases </a></li>
-                                    <li><a href="page-case-detail.html" class="sub-menu-item">Case Detail </a></li>
-                                </ul>
-                            </li>
-                            <li><a href="course-detail.html" class="sub-menu-item">Course Detail </a></li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Auth Pages
-                                </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li class="has-submenu child-menu-item"><a href="javascript:void(0)"> Login
-                                        </a><span class="submenu-arrow"></span>
-                                        <ul class="submenu">
-                                            <li><a href="auth-login.html" class="sub-menu-item">Login</a></li>
-                                            <li><a href="auth-cover-login.html" class="sub-menu-item">Login Cover</a>
-                                            </li>
-                                            <li><a href="auth-login-three.html" class="sub-menu-item">Login Simple</a>
-                                            </li>
-                                            <li><a href="auth-bs-login.html" class="sub-menu-item">BS5 Login</a></li>
-                                            <li><a href="auth-login-bg-video.html" class="sub-menu-item">Login
-                                                    Five</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="has-submenu child-menu-item"><a href="javascript:void(0)"> Signup
-                                        </a><span class="submenu-arrow"></span>
-                                        <ul class="submenu">
-                                            <li><a href="auth-signup.html" class="sub-menu-item">Signup</a></li>
-                                            <li><a href="auth-cover-signup.html" class="sub-menu-item">Signup
-                                                    Cover</a></li>
-                                            <li><a href="auth-signup-three.html" class="sub-menu-item">Signup
-                                                    Simple</a></li>
-                                            <li><a href="auth-bs-signup.html" class="sub-menu-item">BS5 Singup</a>
-                                            </li>
-                                            <li><a href="auth-signup-bg-video.html" class="sub-menu-item">Singup
-                                                    Five</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="has-submenu child-menu-item"><a href="javascript:void(0)"> Reset
-                                            password </a><span class="submenu-arrow"></span>
-                                        <ul class="submenu">
-                                            <li><a href="auth-re-password.html" class="sub-menu-item">Reset
-                                                    Password</a></li>
-                                            <li><a href="auth-cover-re-password.html" class="sub-menu-item">Reset
-                                                    Password Cover</a></li>
-                                            <li><a href="auth-re-password-three.html" class="sub-menu-item">Reset
-                                                    Password Simple</a></li>
-                                            <li><a href="auth-bs-reset.html" class="sub-menu-item">BS5 Reset
-                                                    Password</a></li>
-                                            <li><a href="auth-reset-password-bg-video.html"
-                                                    class="sub-menu-item">Reset Pass Five</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Utility </a><span
-                                    class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="page-terms.html" class="sub-menu-item">Terms of Services</a></li>
-                                    <li><a href="page-privacy.html" class="sub-menu-item">Privacy Policy</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Special</a><span
-                                    class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="page-comingsoon.html" class="sub-menu-item">Coming Soon</a></li>
-                                    <li><a href="page-comingsoon2.html" class="sub-menu-item">Coming Soon Two</a></li>
-                                    <li><a href="page-maintenance.html" class="sub-menu-item">Maintenance</a></li>
-                                    <li><a href="page-error.html" class="sub-menu-item">Error</a></li>
-                                    <li><a href="page-thankyou.html" class="sub-menu-item">Thank you</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Contact </a><span
-                                    class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="page-contact-detail.html" class="sub-menu-item">Contact Detail</a>
-                                    </li>
-                                    <li><a href="page-contact-one.html" class="sub-menu-item">Contact One</a></li>
-                                    <li><a href="page-contact-two.html" class="sub-menu-item">Contact Two</a></li>
-                                    <li><a href="page-contact-three.html" class="sub-menu-item">Contact Three</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item"><a href="javascript:void(0)"> Multi Level
-                                    Menu</a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="javascript:void(0)" class="sub-menu-item">Level 1.0</a></li>
-                                    <li class="has-submenu child-menu-item"><a href="javascript:void(0)"> Level 2.0
-                                        </a><span class="submenu-arrow"></span>
-                                        <ul class="submenu">
-                                            <li><a href="javascript:void(0)" class="sub-menu-item">Level 2.1</a></li>
-                                            <li><a href="javascript:void(0)" class="sub-menu-item">Level 2.2</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="footer.html" class="sub-menu-item">Footer Layouts </a></li>
-                        </ul>
+                        <a href="javascript:void(0)">About</a>
                     </li>
 
                     <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)">Demos</a><span class="menu-arrow"></span>
+                        <a href="javascript:void(0)">Instructor</a><span class="menu-arrow"></span>
                         <ul class="submenu megamenu">
                             <li>
                                 <ul>
@@ -774,7 +497,7 @@
                 <div class="col-12">
                     <div class="features-absolute">
                         <div class="row">
-                            <div class="col-md-4" data-aos="fade-up" >
+                            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100" >
                                 <div
                                     class="card border-0 text-center features feature-primary feature-clean course-feature p-4 overflow-hidden shadow">
                                     <div class="icons text-center mx-auto">
@@ -790,7 +513,7 @@
                                 </div>
                             </div><!--end col-->
 
-                            <div class="col-md-4 mt-4 pt-2 mt-sm-0 pt-sm-0" data-aos="fade-up" >
+                            <div class="col-md-4 mt-4 pt-2 mt-sm-0 pt-sm-0" data-aos="fade-up" data-aos-delay="200" >
                                 <div
                                     class="card border-0 text-center features feature-primary feature-clean course-feature p-4 overflow-hidden shadow">
                                     <div class="icons text-center mx-auto">
@@ -808,7 +531,7 @@
                                 </div>
                             </div><!--end col-->
 
-                            <div class="col-md-4 mt-4 pt-2 mt-sm-0 pt-sm-0" data-aos="fade-up">
+                            <div class="col-md-4 mt-4 pt-2 mt-sm-0 pt-sm-0" data-aos="fade-up" data-aos-delay="300">
                                 <div
                                     class="card border-0 text-center features feature-primary feature-clean course-feature p-4 overflow-hidden shadow">
                                     <div class="icons text-center mx-auto">
@@ -869,7 +592,7 @@
 
     <!-- Cta Start -->
     <section class="section bg-cta" style="background: url('assets/images/course/bg02.jpg') center center;"
-        id="cta" data-aos="fade-up">
+        id="cta" data-aos="fade-right">
         <div class="bg-overlay"></div>
         <div class="container">
             <div class="row justify-content-center">
@@ -897,16 +620,15 @@
                 <div class="col-12 text-center">
                     <div class="section-title mb-4 pb-2">
                         <h4 class="title mb-4">Instructors</h4>
-                        <p class="text-muted para-desc mx-auto mb-0">Start working with <span
-                                class="text-primary fw-bold">Landrick</span> that can provide everything you need to
-                            generate awareness, drive traffic, connect.</p>
+                        <p class="text-muted para-desc mx-auto mb-0">Meet with our experienced <span
+                                class="text-primary fw-bold">instructors</span> who can help you learn programming easily and quickly.</p>
                     </div>
                 </div><!--end col-->
             </div><!--end row-->
 
             <div class="row justify-content-center">
                 <div class="col-lg-3 col-md-6 mt-4 pt-2">
-                    <div class="card team team-primary text-center rounded border-0">
+                    <div class="card team team-primary text-center rounded border-0" data-aos="fade-up" data-aos-delay="100">
                         <div class="card-body">
                             <div class="position-relative">
                                 <img src="assets/images/client/fadhel.png"
@@ -936,7 +658,7 @@
                 </div><!--end col-->
 
                 <div class="col-lg-3 col-md-6 mt-4 pt-2">
-                    <div class="card team team-primary text-center rounded border-0">
+                    <div class="card team team-primary text-center rounded border-0"data-aos="fade-up" data-aos-delay="200">
                         <div class="card-body">
                             <div class="position-relative">
                                 <img src="assets/images/client/bayu.png"
@@ -965,7 +687,7 @@
                     </div>
                 </div><!--end col-->
                 <div class="col-lg-3 col-md-6 mt-4 pt-2">
-                    <div class="card team team-primary text-center rounded border-0">
+                    <div class="card team team-primary text-center rounded border-0" data-aos="fade-up" data-aos-delay="300">
                         <div class="card-body">
                             <div class="position-relative">
                                 <img src="assets/images/client/muiz.png"
@@ -994,7 +716,7 @@
                     </div>
                 </div><!--end col-->
                 <div class="col-lg-3 col-md-6 mt-4 pt-2">
-                    <div class="card team team-primary text-center rounded border-0">
+                    <div class="card team team-primary text-center rounded border-0"data-aos="fade-up" data-aos-delay="400">
                         <div class="card-body">
                             <div class="position-relative">
                                 <img src="assets/images/dika.png"
@@ -1025,7 +747,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-3 col-md-6 mt-4 pt-2">
-                    <div class="card team team-primary text-center rounded border-0">
+                    <div class="card team team-primary text-center rounded border-0" data-aos="fade-up" data-aos-delay="450">
                         <div class="card-body">
                             <div class="position-relative">
                                 <img src="assets/images/pakw.png"
@@ -1045,8 +767,9 @@
                                                 data-feather="linkedin" class="icons"></i></a></li>
                                 </ul><!--end icon-->
                             </div>
-                            <div class="content pt-3">
-                                <h5 class="mb-0"><a href="javascript:void(0)" class="name text-dark">Wahyu Nur
+                            <div class="content pt-3" >
+                                <h5 class="mb-0">
+                                    <a href="javascript:void(0)" class="name text-dark">Wahyu Nur
                                         Hidayat</a></h5>
                                 <small class="designation text-muted">Supervisor</small>
                             </div>
@@ -1056,103 +779,7 @@
             </div><!--end row-->
         </div><!--end container-->
     </section><!--end section-->
-    <!-- Courses End -->
 
-    <!-- Cta Start -->
-    {{-- <section class="section bg-cta" style="background: url('assets/images/course/bg03.jpg') center center;" id="admission">
-            <div class="bg-overlay"></div>
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-8 col-md-7 col-12">
-                        <div class="section-title">
-                            <h4 class="title text-white mb-4">Admission Now</h4>
-                            <p class="para-desc para-dark mb-0 text-white-50">Launch your campaign and benefit from our expertise on designing and managing conversion centered bootstrap v5 html page.</p>
-                        </div>
-                        <div class="row" id="counter">
-                            <div class="col-md-3 col-6 mt-4 pt-2">
-                                <div class="counter-box">
-                                    <i class="uil uil-graduation-cap text-white-50 h2"></i>
-                                    <h2 class="mb-0 text-white mt-2"><span class="counter-value" data-target="25">3</span>K</h2>
-                                    <h6 class="counter-head text-white-50">Students</h6>
-                                </div><!--end counter box-->
-                            </div><!--end col-->
-
-                            <div class="col-md-3 col-6 mt-4 pt-2">
-                                <div class="counter-box">
-                                    <i class="uil uil-book-open text-white-50 h2"></i>
-                                    <h2 class="mb-0 text-white mt-2"><span class="counter-value" data-target="70">1</span>+</h2>
-                                    <h6 class="counter-head text-white-50">Courses</h6>
-                                </div><!--end counter box-->
-                            </div><!--end col-->
-
-                            <div class="col-md-3 col-6 mt-4 pt-2">
-                                <div class="counter-box">
-                                    <i class="uil uil-user text-white-50 h2"></i>
-                                    <h2 class="mb-0 text-white mt-2"><span class="counter-value" data-target="55">0</span>+</h2>
-                                    <h6 class="counter-head text-white-50">Instructors</h6>
-                                </div><!--end counter box-->
-                            </div><!--end col-->
-
-                            <div class="col-md-3 col-6 mt-4 pt-2">
-                                <div class="counter-box">
-                                    <i class="uil uil-english-to-chinese text-white-50 h2"></i>
-                                    <h2 class="mb-0 text-white mt-2"><span class="counter-value" data-target="25">3</span>+</h2>
-                                    <h6 class="counter-head text-white-50">Languages</h6>
-                                </div><!--end counter box-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end col-->
-
-                    <div class="col-lg-4 col-md-5 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                        <div class="card border-0 rounded">
-                            <div class="card-body">
-                                <form>
-                                    <h4>7 Days Free Trial</h4>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Name : <span class="text-danger">*</span></label>
-                                                <div class="form-icon position-relative">
-                                                    <i data-feather="user" class="fea icon-sm icons"></i>
-                                                    <input type="text" class="form-control ps-5" placeholder="Name" name="name" required="">
-                                                </div>
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Email : <span class="text-danger">*</span></label>
-                                                <div class="form-icon position-relative">
-                                                    <i data-feather="mail" class="fea icon-sm icons"></i>
-                                                    <input type="email" class="form-control ps-5" placeholder="Email" name="email" required="">
-                                                </div>
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Phone : <span class="text-danger">*</span></label>
-                                                <div class="form-icon position-relative">
-                                                    <i data-feather="phone" class="fea icon-sm icons"></i>
-                                                    <input type="number" id="number" class="form-control ps-5" placeholder="phone" required="">
-                                                </div>
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="col-lg-12 mt-2 mb-0">
-                                            <div class="d-grid">
-                                                <button class="btn btn-primary">Register Now</button>
-                                            </div>
-                                        </div><!--end col-->
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section--> --}}
-    <!-- Cta End -->
 
     <!-- Testi Subscribe Start -->
     <section class="section">
@@ -1160,10 +787,9 @@
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title mb-4 pb-2">
-                        <h4 class="title mb-4">What Students Say ?</h4>
-                        <p class="text-muted para-desc mx-auto mb-0">Start working with <span
-                                class="text-primary fw-bold">Landrick</span> that can provide everything you need to
-                            generate awareness, drive traffic, connect.</p>
+                        <h4 class="title mb-4">What They Say ?</h4>
+                        <p class="text-muted para-desc mx-auto mb-0">Here's what they have to say about the <span
+                                class="text-primary fw-bold">EdMon</span>.</p>
                     </div>
                 </div><!--end col-->
             </div><!--end row-->
@@ -1173,8 +799,8 @@
                     <div class="tiny-three-item">
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/client/01.jpg"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
+                                <img src="assets/images/avatar_2.svg"
+                                    class="avatar avatar-small client-image rounded-3 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1183,9 +809,8 @@
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     </ul>
-                                    <p class="text-muted mt-2">" It seems that only fragments of the original text
-                                        remain in the Lorem Ipsum texts used today. "</p>
-                                    <h6 class="text-primary">- Thomas Israel <small class="text-muted">C.E.O</small>
+                                    <p class="text-muted mt-2">" Edmon berhasil menggabungkan gamifikasi dengan coding secara luar biasa! Saya merasa seperti bermain game sambil belajar. Tantangannya menarik, dan sistem reward-nya memotivasi saya untuk terus maju. "</p>
+                                    <h6 class="text-primary">- Kusuma Khoironi <small class="text-muted">Guru</small>
                                     </h6>
                                 </div>
                             </div>

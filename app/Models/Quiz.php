@@ -4,26 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Quiz extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'kelas_id', 'judul', 'deskripsi'
-    ];
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class, 'kelas_id');
-    }
+    protected $fillable = ['nama', 'access_token'];
 
     public function questions()
     {
-        return $this->hasMany(QuizQuestion::class, 'quiz_id');
+        return $this->hasMany(QuestionsQuiz::class);
     }
 
-    public function submissions()
+    public function users()
     {
-        return $this->hasMany(QuizSubmission::class, 'quiz_id');
+        return $this->belongsToMany(User::class, 'quiz_join_user', 'quiz_id', 'user_id');
     }
 }

@@ -16,7 +16,7 @@
                             autoplay></dotlottie-player>
                         <h5 class="card-title text-center">Gabung Quiz</h5>
                         <p class="card-text text-center">Silahkan masukkan kode quiz yang telah diberikan oleh guru.</p>
-                        <a href="{{Route('siswa.join-quiz')}}" class="btn btn-primary">Gabung Quiz</a>
+                        <a href="{{Route('siswa.show-quiz')}}" class="btn btn-primary">Gabung Quiz</a>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                             autoplay></dotlottie-player>
                         <h5 class="card-title text-center">Check Leaderboard</h5>
                         <p class="card-text text-center">Lihat Leaderboard terkini</p>
-                        <a href="{{Route('siswa.leaderboard-quiz')}}" class="btn btn-primary">Lihat Leaderboard</a>
+                        <a href="{{Route('siswa.show.latest-leaderboard')}}" class="btn btn-primary">Lihat Leaderboard</a>
                     </div>
                 </div>
             </div>

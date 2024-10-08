@@ -1,98 +1,92 @@
 @media (min-width: 1600px) {
-  .container {
-    max-width: 755px;
-  }
 }
 
 @media (max-width: 1440px) {
+  .countdown {
+    top: 30%;
+  }
 }
 @media (max-width: 1200px) {
+  .question {
+    font-size: 40px;
+  }
+  .options {
+    gap: 25px;
+  }
+  .options .option {
+    width: 20%;
+    height: 200px;
+  }
+  .option label {
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 992px) {
+  .stepCounter {
+    display: none;
+  }
+  .options .option {
+    width: 25%;
+    height: 180px;
+  }
+  .question {
+    font-size: 30px;
+  }
+  .option label {
+    font-size: 18px;
+  }
+  .nextPrev button {
+    font-size: 20px;
+    height: 80px;
+    padding: 0 27px;
+  }
 }
 
 @media (max-width: 768px) {
-  .logo {
-    font-size: 25px;
+  main {
+    padding: 10px 20px;
   }
-  .logo img {
-    width: 25px;
+  .stepImg {
+    width: 50%;
   }
-  .totalQuiz {
-    font-size: 20px;
-    width: 140px;
+  .countdown {
+    right: 20px;
   }
-  .totalQuiz span {
-    font-size: 16px;
+  .options .option {
+    height: 120px;
   }
-  .quizDetail {
+  .option img {
+    width: 70%;
+  }
+  .option label {
     font-size: 15px;
-  }
-  .mainHeading span {
-    font-size: 20px;
-    min-width: 60px;
-    height: 60px;
-  }
-  .mainHeading {
-    font-size: 20px;
-  }
-  footer {
-    font-size: 16px;
-    width: 100%;
   }
 }
 @media (max-width: 576px) {
-  header {
-    height: 60px;
-  }
-  main {
-    padding: 30px 20px;
-  }
-  .HorizontalQuiz {
-    padding: 20px 20px;
-  }
-  .totalQuiz {
+  .countdown {
     display: none;
   }
-  .timer {
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-    border-width: 5px;
+  .qNumber {
+    font-size: 20px;
   }
-  main {
-    height: auto;
+  .question {
+    font-size: 24px;
   }
 }
 
 @media (max-width: 480px) {
-  .quizDetail {
-    display: none;
+  .stepImg {
+    width: 100%;
   }
-  main {
-    border-radius: 0;
-    padding: 20px 0;
-  }
-  .mainHeading {
+  .options {
     flex-wrap: wrap;
-    font-size: 16px;
-    margin-bottom: 30px;
   }
-  .timer {
-    display: none;
+  .options .option {
+    width: 75%;
   }
-  .radioField {
-    height: 65px;
-  }
-  .radioField label {
-    font-size: 20px;
-  }
-  footer {
-    font-size: 12px;
-    gap: 15px;
-    flex-wrap: wrap;
-    text-align: center;
-    justify-content: center;
+  .nextPrev button {
+    height: 60px;
+    padding: 0 24px;
   }
 }

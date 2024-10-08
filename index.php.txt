@@ -1,1 +1,3 @@
 <?php header('location: public/');
+
+>Zi2]5tEO@eB

@@ -17,6 +17,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\StudentSubmissionController;
 use App\Http\Controllers\SubMateriController;
 use App\Http\Controllers\ResultCaseStudyController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SoalController;
 use App\Models\SubMateri;
 use Illuminate\Support\Facades\Auth;
@@ -25,67 +26,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
     return view('landing');
 });
-
-Route::get('/hasil-soal', function () {
-    return view('guru.hasil-soal');
-});
-Route::get('/hasil-soal-siswa', function () {
-    return view('siswa.hasil-soal');
-});
-// Route::get('/tabel', function () {
-//     return view('table-datatable');
-// });
-// Route::get('/course_detail', function () {
-//     return view('course_detail');
-// });
-// Route::get('/dashboard_guru', function () {
-//     return view('guru.dashboard_guru');
-// });
-// Route::get('/course_guru', function () {
-//     return view('guru.course_guru');
-// });
-// Route::get('/livecode_guru', function () {
-//     return view('guru.livecode_guru');
-// });
-// Route::get('/tambah_materi', function () {
-//     return view('guru.tambah_materi');
-// });
-// Route::get('/tambah_studi_kasus', function () {
-//     return view('guru.tambah_studi_kasus');
-// });
-// Route::get('/list_question', function () {
-//     return view('guru.list_question');
-// });
-// Route::get('/discussion', function () {
-//     return view('discussion');
-// });
-// Route::get('/course_detail_guru', function () {
-//     return view('guru.course_detail_guru');
-// });
-// Route::get('/card', function () {
-//     return view('component-cards-basic');
-// });
-// Route::get('/component-carousels', function () {
-//     return view('component-carousels');
-// });
-Route::get('/charts-chartjs', function () {
-    return view('charts-chartjs');
-});
-// Route::get('/live_code', function () {
-//     return view('livecode');
-// });
-// Route::get('/component-navs-tabs', function () {
-//     return view('component-navs-tabs');
-// });
-// Route::get('/component-accordions', function () {
-//     return view('component-accordions');
-// });
-// Route::get('/widget', function () {
-//     return view('widgets-data');
-// });
-// Route::get('/icon', function () {
-//     return view('icons-boxicons');
-// });
 
 // Public Routes
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -137,6 +77,14 @@ Route::prefix('siswa')->middleware(['role:siswa', 'auth', 'check_session'])->gro
     ->name('siswa.sub-materi.mark-as-read');
 
     Route::get('/kelas/{kelasId}/sertifikat', [KelasController::class, 'cetakSertifikat'])->name('kelas.cetakSertifikat');
+
+    Route::get('/quiz/show', [QuizController::class, 'showQuiz'])->name('siswa.show-quiz');
+    Route::post(('/quiz/join'), [QuizController::class, 'joinQuiz'])->name('siswa.join.quiz');
+    Route::get('/quiz/{id}/preview', [QuizController::class, 'previewQuiz'])->name('siswa.preview.quiz');
+    Route::get('/quiz/{id}/take-quiz', [QuizController::class, 'takeQuiz'])->name('siswa.take-quiz');
+    Route::post('/quiz/{id}/submit-quiz', [QuizController::class, 'submitQuiz'])->name('siswa.submit-quiz');
+    Route::get('/quiz/{id}/leaderboard', [QuizController::class, 'showResultQuiz'])->name('siswa.show.result');
+    Route::get('quiz/latest-leaderboard', [QuizController::class, 'showLeaderboard'])->name('siswa.show.latest-leaderboard');
 });
 
 // Guru Routes
@@ -210,6 +158,13 @@ Route::prefix('guru')->middleware(['role:guru', 'auth', 'check_session'])->group
     Route::get('/result/case-study/{caseStudyId}/siswa/{id}', [ResultCaseStudyController::class, 'showSubmission'])
         ->name('guru.result.case.showSubmission');
     Route::get('/compiler', [GuruController::class, 'compiler'])->name('guru.compiler');
+    Route::get('/quiz', [GuruController::class, 'quiz'])->name('guru.quiz');
+    Route::get('/quiz/tambah-quiz', [QuizController::class, 'index'])->name('guru.tambah-quiz');
+    Route::get('/quiz/{id}/detail-quiz', [QuizController::class, 'show'])->name('guru.detail-quiz');
+    Route::post(('/quiz/{id}/detail-quiz/store'), [QuizController::class, 'CreateQuestion'])->name('guru.question.store');
+    Route::post('/quiz/store', [QuizController::class, 'store'])->name('guru.quiz.store');
+    Route::put('/quiz/{id}/detail-quiz/{questionId}/update', [QuizController::class, 'updateQuestion'])->name('guru.question.update');
+    Route::delete('/quiz/{id}/detail-quiz/{questionId}/delete', [QuizController::class, 'destroyQuestion'])->name('guru.question.destroy');
 });
 
 // Admin Routes
@@ -227,3 +182,14 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // require __DIR__ . '/auth.php';
+
+// Menampilkan form untuk membuat quiz
+Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
+
+// Menyimpan quiz
+
+// Menampilkan quiz berdasarkan token
+Route::get('/quiz/{token}', [QuizController::class, 'showByToken'])->name('quiz.showByToken');
+
+// Mengirim jawaban quiz
+Route::post('/quiz/{token}/submit', [QuizController::class, 'submitQuiz'])->name('quiz.submit');

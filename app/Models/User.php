@@ -71,5 +71,8 @@ class User extends Authenticatable
         return $this->hasMany(UserTask::class, 'student_id'); // Adjust based on your actual foreign key
     }
 
-    
+    public function quizzes()
+    {
+        return $this->belongsToMany(Quiz::class, 'quiz_join_user', 'user_id', 'quiz_id');
+    }
 }

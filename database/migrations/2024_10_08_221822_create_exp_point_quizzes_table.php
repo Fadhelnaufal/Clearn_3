@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('soal_tests', function (Blueprint $table) {
+        Schema::create('exp_point_quizzes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('materi_id');
-            $table->foreign('materi_id')->references('id')->on('materis')->onDelete('cascade');
-            
+            $table->foreignId('quiz_id')->references('id')->on('quizzes')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->constrained()->onDelete('cascade');
+            $table->integer('exp_point');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('soal_tests');
+        Schema::dropIfExists('exp_point_quizzes');
     }
 };

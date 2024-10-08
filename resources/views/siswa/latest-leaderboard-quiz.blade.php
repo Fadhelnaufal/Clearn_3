@@ -98,14 +98,15 @@
         <div class="leaderboard">
             <div class="leaderboard-header">
                 <div class="stars">
-                    <i class="fas fa-star" style="color: yellow;">
-                    </i>
-                    <i class="fas fa-star" style="color: yellow;">
-                    </i>
-                    <i class="fas fa-star" style="color: yellow;">
-                    </i>
+                    <i class="fas fa-star" style="color: yellow;"></i>
+                    <i class="fas fa-star" style="color: yellow;"></i>
+                    <i class="fas fa-star" style="color: yellow;"></i>
                 </div>
-                <h1 class="text-title text-white">Leaderboard</h1>
+                @if($leaderboard->isNotEmpty() && $leaderboard->first()->quiz)
+                    <h1 class="text-title text-white">Leaderboard for {{ $leaderboard->first()->quiz->nama }}</h1>
+                @else
+                    <h1 class="text-title text-white">Leaderboard</h1>
+                @endif
             </div>
             <div class="table-responsive">
                 <table class="table">
@@ -117,11 +118,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($topPlayers as $index => $player)
+                        @foreach($leaderboard as $index => $entry)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td class="player-info">
-                                    <p class="mt-2">{{ $player->user->name }} 
+                                    <p class="mt-2">{{ $entry->user->name }} 
                                         @if ($index === 0)
                                             <i class="fas fa-trophy trophy" style="color: gold;"></i>
                                         @elseif ($index === 1)
@@ -131,7 +132,7 @@
                                         @endif
                                     </p>
                                 </td>
-                                <td>{{ $player->total_points }}</td>
+                                <td>{{ $entry->exp_point }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -1,18 +1,32 @@
 .animate {
-  animation: slide-in 1.5s forwards cubic-bezier(0.19, 1, 0.22, 1);
+  animation: slideLeft 1s forwards cubic-bezier(0.77, 0, 0.175, 1);
   opacity: 0;
-  transform: translateX(-200px);
 }
-@keyframes slide-in {
+@keyframes slideLeft {
   from {
     opacity: 0;
-    transform: translateX(-200px);
+    transform: translateX(-100%);
   }
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
+.animateReverse {
+  animation: slideLeftReverse 1s forwards cubic-bezier(0.77, 0, 0.175, 1);
+  opacity: 1;
+}
+@keyframes slideLeftReverse {
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .delay-100 {
   animation-delay: 100ms;
 }
@@ -21,4 +35,15 @@
 }
 .delay-300 {
   animation-delay: 300ms;
+}
+.countdown {
+  animation: slideUp forwards 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
