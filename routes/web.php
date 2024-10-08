@@ -33,18 +33,10 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/register', [RegisterController::class, 'create']);
 
-Route::get('/token_quiz', function () {
-     return view('quiz.token-quiz');
- });
-
 // Siswa Routes
 Route::prefix('siswa')->middleware(['role:siswa', 'auth', 'check_session'])->group(function () {
     Route::get('/dashboard', [SiswaController::class, 'index'])->name('siswa.dashboard');
     Route::get('/quiz', [SiswaController::class, 'quiz'])->name('siswa.quiz');
-    Route::get('/join-quiz', [SiswaController::class, 'join_quiz'])->name('siswa.join-quiz');
-    Route::get('/study-quiz', [SiswaController::class, 'study_quiz'])->name('siswa.study-quiz');
-    Route::get('/preview-quiz', [SiswaController::class, 'preview_quiz'])->name('siswa.preview-quiz');
-    Route::get('/leaderboard-quiz', [SiswaController::class, 'leaderboard_quiz'])->name('siswa.leaderboard-quiz');
     Route::get('/compiler', [SiswaController::class, 'compiler'])->name('/siswa/compiler');
     Route::post('/store-answers', [SiswaController::class, 'storeAnswers'])->name('siswa.store.answers');
     Route::get('/user-type-result', [SiswaController::class, 'getUserTypeResult'])->name('siswa.result');
@@ -182,14 +174,3 @@ Route::post('/logout', function () {
 })->name('logout');
 
 // require __DIR__ . '/auth.php';
-
-// Menampilkan form untuk membuat quiz
-Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.create');
-
-// Menyimpan quiz
-
-// Menampilkan quiz berdasarkan token
-Route::get('/quiz/{token}', [QuizController::class, 'showByToken'])->name('quiz.showByToken');
-
-// Mengirim jawaban quiz
-Route::post('/quiz/{token}/submit', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
