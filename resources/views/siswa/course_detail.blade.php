@@ -3,9 +3,9 @@
     Widgets Data
 @endsection
 @section('content')
-<div class="row mb-4">
-    <x-page-title title="Course" subtitle="Detail Kelas" />
-</div>
+    <div class="row mb-4">
+        <x-page-title title="Course" subtitle="Detail Kelas" />
+    </div>
     <div class="row">
         <div class="container">
             <div class="card">
@@ -96,14 +96,17 @@
                                             <div class="accordion-body">
                                                 @foreach ($materi->subMateris->where('user_type_id', $user->user_type_id) as $subMateri)
                                                     <div class="sub-materi-item">
-                                                        <a href="{{ route('siswa.sub-materi.show', [$kelas->id, $materi->id, $subMateri->id, $subMateri->user_type_id]) }}" style="color: #7964EF">
+                                                        <a href="{{ route('siswa.sub-materi.show', [$kelas->id, $materi->id, $subMateri->id, $subMateri->user_type_id]) }}"
+                                                            style="color: #7964EF">
                                                             <strong>Materi: {{ $subMateri->judul }}</strong>
                                                             @if (isset($userTasks[$subMateri->id]) && $userTasks[$subMateri->id]->is_completed)
-                                                                <span class="text-success">&#10004;</span> <!-- Checkmark if completed -->
+                                                                <span class="text-success">&#10004;</span>
+                                                                <!-- Checkmark if completed -->
                                                             @endif
                                                         </a>
                                                         @if ($subMateri->lampiran)
-                                                            <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}" target="_blank" style="color: #7964EF">
+                                                            <a href="{{ asset('files/sub_materi/' . $subMateri->lampiran) }}"
+                                                                target="_blank" style="color: #7964EF">
                                                                 <i class="bi bi-file-earmark-arrow-down"></i>
                                                             </a>
                                                         @endif
@@ -112,10 +115,12 @@
 
                                                 @foreach ($materi->soal as $soas)
                                                     <div class="soal-test-item">
-                                                        <a href="{{ route('siswa.soal.preview', ['materi_id' => $materi->id, 'soalId' => $soas->id]) }}" style="color: #7964EF">
+                                                        <a href="{{ route('siswa.soal.preview', ['materi_id' => $materi->id, 'soalId' => $soas->id]) }}"
+                                                            style="color: #7964EF">
                                                             <strong>Soal Quiz: {{ $soas->nama }}</strong>
                                                             @if (isset($userTasks[$soas->id]) && $userTasks[$soas->id]->is_completed)
-                                                                <span class="text-success">&#10004;</span> <!-- Checkmark if completed -->
+                                                                <span class="text-success">&#10004;</span>
+                                                                <!-- Checkmark if completed -->
                                                             @endif
                                                         </a>
                                                     </div>
@@ -150,7 +155,8 @@
                                 <h4 class="mt-3">Total Perolehan EXP</h4>
                                 <div class="d-flex justify-content-center align-items-center">
                                     <p class="lead mb-0" style="font-size: 1.5rem;">{{ $totalPoints ?? 0 }}</p>
-                                    <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 40px; height: 40px; margin-left: 10px;">
+                                    <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image"
+                                        style="width: 40px; height: 40px; margin-left: 10px;">
                                 </div>
                             </div>
                         </div>
@@ -163,30 +169,34 @@
                     <div class="col-md-7">
                         @if ($case_studies->isNotEmpty())
                             @foreach ($case_studies as $caseStudy)
-                            <div class="accordion mb-2" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading{{ $caseStudy->id }}">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $caseStudy->id }}" aria-expanded="false" aria-controls="collapse{{ $caseStudy->id }}">
-                                            {{ $caseStudy->title }}
-                                        </button>
-                                    </h2>
-                                    <div id="collapse{{ $caseStudy->id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $caseStudy->id }}" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}" style="color: #7964EF">
-                                                <p class="card-text text-neutral-600">
-                                                    <i class="bi bi-caret-right-fill ms-3 fs-6"></i>
-                                                    {{ $caseStudy->description }}
-                                                    @if (isset($userTasks[$caseStudy->id]) && $userTasks[$caseStudy->id]->is_completed)
-                                                        <span class="text-success">&#10004;</span> <!-- Checkmark if completed -->
-                                                    @endif
-                                                </p>
-                                            </a>
+                                <div class="accordion mb-2" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading{{ $caseStudy->id }}">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse{{ $caseStudy->id }}"
+                                                aria-expanded="false" aria-controls="collapse{{ $caseStudy->id }}">
+                                                {{ $caseStudy->title }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{ $caseStudy->id }}" class="accordion-collapse collapse"
+                                            aria-labelledby="heading{{ $caseStudy->id }}"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <a href="{{ route('siswa.case-submission.show', ['id' => $caseStudy->id]) }}"
+                                                    style="color: #7964EF">
+                                                    <p class="card-text text-neutral-600">
+                                                        <i class="bi bi-caret-right-fill ms-3 fs-6"></i>
+                                                        {{ $caseStudy->description }}
+                                                        @if (isset($userTasks[$caseStudy->id]) && $userTasks[$caseStudy->id]->is_completed)
+                                                            <span class="text-success">&#10004;</span>
+                                                            <!-- Checkmark if completed -->
+                                                        @endif
+                                                    </p>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-
                             @endforeach
                         @else
                             <p>No Studi Kasus available for this class.</p>
@@ -198,7 +208,8 @@
                                 <h4 class="mt-3">Total Perolehan EXP</h4>
                                 <div class="d-flex justify-content-center align-items-center">
                                     <p class="lead mb-0" style="font-size: 1.5rem;">{{ $totalPoints ?? 0 }}</p>
-                                    <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 40px; height: 40px; margin-left: 10px;">
+                                    <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image"
+                                        style="width: 40px; height: 40px; margin-left: 10px;">
                                 </div>
                             </div>
                         </div>
@@ -210,170 +221,232 @@
             <div class="tab-pane fade target" id="leaderboard">
                 <div class="container">
                     {{-- Overachiever Leaderboard --}}
-                        @if ($siswas->where('user_type_id',1)->isNotEmpty())
+                    @if ($siswas->where('user_type_id', 1)->isNotEmpty() && Auth::user()->user_type_id == 1)
                         <div class="col-md-12 justify-content-center">
                             <div class="card px-2 py-2 table-responsive mx-3 my-3">
                                 <h4>Overachiever Leaderboard</h4>
-                                <table id="tabel-leader" class="table table-striped table-bordered  table-hover text-center">
-                                    <thead class="thead-light text-center align-middle" style="text-align: center; vertical-align: middle;">
+                                <table id="leaderboard-table"
+                                    class="table table-striped table-bordered  table-hover text-center">
+                                    <thead class="thead-light text-center align-middle"
+                                        style="text-align: center; vertical-align: middle;">
                                         <tr>
                                             <th scope="col" rowspan="2">Peringkat</th>
                                             <th scope="col" rowspan="2">Nama</th>
-                                            <th scope="col" colspan="{{ $materis->count() + $case_studies->count() }}">Tantangan</th>
+                                            <th scope="col"
+                                                colspan="{{ $materis->count() + $case_studies->count() }}">Tantangan</th>
                                             <th scope="col" colspan="4">Perolehan</th>
                                             <th scope="col" rowspan="2">Total EXP</th>
                                         </tr>
                                         <tr>
-                                            @foreach ($materis as $materi )
-                                                <th scope="col">{{ $materi->judul }}</th>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <th scope="col">{{ $caseStudy->title }}</th>
-                                            @endforeach
+                                            @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                @foreach ($materis as $materi)
+                                                    <th scope="col">{{ $materi->judul }}</th>
+                                                @endforeach
+                                                @foreach ($case_studies as $caseStudy)
+                                                    <th scope="col">{{ $caseStudy->title }}</th>
+                                                @endforeach
+                                            @else
+                                                <th scope="col">-</th>
+                                            @endif
                                             <th scope="col">Emas</th>
                                             <th scope="col">Perak</th>
                                             <th scope="col">Perunggu</th>
                                             <th scope="col">Total</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="text-center align-middle" style="text-align: center; vertical-align: middle;">
+                                    <tbody class="text-center align-middle"
+                                        style="text-align: center; vertical-align: middle;">
                                         @php
                                             // Filter and sort the students by total points for user_type_id = 1
-                                            $overachievers = $siswas->where('user_type_id', 1)->sortByDesc(function ($siswa) {
-                                                return $siswa->user_tasks->sum('points');
-                                            });
+                                            $overachievers = $siswas
+                                                ->where('user_type_id', 1)
+                                                ->sortByDesc(function ($siswa) {
+                                                    return $siswa->user_tasks->sum('points');
+                                                });
                                         @endphp
                                         @foreach ($overachievers as $siswa)
-                                        <tr>
-                                            <td scope="row">{{ $loop->iteration }}</td>
-                                            <td scope="row">{{ $siswa->name }}</td>
-                                            @php
-                                                // Initialize medal counters
-                                                $totalGold = 0;
-                                                $totalSilver = 0;
-                                                $totalBronze = 0;
-                                            @endphp
-                                            @foreach ($materis as $materi )
+                                            <tr>
+                                                <td scope="row">{{ $loop->iteration }}</td>
+                                                <td scope="row">{{ $siswa->name }}</td>
+                                                @php
+                                                    // Initialize medal counters
+                                                    $totalGold = 0;
+                                                    $totalSilver = 0;
+                                                    $totalBronze = 0;
+                                                @endphp
+                                                @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                    @foreach ($materis as $materi)
+                                                        <td scope="row">
+                                                            @php
+                                                                $jumlahSubmateri = $siswa->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'sub_materi')
+                                                                    ->where('user_type_id', $siswa->user_type_id)
+                                                                    ->count();
+                                                                $jumlahSoal = $siswa->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'soal')
+                                                                    ->where('user_type_id', $siswa->user_type_id)
+                                                                    ->count();
+                                                                $maxPointSubMateri = 50 * $jumlahSubmateri;
+                                                                $maxPointSoal = 100 * $jumlahSoal;
+                                                                $pointSubMateri =
+                                                                    $siswa->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'sub_materi')
+                                                                        ->where('user_type_id', $siswa->user_type_id)
+                                                                        ->sum('points') ?? 0;
+                                                                $pointSoal =
+                                                                    $siswa->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'soal')
+                                                                        ->where('user_type_id', $siswa->user_type_id)
+                                                                        ->sum('points') ?? 0;
+
+                                                                $pointMateri = $pointSubMateri + $pointSoal;
+
+                                                                $rataSubmateri =
+                                                                    $maxPointSubMateri > 0
+                                                                        ? ($pointSubMateri / $maxPointSubMateri) * 100
+                                                                        : 0;
+                                                                $rataSoal =
+                                                                    $maxPointSoal > 0
+                                                                        ? ($pointSoal / $maxPointSoal) * 100
+                                                                        : 0;
+
+                                                                $average = ($rataSubmateri + $rataSoal) / 2;
+                                                                // dd($jumlahSubmateri, $jumlahSoal, $maxPointSubMateri, $maxPointSoal, $pointSubMateri, $pointSoal, $rataSubmateri, $rataSoal, $average);
+
+                                                                $category = '';
+                                                                $image = '';
+                                                                // Determine category based on points
+                                                                if ($average >= 50 && $average <= 75) {
+                                                                    $category = 'Perunggu'; // Bronze
+                                                                    $image = asset('assets/images/medals/bronze.png'); // Replace with your image path
+                                                                    $totalBronze++;
+                                                                } elseif ($average >= 76 && $average <= 85) {
+                                                                    $category = 'Silver'; // Silver
+                                                                    $image = asset('assets/images/medals/silver.png'); // Replace with your image path
+                                                                    $totalSilver++;
+                                                                } elseif ($average >= 86 && $average <= 100) {
+                                                                    $category = 'Emas'; // Gold
+                                                                    $image = asset('assets/images/medals/gold.png'); // Replace with your image path
+                                                                    $totalGold++;
+                                                                } elseif ($average < 0) {
+                                                                    $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
+                                                                    $image = null;
+                                                                } else {
+                                                                    $category = 'Tidak Ada Perolehan';
+                                                                    $image = null;
+                                                                }
+                                                            @endphp
+                                                            @if ($image)
+                                                                <img src="{{ $image }}" alt="{{ $category }}"
+                                                                    width="20%" height="auto" class="ml-2" />
+                                                            @endif
+                                                            <br>
+                                                            {{ $pointMateri }} Point <br> ({{ $category }})
+                                                        </td>
+                                                    @endforeach
+                                                    @foreach ($case_studies as $caseStudy)
+                                                        <td scope="row">
+                                                            @php
+                                                                $pointCaseStudy =
+                                                                    $siswa->user_tasks
+                                                                        ->where('task_type', 'case_study')
+                                                                        ->where('task_id', $caseStudy->id)
+                                                                        ->where('kelas_id', $kelas->id)
+                                                                        ->sum('points') ?? 0;
+
+                                                                $category = '';
+                                                                $image = '';
+                                                                // Determine category based on points
+                                                                if ($pointCaseStudy >= 50 && $pointCaseStudy <= 75) {
+                                                                    $category = 'Perunggu'; // Bronze
+                                                                    $image = asset('assets/images/medals/bronze.png'); // Replace with your image path
+                                                                    $totalBronze++;
+                                                                } elseif (
+                                                                    $pointCaseStudy >= 76 &&
+                                                                    $pointCaseStudy <= 85
+                                                                ) {
+                                                                    $category = 'Silver'; // Silver
+                                                                    $image = asset('assets/images/medals/silver.png'); // Replace with your image path
+                                                                    $totalSilver++;
+                                                                } elseif (
+                                                                    $pointCaseStudy >= 86 &&
+                                                                    $pointCaseStudy <= 100
+                                                                ) {
+                                                                    $category = 'Emas'; // Gold
+                                                                    $image = asset('assets/images/medals/gold.png'); // Replace with your image path
+                                                                    $totalGold++;
+                                                                } elseif ($average < 0) {
+                                                                    $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
+                                                                    $image = null;
+                                                                } else {
+                                                                    $category = 'Tidak Ada Perolehan';
+                                                                    $image = null;
+                                                                }
+                                                            @endphp
+                                                            @if ($image)
+                                                                <img src="{{ $image }}" alt="{{ $category }}"
+                                                                    width="20%" height="auto" class="ml-2" />
+                                                            @endif
+                                                            <br>
+                                                            {{ $pointCaseStudy }} Point <br> ({{ $category }})
+                                                        </td>
+                                                    @endforeach
+                                                @else
+                                                    <td scope="row">-</td>
+                                                @endif
+
+                                                <td scope="row">{{ $totalGold }}</td>
+                                                <td scope="row">{{ $totalSilver }}</td>
+                                                <td scope="row">{{ $totalBronze }}</td>
+                                                <td scope="row">{{ $totalGold + $totalSilver + $totalBronze }}</td>
                                                 <td scope="row">
-                                                    @php
-                                                        $jumlahSubmateri = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->where('user_type_id', $siswa->user_type_id)->count();
-                                                        $jumlahSoal = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->where('user_type_id', $siswa->user_type_id)->count();
-                                                        $maxPointSubMateri = 50 * $jumlahSubmateri;
-                                                        $maxPointSoal = 100 * $jumlahSoal;
-                                                        $pointSubMateri = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0;
-                                                        $pointSoal = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0;
-
-                                                        $pointMateri = $pointSubMateri + $pointSoal;
-
-                                                        $rataSubmateri = $maxPointSubMateri > 0 ? ($pointSubMateri / $maxPointSubMateri) * 100 : 0;
-                                                        $rataSoal = $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
-
-                                                        $average = ($rataSubmateri + $rataSoal) / 2;
-                                                        // dd($jumlahSubmateri, $jumlahSoal, $maxPointSubMateri, $maxPointSoal, $pointSubMateri, $pointSoal, $rataSubmateri, $rataSoal, $average);
-
-                                                        $category ='';
-                                                        $image = '';
-                                                        // Determine category based on points
-                                                        if ($average >= 50 && $average <= 75) {
-                                                            $category = 'Perunggu'; // Bronze
-                                                            $image = asset('assets/images/medals/bronze.png'); // Replace with your image path
-                                                            $totalBronze++;
-                                                        } elseif ($average >= 76 && $average <= 85) {
-                                                            $category = 'Silver'; // Silver
-                                                            $image = asset('assets/images/medals/silver.png'); // Replace with your image path
-                                                            $totalSilver++;
-                                                        } elseif ($average >= 86 && $average <= 100) {
-                                                            $category = 'Emas'; // Gold
-                                                            $image = asset('assets/images/medals/gold.png'); // Replace with your image path
-                                                            $totalGold++;
-                                                        }elseif ($average < 0) {
-                                                            $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
-                                                            $image = null;
-                                                        } else {
-                                                            $category = 'Tidak Ada Perolehan';
-                                                            $image = null;
-                                                        }
-                                                    @endphp
-                                                    @if($image)
-                                                        <img src="{{ $image }}" alt="{{ $category }}" width="20%" height="auto" class="ml-2" />
-                                                    @endif
-                                                    <br>
-                                                    {{ $pointMateri }} Point <br> ({{ $category }})
+                                                    <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image"
+                                                        style="width: 25px; height: 25px; align-item: center"><br>
+                                                    <span>{{ $siswa->user_tasks->sum('points') }}</span>
                                                 </td>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <td scope="row">
-                                                    @php
-                                                        $pointCaseStudy = $siswa->user_tasks
-                                                        ->where('task_type', 'case_study')
-                                                        ->where('task_id', $caseStudy->id)
-                                                        ->where('kelas_id', $kelas->id)
-                                                        ->sum('points') ?? 0;
-
-                                                        $category ='';
-                                                        $image = '';
-                                                        // Determine category based on points
-                                                        if ($pointCaseStudy >= 50 && $pointCaseStudy <= 75) {
-                                                            $category = 'Perunggu'; // Bronze
-                                                            $image = asset('assets/images/medals/bronze.png'); // Replace with your image path
-                                                            $totalBronze++;
-                                                        } elseif ($pointCaseStudy >= 76 && $pointCaseStudy <= 85) {
-                                                            $category = 'Silver'; // Silver
-                                                            $image = asset('assets/images/medals/silver.png'); // Replace with your image path
-                                                            $totalSilver++;
-                                                        } elseif ($pointCaseStudy >= 86 && $pointCaseStudy <= 100) {
-                                                            $category = 'Emas'; // Gold
-                                                            $image = asset('assets/images/medals/gold.png'); // Replace with your image path
-                                                            $totalGold++;
-                                                        }elseif ($average < 0) {
-                                                            $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
-                                                            $image = null;
-                                                        } else {
-                                                            $category = 'Tidak Ada Perolehan';
-                                                            $image = null;
-                                                        }
-                                                    @endphp
-                                                    @if($image)
-                                                        <img src="{{ $image }}" alt="{{ $category }}" width="20%" height="auto" class="ml-2" />
-                                                    @endif
-                                                    <br>
-                                                    {{ $pointCaseStudy }} Point <br> ({{ $category }})
-                                                </td>
-                                            @endforeach
-
-                                            <td scope="row">{{ $totalGold }}</td>
-                                            <td scope="row">{{ $totalSilver }}</td>
-                                            <td scope="row">{{ $totalBronze }}</td>
-                                            <td scope="row">{{ $totalGold+$totalSilver+$totalBronze }}</td>
-                                            <td scope="row">
-                                                <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 25px; height: 25px; align-item: center"><br>
-                                                <span>{{ $siswa->user_tasks->sum('points') }}</span>
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        @endif
+                    @endif
 
-                        {{-- Mastery-Expert Leaderboard --}}
-                        @if ($siswas->where('user_type_id', 2)->isNotEmpty())
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <h4>Mastery-Expert Leaderboard</h4>
+                    {{-- Mastery-Expert Leaderboard --}}
+                    @if ($siswas->where('user_type_id', 2)->isNotEmpty() && Auth::user()->user_type_id == 2)
+                        <div class="col-md-12 justify-content-center">
                             <div class="card px-2 py-2 table-responsive">
-                                <table id="tabel-leader" class="table table-striped table-bordered table-hover text-center">
+                                <h4>Mastery-Expert Leaderboard</h4>
+                                <table id="leaderboard-table"
+                                    class="table table-striped table-bordered table-hover text-center">
                                     <thead class="thead-light" style="text-align: center; vertical-align: middle;">
                                         <tr>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Tipe</th>
-                                            @foreach ($materis as $materi)
-                                                <th scope="col">{{ $materi->judul }}</th>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <th scope="col">{{ $caseStudy->title }}</th>
-                                            @endforeach
-                                            <th scope="col">Perolehan EXP</th>
+                                            <th scope="col" rowspan="2">Peringkat</th>
+                                            <th scope="col" rowspan="2">Nama</th>
+                                            <th scope="col"
+                                                colspan="{{ $materis->count() + $case_studies->count() }}">Tantangan</th>
+                                            <th scope="col" colspan="4">Perolehan</th>
+                                            <th scope="col" rowspan="2">Total EXP</th>
+                                        </tr>
+                                        <tr>
+                                            @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                @foreach ($materis as $materi)
+                                                    <th scope="col">{{ $materi->judul }}</th>
+                                                @endforeach
+                                                @foreach ($case_studies as $caseStudy)
+                                                    <th scope="col">{{ $caseStudy->title }}</th>
+                                                @endforeach
+                                            @else
+                                                <th scope="col">-</th>
+                                            @endif
+                                            <th scope="col">Emas</th>
+                                            <th scope="col">Perak</th>
+                                            <th scope="col">Perunggu</th>
+                                            <th scope="col">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody style="text-align: center; vertical-align: middle;">
@@ -381,199 +454,292 @@
                                             // Get the first student with user_type_id = 2
                                             $masteryexpert = Auth::user();
                                         @endphp
-                                        @if ($masteryexpert->user_type_id == 2) <!-- Check if there is a mastery expert -->
-                                        <tr>
-                                            <td scope="row">{{ $masteryexpert->name }}</td>
-                                            <td scope="row">{{ $masteryexpert->userType->name }}</td>
-                                            @foreach ($materis as $materi)
+                                        @if ($masteryexpert->user_type_id == 2)
+                                            <!-- Check if there is a mastery expert -->
+                                            <tr>
+                                                @php
+                                                    // Initialize medal counters
+                                                    $totalGold = 0;
+                                                    $totalSilver = 0;
+                                                    $totalBronze = 0;
+                                                @endphp
+                                                <td scope="row">{{ $masteryexpert->name }}</td>
+                                                <td scope="row">{{ $masteryexpert->userType->name }}</td>
+                                                @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                    @foreach ($materis as $materi)
+                                                        <td scope="row">
+                                                            @php
+                                                                $jumlahSubmateri = $masteryexpert->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'sub_materi')
+                                                                    ->count();
+                                                                $jumlahSoal = $masteryexpert->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'soal')
+                                                                    ->count();
+                                                                $maxPointSubMateri = 50 * $jumlahSubmateri;
+                                                                $maxPointSoal = 100 * $jumlahSoal;
+                                                                $pointSubMateri =
+                                                                    $masteryexpert->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'sub_materi')
+                                                                        ->sum('points') ?? 0;
+                                                                $pointSoal =
+                                                                    $masteryexpert->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'soal')
+                                                                        ->sum('points') ?? 0;
+
+                                                                $rataSubmateri =
+                                                                    $maxPointSubMateri > 0
+                                                                        ? ($pointSubMateri / $maxPointSubMateri) * 100
+                                                                        : 0;
+                                                                $rataSoal =
+                                                                    $maxPointSoal > 0
+                                                                        ? ($pointSoal / $maxPointSoal) * 100
+                                                                        : 0;
+
+                                                                $totalPointMateri = $pointSubMateri + $pointSoal;
+
+                                                                $average = ($rataSubmateri + $rataSoal) / 2;
+
+                                                                $category = '';
+                                                                $image = '';
+                                                                // Determine category based on points
+                                                                if ($average >= 50 && $average <= 75) {
+                                                                    $category = 'Perunggu'; // Bronze
+                                                                    $image = asset('assets/images/medals/bronze.png'); // Gambar medali perunggu
+                                                                    $totalBronze++;
+                                                                } elseif ($average >= 76 && $average <= 85) {
+                                                                    $category = 'Silver'; // Silver
+                                                                    $image = asset('assets/images/medals/silver.png'); // Gambar medali perak
+                                                                    $totalSilver++;
+                                                                } elseif ($average >= 86 && $average <= 100) {
+                                                                    $category = 'Emas'; // Gold
+                                                                    $image = asset('assets/images/medals/gold.png'); // Gambar medali emas
+                                                                    $totalGold++;
+                                                                } elseif ($average < 0) {
+                                                                    $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
+                                                                    $image = null;
+                                                                } else {
+                                                                    $category = 'Tidak Ada Perolehan';
+                                                                    $image = null;
+                                                                }
+                                                            @endphp
+                                                            @if ($image)
+                                                                <img src="{{ $image }}" alt="{{ $category }}"
+                                                                    width="20%" height="auto" class="ml-2" />
+                                                            @endif
+                                                            <br>
+                                                            {{ $totalPointMateri }} <br> ({{ $category }})
+                                                        </td>
+                                                    @endforeach
+                                                    @foreach ($case_studies as $caseStudy)
+                                                        <td scope="row">
+                                                            @php
+                                                                $pointCaseStudy =
+                                                                    $masteryexpert->user_tasks
+                                                                        ->where('task_type', 'case_study')
+                                                                        ->where('task_id', $caseStudy->id)
+                                                                        ->where('kelas_id', $kelas->id)
+                                                                        ->sum('points') ?? 0;
+
+                                                                $category = '';
+                                                                $image = '';
+                                                                // Determine category based on points
+                                                                if ($pointCaseStudy >= 50 && $pointCaseStudy <= 75) {
+                                                                    $category = 'Perunggu'; // Bronze
+                                                                    $image = asset('assets/images/medals/bronze.png'); // Gambar medali perunggu
+                                                                    $totalBronze++;
+                                                                } elseif (
+                                                                    $pointCaseStudy >= 76 &&
+                                                                    $pointCaseStudy <= 85
+                                                                ) {
+                                                                    $category = 'Silver'; // Silver
+                                                                    $image = asset('assets/images/medals/silver.png'); // Gambar medali perak
+                                                                    $totalSilver++;
+                                                                } elseif (
+                                                                    $pointCaseStudy >= 86 &&
+                                                                    $pointCaseStudy <= 100
+                                                                ) {
+                                                                    $category = 'Emas'; // Gold
+                                                                    $image = asset('assets/images/medals/gold.png'); // Gambar medali emas
+                                                                    $totalGold++;
+                                                                } elseif ($average < 0) {
+                                                                    $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
+                                                                    $image = null;
+                                                                } else {
+                                                                    $category = 'Tidak Ada Perolehan';
+                                                                    $image = null;
+                                                                }
+                                                            @endphp
+                                                            @if ($image)
+                                                                <img src="{{ $image }}" alt="{{ $category }}"
+                                                                    width="20%" height="auto" class="ml-2" />
+                                                            @endif
+                                                            <br>
+                                                            {{ $pointCaseStudy }} Point <br> ({{ $category }})
+                                                        </td>
+                                                    @endforeach
+                                                @else
+                                                    <td scope="row">-</td>
+                                                @endif
+                                                <td scope="row">{{ $totalGold }}</td>
+                                                <td scope="row">{{ $totalSilver }}</td>
+                                                <td scope="row">{{ $totalBronze }}</td>
+                                                <td scope="row">{{ $totalGold + $totalSilver + $totalBronze }}</td>
                                                 <td scope="row">
-                                                    @php
-                                                        $jumlahSubmateri = $masteryexpert->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->count();
-                                                        $jumlahSoal = $masteryexpert->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->count();
-                                                        $maxPointSubMateri = 50 * $jumlahSubmateri;
-                                                        $maxPointSoal = 100 * $jumlahSoal;
-                                                        $pointSubMateri = $masteryexpert->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->sum('points') ?? 0;
-                                                        $pointSoal = $masteryexpert->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->sum('points') ?? 0;
-
-                                                        $rataSubmateri = $maxPointSubMateri > 0 ? ($pointSubMateri / $maxPointSubMateri) * 100 : 0;
-                                                        $rataSoal = $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
-
-                                                        $totalPointMateri = $pointSubMateri + $pointSoal;
-
-                                                        $average = ($rataSubmateri + $rataSoal) / 2;
-
-                                                        $category = '';
-                                                        $image = '';
-                                                        // Determine category based on points
-                                                        if ($average >= 50 && $average <= 75) {
-                                                            $category = 'Perunggu'; // Bronze
-                                                            $image = asset('assets/images/medals/bronze.png'); // Gambar medali perunggu
-                                                        } elseif ($average >= 76 && $average <= 85) {
-                                                            $category = 'Silver'; // Silver
-                                                            $image = asset('assets/images/medals/silver.png'); // Gambar medali perak
-                                                        } elseif ($average >= 86 && $average <= 100) {
-                                                            $category = 'Emas'; // Gold
-                                                            $image = asset('assets/images/medals/gold.png'); // Gambar medali emas
-                                                        } elseif ($average < 0) {
-                                                            $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
-                                                            $image = null;
-                                                        } else {
-                                                            $category = 'Tidak Ada Perolehan';
-                                                            $image = null;
-                                                        }
-                                                    @endphp
-                                                    @if($image)
-                                                        <img src="{{ $image }}" alt="{{ $category }}" width="20%" height="auto" class="ml-2" />
-                                                    @endif
-                                                    <br>
-                                                    {{ $totalPointMateri }} <br> ({{ $category }})
+                                                    <span>{{ $masteryexpert->user_tasks->sum('points') }}</span>
+                                                    <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image"
+                                                        style="width: 25px; height: 25px; align-item:center">
                                                 </td>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <td scope="row">
-                                                    @php
-                                                        $pointCaseStudy = $masteryexpert->user_tasks
-                                                        ->where('task_type', 'case_study')
-                                                        ->where('task_id', $caseStudy->id)
-                                                        ->where('kelas_id', $kelas->id)
-                                                        ->sum('points') ?? 0;
-
-                                                        $category = '';
-                                                        $image = '';
-                                                        // Determine category based on points
-                                                        if ($pointCaseStudy >= 50 && $pointCaseStudy <= 75) {
-                                                            $category = 'Perunggu'; // Bronze
-                                                            $image = asset('assets/images/medals/bronze.png'); // Gambar medali perunggu
-                                                        } elseif ($pointCaseStudy >= 76 && $pointCaseStudy <= 85) {
-                                                            $category = 'Silver'; // Silver
-                                                            $image = asset('assets/images/medals/silver.png'); // Gambar medali perak
-                                                        } elseif ($pointCaseStudy >= 86 && $pointCaseStudy <= 100) {
-                                                            $category = 'Emas'; // Gold
-                                                            $image = asset('assets/images/medals/gold.png'); // Gambar medali emas
-                                                        } elseif ($average < 0) {
-                                                            $category = 'Tidak Ada Perolehan'; // Nilai negatif tidak valid
-                                                            $image = null;
-                                                        } else {
-                                                            $category = 'Tidak Ada Perolehan';
-                                                            $image = null;
-                                                        }
-                                                    @endphp
-                                                    @if($image)
-                                                        <img src="{{ $image }}" alt="{{ $category }}" width="20%" height="auto" class="ml-2" />
-                                                    @endif
-                                                    <br>
-                                                    {{ $pointCaseStudy }} Point <br> ({{ $category }})
-                                                </td>
-                                            @endforeach
-                                            <td scope="row">
-                                                <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image" style="width: 25px; height: 25px; align-item:center"> <br>
-                                                <span>{{ $masteryexpert->user_tasks->sum('points') }}</span>
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     @endif
-                        {{-- Best-Performance Leaderboard --}}
-                        @if ($siswas->where('user_type_id',3)->isNotEmpty())
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <h4>Best-Performance Leaderboard</h4>
+                    {{-- Best-Performance Leaderboard --}}
+                    @if ($siswas->where('user_type_id', 3)->isNotEmpty() && Auth::user()->user_type_id == 3)
+                        <div class="col-md-12 justify-content-center">
                             <div class="card px-2 py-2 table-responsive">
-                                <table id="tabel-leader" class="table table-striped table-bordered table-hover text-center">
+                                <h4>Best-Performance Leaderboard</h4>
+                                <table id="leaderboard-table"
+                                    class="table table-striped table-bordered table-hover text-center">
                                     <thead class="thead-light" style="text-align: center; vertical-align: middle;">
                                         <tr>
                                             <th scope="col" rowspan="2">Peringkat</th>
                                             <th scope="col" rowspan="2">Nama</th>
-                                            <th scope="col" colspan="{{ count($materis) + count($case_studies) }}">Tantangan</th>
+                                            <th scope="col" colspan="{{ count($materis) + count($case_studies) }}">
+                                                Tantangan</th>
                                             <th scope="col" rowspan="2">Perolehan EXP</th>
                                         </tr>
                                         <tr>
-                                            @foreach ($materis as $materi )
-                                                <th scope="col">{{ $materi->judul }}</th>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <th scope="col">{{ $caseStudy->title }}</th>
-                                            @endforeach
+                                            @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                @foreach ($materis as $materi)
+                                                    <th scope="col">{{ $materi->judul }}</th>
+                                                @endforeach
+                                                @foreach ($case_studies as $caseStudy)
+                                                    <th scope="col">{{ $caseStudy->title }}</th>
+                                                @endforeach
+                                            @else
+                                                <th scope="col">-</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody style="text-align: center; vertical-align: middle;">
                                         @php
                                             // Sort the students by total points in descending order
                                             // Filter and sort the students by total points for user_type_id = 1
-                                            $bestPerformers = $siswas->where('user_type_id', 3)->sortByDesc(function ($siswa) {
-                                                return $siswa->user_tasks->sum('points');
-                                            });
+                                            $bestPerformers = $siswas
+                                                ->where('user_type_id', 3)
+                                                ->sortByDesc(function ($siswa) {
+                                                    return $siswa->user_tasks->sum('points');
+                                                });
                                         @endphp
                                         @foreach ($bestPerformers as $siswa)
-                                        <tr>
-                                            <td scope="row">{{ $loop->iteration }}</td>
-                                            <td scope="row">{{ $siswa->name }}</td>
-                                            @foreach ($materis as $materi )
-                                                <td scope="row">
-                                                    @php
-                                                        $jumlahSubmateri = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->count();
-                                                        $jumlahSoal = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->count();
-                                                        $maxPointSubMateri = 50 * $jumlahSubmateri;
-                                                        $maxPointSoal = 100 * $jumlahSoal;
-                                                        $pointSubMateri = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->sum('points') ?? 0;
-                                                        $pointSoal = $siswa->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->sum('points') ?? 0;
+                                            <tr>
+                                                <td scope="row">{{ $loop->iteration }}</td>
+                                                <td scope="row">{{ $siswa->name }}</td>
+                                                @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                    @foreach ($materis as $materi)
+                                                        <td scope="row">
+                                                            @php
+                                                                $jumlahSubmateri = $siswa->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'sub_materi')
+                                                                    ->count();
+                                                                $jumlahSoal = $siswa->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'soal')
+                                                                    ->count();
+                                                                $maxPointSubMateri = 50 * $jumlahSubmateri;
+                                                                $maxPointSoal = 100 * $jumlahSoal;
+                                                                $pointSubMateri =
+                                                                    $siswa->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'sub_materi')
+                                                                        ->sum('points') ?? 0;
+                                                                $pointSoal =
+                                                                    $siswa->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'soal')
+                                                                        ->sum('points') ?? 0;
 
-                                                        $rataSubmateri = $maxPointSubMateri > 0 ? ($pointSubMateri / $maxPointSubMateri) * 100 : 0;
-                                                        $rataSoal = $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
+                                                                $rataSubmateri =
+                                                                    $maxPointSubMateri > 0
+                                                                        ? ($pointSubMateri / $maxPointSubMateri) * 100
+                                                                        : 0;
+                                                                $rataSoal =
+                                                                    $maxPointSoal > 0
+                                                                        ? ($pointSoal / $maxPointSoal) * 100
+                                                                        : 0;
 
-                                                        $average = ($rataSubmateri + $rataSoal) / 2;
-                                                        // dd($jumlahSubmateri, $jumlahSoal, $maxPointSubMateri, $maxPointSoal, $pointSubMateri, $pointSoal, $rataSubmateri, $rataSoal, $average);
+                                                                $average = ($rataSubmateri + $rataSoal) / 2;
+                                                                // dd($jumlahSubmateri, $jumlahSoal, $maxPointSubMateri, $maxPointSoal, $pointSubMateri, $pointSoal, $rataSubmateri, $rataSoal, $average);
 
-                                                        $category ='';
-                                                    @endphp
-                                                    {{ $average }} Point
+                                                                $category = '';
+                                                            @endphp
+                                                            {{ $average }} Point
+                                                        </td>
+                                                    @endforeach
+                                                    @foreach ($case_studies as $caseStudy)
+                                                        <td scope="row">
+                                                            @php
+                                                                $pointCaseStudy =
+                                                                    $siswa->user_tasks
+                                                                        ->where('task_type', 'case_study')
+                                                                        ->where('task_id', $caseStudy->id)
+                                                                        ->where('kelas_id', $kelas->id)
+                                                                        ->sum('points') ?? 0;
+
+                                                                $category = '';
+                                                            @endphp
+                                                            {{ $pointCaseStudy }} Point
+                                                        </td>
+                                                    @endforeach
+                                                @else
+                                                    <td>-</td>
+                                                @endif
+                                                <td scope="row" class=" align-items-center justify-content-center">
+                                                    <span>{{ $siswa->user_tasks->sum('points') }}</span>
+                                                    <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image"
+                                                        style="width: 25px; height: 25px;">
                                                 </td>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <td scope="row">
-                                                    @php
-                                                        $pointCaseStudy = $siswa->user_tasks
-                                                        ->where('task_type', 'case_study')
-                                                        ->where('task_id', $caseStudy->id)
-                                                        ->where('kelas_id', $kelas->id)
-                                                        ->sum('points') ?? 0;
-
-                                                        $category ='';
-                                                    @endphp
-                                                    {{ $pointCaseStudy }} Point
-                                                </td>
-                                            @endforeach
-                                            <td scope="row" class="d-flex align-items-center justify-content-center">
-                                                <span>{{ $siswa->user_tasks->sum('points') }}</span>
-                                                <img src="{{asset('assets/images/exp.png')}}" alt="EXP Image" style="width: 25px; height: 25px;">
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        @endif
+                    @endif
 
-                        {{-- Non-Achiever Leaderboard --}}
-                        @if ($siswas->where('user_type_id', 4)->isNotEmpty())
-                        <div class="col-md-12 d-flex justify-content-center">
-                            <h4>Non-Achiever Leaderboard</h4>
+                    {{-- Non-Achiever Leaderboard --}}
+                    @if ($siswas->where('user_type_id', 4)->isNotEmpty() && Auth::user()->user_type_id == 4)
+                        <div class="col-md-12 d justify-content-center">
                             <div class="card px-2 py-2 table-responsive">
-                                <table id="tabel-leader" class="table table-striped table-hover text-center">
+                                <h4>Non-Achiever Leaderboard</h4>
+                                <table id="leaderboard-table" class="table table-striped table-bordered table-hover text-center">
                                     <thead class="thead-light" style="text-align: center; vertical-align: middle;">
                                         <tr>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Tipe</th>
-                                            @foreach ($materis as $materi)
-                                                <th scope="col">{{ $materi->judul }}</th>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <th scope="col">{{ $caseStudy->title }}</th>
-                                            @endforeach
-                                            <th scope="col">Perolehan EXP</th>
+                                            <th scope="col" rowspan="2">Nama</th>
+                                            <th scope="col" rowspan="2">Tipe</th>
+                                            <th scope="col" colspan="{{ count($materis) + count($case_studies) }}">
+                                                Tantangan</th>
+                                            <th scope="col" rowspan="2">Perolehan EXP</th>
+                                        </tr>
+                                        <tr>
+                                            @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                @foreach ($materis as $materi)
+                                                    <th scope="col">{{ $materi->judul }}</th>
+                                                @endforeach
+                                                @foreach ($case_studies as $caseStudy)
+                                                    <th scope="col">{{ $caseStudy->title }}</th>
+                                                @endforeach
+                                            @else
+                                                <th scope="col">-</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody style="text-align: center; vertical-align: middle;">
@@ -581,49 +747,77 @@
                                             // Get the first student with user_type_id = 2
                                             $nonAchiever = Auth::user();
                                         @endphp
-                                        @if ($nonAchiever->user_type_id == 4) <!-- Check if there is a mastery expert -->
-                                        <tr>
-                                            <td scope="row">{{ $nonAchiever->name }}</td>
-                                            <td scope="row">{{ $nonAchiever->userType->name }}</td>
-                                            @foreach ($materis as $materi)
-                                                <td scope="row">
-                                                    @php
-                                                        $jumlahSubmateri = $nonAchiever->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->count();
-                                                        $jumlahSoal = $nonAchiever->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->count();
-                                                        $maxPointSubMateri = 50 * $jumlahSubmateri;
-                                                        $maxPointSoal = 100 * $jumlahSoal;
-                                                        $pointSubMateri = $nonAchiever->user_tasks->where('materi_id', $materi->id)->where('task_type', 'sub_materi')->sum('points') ?? 0;
-                                                        $pointSoal = $nonAchiever->user_tasks->where('materi_id', $materi->id)->where('task_type', 'soal')->sum('points') ?? 0;
+                                        @if ($nonAchiever->user_type_id == 4)
+                                            <!-- Check if there is a mastery expert -->
+                                            <tr>
+                                                <td scope="row">{{ $nonAchiever->name }}</td>
+                                                <td scope="row">{{ $nonAchiever->userType->name }}</td>
+                                                @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                    @foreach ($materis as $materi)
+                                                        <td scope="row">
+                                                            @php
+                                                                $jumlahSubmateri = $nonAchiever->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'sub_materi')
+                                                                    ->count();
+                                                                $jumlahSoal = $nonAchiever->user_tasks
+                                                                    ->where('materi_id', $materi->id)
+                                                                    ->where('task_type', 'soal')
+                                                                    ->count();
+                                                                $maxPointSubMateri = 50 * $jumlahSubmateri;
+                                                                $maxPointSoal = 100 * $jumlahSoal;
+                                                                $pointSubMateri =
+                                                                    $nonAchiever->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'sub_materi')
+                                                                        ->sum('points') ?? 0;
+                                                                $pointSoal =
+                                                                    $nonAchiever->user_tasks
+                                                                        ->where('materi_id', $materi->id)
+                                                                        ->where('task_type', 'soal')
+                                                                        ->sum('points') ?? 0;
 
-                                                        $rataSubmateri = $maxPointSubMateri > 0 ? ($pointSubMateri / $maxPointSubMateri) * 100 : 0;
-                                                        $rataSoal = $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
+                                                                $rataSubmateri =
+                                                                    $maxPointSubMateri > 0
+                                                                        ? ($pointSubMateri / $maxPointSubMateri) * 100
+                                                                        : 0;
+                                                                $rataSoal =
+                                                                    $maxPointSoal > 0
+                                                                        ? ($pointSoal / $maxPointSoal) * 100
+                                                                        : 0;
 
-                                                        $average = ($rataSubmateri + $rataSoal) / 2;
+                                                                $average = ($rataSubmateri + $rataSoal) / 2;
 
-                                                        $category = '';
-                                                    @endphp
-                                                    {{ $average }}
+                                                                $category = '';
+                                                            @endphp
+                                                            {{ $average }}
+                                                        </td>
+                                                    @endforeach
+                                                    @foreach ($case_studies as $caseStudy)
+                                                        <td scope="row">
+                                                            @php
+                                                                $pointCaseStudy =
+                                                                    $nonAchiever->user_tasks
+                                                                        ->where('task_type', 'case_study')
+                                                                        ->where('task_id', $caseStudy->id)
+                                                                        ->where('kelas_id', $kelas->id)
+                                                                        ->sum('points') ?? 0;
+
+                                                                $category = '';
+                                                            @endphp
+                                                            {{ $pointCaseStudy }} Point
+                                                        </td>
+                                                    @endforeach
+                                                @else
+                                                    <td scope="row">-</td>
+                                                @endif
+                                                <td scope="row"
+                                                    class="d-flex justify-content-center align-items-center">
+                                                    <span>{{ $nonAchiever->user_tasks->sum('points') }}</span>
+                                                    <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image"
+                                                        style="width: 25px; height: 25px; margin-left: 10px;">
                                                 </td>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <td scope="row">
-                                                    @php
-                                                        $pointCaseStudy = $nonAchiever->user_tasks
-                                                        ->where('task_type', 'case_study')
-                                                        ->where('task_id', $caseStudy->id)
-                                                        ->where('kelas_id', $kelas->id)
-                                                        ->sum('points') ?? 0;
-
-                                                        $category = '';
-                                                    @endphp
-                                                    {{ $pointCaseStudy }} Point
-                                                </td>
-                                            @endforeach
-                                            <td scope="row" class="d-flex justify-content-center align-items-center">
-                                                <span>{{ $nonAchiever->user_tasks->sum('points') }}</span>
-                                                <img src="{{ asset('assets/images/exp.png') }}" alt="EXP Image" style="width: 25px; height: 25px; margin-left: 10px;">
-                                            </td>
-                                        </tr>
+                                            </tr>
                                         @endif
                                     </tbody>
                                 </table>
@@ -742,44 +936,59 @@
         </script>
         <style>
             /* Center text and items */
-            #tabel-leader th, #tabel-leader td,
-            #anggota-kelas th, #anggota-kelas td {
+            #leaderboard-table th,
+            #leaderboard-table td,
+            #anggota-kelas th,
+            #anggota-kelas td {
                 text-align: center;
                 vertical-align: middle;
             }
 
             /* Make header text bold and colorful */
-            #tabel-leader th, #anggota-kelas th {
+            #leaderboard-table th,
+            #anggota-kelas th {
                 font-weight: bold;
-                background-color: #535794; /* Green background */
-                color: white; /* White text */
+                background-color: #535794;
+                /* Green background */
+                color: white;
+                /* White text */
             }
 
             /* Colorful alternating rows for tabel-leader */
-            #tabel-leader tbody tr:nth-child(odd) {
-                background-color: #DDDDEA; /* Light grey */
+            #leaderboard-table tbody tr:nth-child(odd) {
+                background-color: #DDDDEA;
+                /* Light grey */
                 color: grey;
             }
-            #tabel-leader tbody tr:nth-child(even) {
-                background-color: #afb0c9; /* Light green */
+
+            #leaderboard-table tbody tr:nth-child(even) {
+                background-color: #afb0c9;
+                /* Light green */
                 color: white;
             }
 
             /* Colorful alternating rows for anggota-kelas */
             #anggota-kelas tbody tr:nth-child(odd) {
-                background-color: #f9f9f9; /* Light grey */
+                background-color: #f9f9f9;
+                /* Light grey */
             }
+
             #anggota-kelas tbody tr:nth-child(even) {
-                background-color: #999ab6; /* Light pink */
+                background-color: #999ab6;
+                /* Light pink */
             }
 
             /* Customize badge colors */
             .badge.bg-success {
-                background-color: #28a745; !important; /* Green */
+                background-color: #28a745;
+                !important;
+                /* Green */
                 color: white;
             }
+
             .badge.bg-danger {
-                background-color: #dc3545 !important; /* Red */
+                background-color: #dc3545 !important;
+                /* Red */
                 color: white;
             }
 
@@ -793,18 +1002,22 @@
 
         <script>
             // Initialize DataTable for #tabel-leader with responsive feature and centered content
-            let tableLeader = new DataTable('#tabel-leader', {
+            let tableLeader = new DataTable('#leaderboard-table', {
                 responsive: true,
-                columnDefs: [
-                    { targets: '_all', className: 'dt-center' }  // Center content in all columns
+                columnDefs: [{
+                        targets: '_all',
+                        className: 'dt-center'
+                    } // Center content in all columns
                 ]
             });
 
             // Initialize DataTable for #anggota-kelas with responsive feature and centered content
             let tableKelas = new DataTable('#anggota-kelas', {
                 responsive: true,
-                columnDefs: [
-                    { targets: '_all', className: 'dt-center' }  // Center content in all columns
+                columnDefs: [{
+                        targets: '_all',
+                        className: 'dt-center'
+                    } // Center content in all columns
                 ]
             });
         </script>

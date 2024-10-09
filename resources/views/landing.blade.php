@@ -34,7 +34,7 @@
 
 <body>
     <!-- Navbar Start -->
-    <header id="topnav" class="defaultscroll sticky">
+    <nav id="topnav" class="defaultscroll sticky">
         <div class="container">
             <!-- Logo container-->
             <a class="logo" href="">
@@ -42,22 +42,8 @@
                     <img src="assets/images/edmondsh.png" class="l-dark" height="55" alt="">
                     <img src="assets/images/putihasli.png" class="l-light" height="55" alt="">
                 </span>
-                <img src="assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
             </a>
             <!-- End Logo container-->
-            <div class="menu-extras">
-                <div class="menu-item">
-                    <!-- Mobile menu toggle-->
-                    <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
-                        <div class="lines">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </a>
-                    <!-- End mobile menu toggle-->
-                </div>
-            </div>
 
             <!--Login button Start-->
             <ul class="buy-button list-inline mb-0">
@@ -108,7 +94,7 @@
 
             <div id="navigation">
                 <!-- Navigation Menu-->
-                <ul class="navigation-menu nav-light">
+                <ul class="navigation-menu nav-light" id="main-menu">
                     <li><a href="#home" class="sub-menu-item">Home</a></li>
                     <li class="has-submenu parent-parent-menu-item">
                         <a href="#features">Features</a>
@@ -136,7 +122,8 @@
                 </ul><!--end navigation menu-->
             </div><!--end navigation-->
         </div><!--end container-->
-    </header><!--end header-->
+    </nav>
+    <!--end header-->
     <!-- Navbar End -->
 
     <!-- Hero Start -->
@@ -336,9 +323,8 @@
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title">
-                        <h4 class="title text-white mb-4">We Bring New Online Courses</h4>
-                        <p class="text-white-50 para-desc mx-auto">Start working with Landrick that can provide
-                            everything you need to generate awareness, drive traffic, connect.</p>
+                        <h4 class="title text-white mb-4">We Bring New Learning Media</h4>
+                        <p class="text-white-50 para-desc mx-auto">Dengan adanya media pembelajaran baru, Edmon menghadirkan pengalaman belajar berbasis gamifikasi dan live compiler, di mana Anda bisa langsung melihat hasil kode yang Anda tulis. Belajar sambil bermain, raih level coding baru dengan Edmon!</p>
                         <a href="" data-type="youtube" data-id="U9SK2dYVFo0?si=lNrkFkRVcPAr_oGr"
                             class="play-btn  mt-4 lightbox">
                             <i data-feather="play" class="fea icon-ex-md text-white"></i>
@@ -445,7 +431,7 @@
                             <div class="content pt-3">
                                 <h5 class="mb-0"><a href="javascript:void(0)" class="name text-dark">Mochammad
                                         Mu'iz A</a></h5>
-                                <small class="designation text-muted">Web Designer</small>
+                                <small class="designation text-muted">UI/UX Designer</small>
                             </div>
                         </div>
                     </div>
@@ -530,8 +516,8 @@
                     <div class="tiny-three-item">
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/avatar_2.svg"
-                                    class="avatar avatar-small client-image rounded-3 shadow" alt="">
+                                <img src="{{asset('assets/images/avatar_2.svg')}}"
+                                    class="avatar avatar-small client-image rounded-5 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -551,8 +537,8 @@
 
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/client/02.jpg"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
+                                <img src="{{asset('assets/images/avatar_1.svg')}}"
+                                    class="avatar avatar-small client-image rounded-5 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -562,9 +548,8 @@
                                         <li class="list-inline-item"><i class="mdi mdi-star-half text-warning"></i>
                                         </li>
                                     </ul>
-                                    <p class="text-muted mt-2">" One disadvantage of Lorum Ipsum is that in Latin
-                                        certain letters appear more frequently than others. "</p>
-                                    <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small>
+                                    <p class="text-muted mt-2">" Sebagai guru, Edmon sangat membantu saya dalam mengajar coding. Fitur gamifikasi membuat siswa lebih antusias belajar, dan live compiler memungkinkan mereka langsung mempraktikkan materi. "</p>
+                                    <h6 class="text-primary">- Rezky Amelia <small class="text-muted">Guru</small>
                                     </h6>
                                 </div>
                             </div>
@@ -572,8 +557,8 @@
 
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/client/03.jpg"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
+                                <img src="{{asset('assets/images/avatar_2.svg')}}"
+                                    class="avatar avatar-small client-image rounded-5 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -582,17 +567,16 @@
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     </ul>
-                                    <p class="text-muted mt-2">" The most well-known dummy text is the 'Lorem Ipsum',
-                                        which is said to have originated in the 16th century. "</p>
-                                    <h6 class="text-primary">- Carl Oliver <small class="text-muted">P.A</small></h6>
+                                    <p class="text-muted mt-2">" Edmon memudahkan saya untuk memberikan pengalaman belajar coding yang interaktif bagi siswa. Mereka bisa belajar sambil bermain, dan saya bisa langsung melihat perkembangan mereka. "</p>
+                                    <h6 class="text-primary">- Choirul <small class="text-muted">Guru</small></h6>
                                 </div>
                             </div>
                         </div>
 
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/client/04.jpg"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
+                                <img src="{{asset('assets/images/avatar_4.svg')}}"
+                                    class="avatar avatar-small client-image rounded-5 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -601,9 +585,8 @@
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     </ul>
-                                    <p class="text-muted mt-2">" According to most sources, Lorum Ipsum can be traced
-                                        back to a text composed by Cicero. "</p>
-                                    <h6 class="text-primary">- Christa Smith <small class="text-muted">Manager</small>
+                                    <p class="text-muted mt-2">" Edmon membuat belajar coding jadi menyenangkan! Fitur live compiler dan gamifikasi benar-benar membantu saya belajar dengan cepat. "</p>
+                                    <h6 class="text-primary">- Ardiansyah <small class="text-muted">Siswa</small>
                                     </h6>
                                 </div>
                             </div>
@@ -611,8 +594,8 @@
 
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/client/05.jpg"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
+                                <img src="{{asset('assets/images/avatar_3.svg')}}"
+                                    class="avatar avatar-small client-image rounded-5 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -621,9 +604,8 @@
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     </ul>
-                                    <p class="text-muted mt-2">" There is now an abundance of readable dummy texts.
-                                        These are usually used when a text is required. "</p>
-                                    <h6 class="text-primary">- Dean Tolle <small class="text-muted">Developer</small>
+                                    <p class="text-muted mt-2">" Dengan Edmon, belajar coding terasa seperti bermain game. Live compiler-nya memudahkan saya melihat hasil kode secara instan!"</p>
+                                    <h6 class="text-primary">- Anggun Dwi <small class="text-muted">Siswa</small>
                                     </h6>
                                 </div>
                             </div>
@@ -631,8 +613,8 @@
 
                         <div class="tiny-slide">
                             <div class="d-flex client-testi m-2">
-                                <img src="assets/images/client/06.jpg"
-                                    class="avatar avatar-small client-image rounded shadow" alt="">
+                                <img src={{asset('assets/images/avatar_2.svg')}}"
+                                    class="avatar avatar-small client-image rounded-5 shadow" alt="">
                                 <div class="card flex-1 content p-3 shadow rounded position-relative">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -641,9 +623,8 @@
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                         <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     </ul>
-                                    <p class="text-muted mt-2">" Thus, Lorem Ipsum has only limited suitability as a
-                                        visual filler for German texts. "</p>
-                                    <h6 class="text-primary">- Jill Webb <small class="text-muted">Designer</small>
+                                    <p class="text-muted mt-2">" Dengan Edmon, saya bisa mengajarkan coding dengan cara yang lebih menarik. Siswa saya lebih fokus dan termotivasi berkat gamifikasi dan hasil langsung dari live compiler. "</p>
+                                    <h6 class="text-primary">- Putri Wong <small class="text-muted">Siswa</small>
                                     </h6>
                                 </div>
                             </div>
@@ -656,47 +637,83 @@
     <!-- Testi Subscribe End -->
 
     <!-- Footer Start -->
-    <footer id="contact" class="footer">
-        <div class="container d-flex justify-content-center align-items-center">
-            <div class="row d-flex justify-content-center align-items-center w-100">
-                <div class="col-12 text-center">
-                    <div class="footer-py-20">
-                        <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2 mx-auto">
-                            <a href="#" class="logo-footer">
-                                <img src="assets/images/putihasli.png" height="55" alt="">
-                            </a>
-                            <p class="mt-4">Platform pembelajaran interaktif dan Learning Management System sebagai
-                                sarana media pembelajaran siswa</p>
-                            <ul
-                                class="list-unstyled social-icon foot-social-icon mb-0 mt-4 d-flex justify-content-center">
-                                <li class="list-inline-item mb-0">
-                                    <a href="https://www.instagram.com/clearn.id/" target="_blank" class="rounded">
-                                        <i class="uil uil-instagram align-middle" title="instagram"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item mb-0">
-                                    <a href="mailto:fadhelnaufal12@gmail.com" class="rounded">
-                                        <i class="uil uil-envelope align-middle" title="email"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><!--end col-->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer-py-60">
+                        <div class="row">
+                            <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
+                                <a href="#" class="logo-footer">
+                                    <img src="assets/images/putihasli.png" height="55" alt="">
+                                </a>
+                                <p class="mt-4">Website pembelajaran pemrograman terintegrasi live compiler berbasis gamifikasi.</p>
+                                <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
+                                    <li class="list-inline-item mb-0"><a href="https://1.envato.market/landrick" target="_blank" class="rounded"><i class="uil uil-shopping-cart align-middle" title="Buy Now"></i></a></li>
+                                    <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-dribbble align-middle" title="dribbble"></i></a></li>
+                                    <li class="list-inline-item mb-0"><a href="https://www.behance.net/shreethemes" target="_blank" class="rounded"><i class="uil uil-behance align-middle" title="behance"></i></a></li>
+                                    <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-facebook-f align-middle" title="facebook"></i></a></li>
+                                    <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank" class="rounded"><i class="uil uil-instagram align-middle" title="instagram"></i></a></li>
+                                    <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+                                    <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i class="uil uil-envelope align-middle" title="email"></i></a></li>
+                                </ul><!--end icon-->
+                            </div><!--end col-->
+
+                            <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="footer-head">Edmon</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> Home</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> Features</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> About</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> Video</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> Instructor</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> Testimonial</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-angle-right-b me-1"></i> Contact</a></li>
+                                </ul>
+                            </div><!--end col-->
+
+                            <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="footer-head">Contact</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-envelope me-1"></i>edmon@gmail.com</a></li>
+                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-whatsapp me-1"></i> +62 81217560338</a></li>
+                                </ul>
+                            </div><!--end col-->
+
+                            <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="footer-head">Newsletter</h5>
+                                <p class="mt-4">Sign up and receive the latest tips via email.</p>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="foot-subscribe mb-3">
+                                                <label class="form-label">Write your email <span class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="mail" class="fea icon-sm icons"></i>
+                                                    <input type="email" name="email" id="emailsubscribe" class="form-control ps-5 rounded" placeholder="Your email : " required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="d-grid">
+                                                <input type="submit" id="submitsubscribe" name="send" class="btn btn-soft-primary" value="Subscribe">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="footer-py-30 footer-bar">
-            <div class="container">
-                <div class="row">
+            <div class="container text-center">
+                <div class="row align-items-center">
                     <div class="col-sm-6">
-                        <div class="text">
-                            <p class="mb-0">©
-                                <script>
-                                    document.write(new Date().getFullYear())
-                                </script> EdMon. Design with <i class="mdi mdi-heart text-danger"></i>
-                                by <a href="https://www.instagram.com/digitalin.ae/" target="_blank"
-                                    class="text-reset">Digitalin</a>.ae
-                            </p>
+                        <div class="text-sm-start">
+                            <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> EdMon. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="https://shreethemes.in/" target="_blank" class="text-reset">Digitalin</a>.ae</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->

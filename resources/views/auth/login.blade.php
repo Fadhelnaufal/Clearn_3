@@ -33,8 +33,10 @@
                 <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
                     <div class="card rounded-0 m-3 mb-0 border-0 shadow-none bg-none">
                         <div class="card-body p-sm-5">
-                            <img src="{{ URL::asset('build/images/edmon.svg') }}" class="mb-4" width="145"
-                                alt="">
+                            <a href="/">
+                                <img src="{{ URL::asset('build/images/edmon.svg') }}" class="mb-4" width="145"
+                                alt="" >
+                            </a>
                             <h4 class="fw-bold">Get Started Now</h4>
                             <p class="mb-0">Enter your credentials to login your account</p>
                             <div class="form-body mt-4">
@@ -111,7 +113,7 @@
     </div>
 @endsection
 @push('script')
-   
+
     <script>
         $(document).ready(function() {
             $("#show_hide_password a").on('click', function(event) {

@@ -5,7 +5,7 @@
    Version: 4.8.0
    File Description: Main JS file of the template
 
-   
+
 */
 
 
@@ -91,21 +91,21 @@ function activateMenu() {
 
         if (matchingMenuItem) {
             matchingMenuItem.classList.add('active');
-         
-         
+
+
             var immediateParent = getClosest(matchingMenuItem, 'li');
-      
+
             if (immediateParent) {
                 immediateParent.classList.add('active');
             }
-            
+
             var parent = getClosest(immediateParent, '.child-menu-item');
             if(parent){
                 parent.classList.add('active');
             }
 
             var parent = getClosest(parent || immediateParent , '.parent-menu-item');
-        
+
             if (parent) {
                 parent.classList.add('active');
 
@@ -154,6 +154,10 @@ function windowScroll() {
             navbar.classList.remove("nav-sticky");
         }
     }
+}
+function toggleMenu() {
+    const menu = document.getElementById('main-menu');
+    menu.classList.toggle('active');
 }
 
 window.addEventListener('scroll', (ev) => {
@@ -221,7 +225,7 @@ var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
 try {
     var spy = new Gumshoe('#navmenu-nav a');
 }catch(err) {
-    
+
 }
 
 
@@ -269,7 +273,7 @@ try {
         xhttp.send("name=" + name + "&email=" + email + "&subject=" + subject + "&comments=" + comments);
         return false;
       }
-    
+
       function fadeIn() {
         var fade = document.getElementById("error-msg");
         var opacity = 0;
@@ -283,5 +287,5 @@ try {
         }, 200);
     }
 } catch (error) {
-    
+
 }
