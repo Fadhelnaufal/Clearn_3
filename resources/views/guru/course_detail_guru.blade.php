@@ -493,18 +493,23 @@
                                         <th scope="col" rowspan="2">Nomor</th>
                                         <th scope="col" rowspan="2">Nama</th>
                                         <th scope="col" rowspan="2">Tipe</th>
-                                        <th scope="col" colspan="{{ $materis->count() + $case_studies->count() ?? 1 }}">
+                                        <th scope="col"
+                                            colspan="{{ $materis->count() + $case_studies->count() ?? 1 }}">
                                             Tantangan</th>
                                         <th scope="col" rowspan="2">Exp</th>
                                         <th scope="col" rowspan="2">Nilai</th>
                                     </tr>
                                     <tr>
-                                        @foreach ($materis as $materi)
-                                            <th scope="col">{{ $materi->judul }}</th>
-                                        @endforeach
-                                        @foreach ($case_studies as $caseStudy)
-                                            <th scope="col">{{ $caseStudy->title }}</th>
-                                        @endforeach
+                                        @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                            @foreach ($materis as $materi)
+                                                <th scope="col">{{ $materi->judul }}</th>
+                                            @endforeach
+                                            @foreach ($case_studies as $caseStudy)
+                                                <th scope="col">{{ $caseStudy->title }}</th>
+                                            @endforeach
+                                        @else
+                                            <th scope="col">-</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody style="text-align: center; vertical-align: middle; justify-content: center">
@@ -520,82 +525,86 @@
                                             <td scope="row">{{ $siswa->name }}</td>
                                             <td scope="row">{{ optional($siswa->userType)->name ?? 'No UserType' }}
                                             </td>
-                                            @foreach ($materis as $materi)
-                                                @php
-                                                    $jumlahSubmateri = $siswa->user_tasks
-                                                        ->where('materi_id', $materi->id)
-                                                        ->where('task_type', 'sub_materi')
-                                                        ->where('user_type_id', $siswa->user_type_id)
-                                                        ->count();
-                                                    $jumlahSoal = $siswa->user_tasks
-                                                        ->where('materi_id', $materi->id)
-                                                        ->where('task_type', 'soal')
-                                                        ->where('user_type_id', $siswa->user_type_id)
-                                                        ->count();
-                                                    $maxPointSubMateri = 50 * $jumlahSubmateri;
-                                                    $maxPointSoal = 100 * $jumlahSoal;
-                                                    $pointSubMateri =
-                                                        $siswa->user_tasks
+                                            @if ($materis->isNotEmpty() && $case_studies->isNotEmpty())
+                                                @foreach ($materis as $materi)
+                                                    @php
+                                                        $jumlahSubmateri = $siswa->user_tasks
                                                             ->where('materi_id', $materi->id)
                                                             ->where('task_type', 'sub_materi')
                                                             ->where('user_type_id', $siswa->user_type_id)
-                                                            ->sum('points') ?? 0;
-                                                    $pointSoal =
-                                                        $siswa->user_tasks
+                                                            ->count();
+                                                        $jumlahSoal = $siswa->user_tasks
                                                             ->where('materi_id', $materi->id)
                                                             ->where('task_type', 'soal')
                                                             ->where('user_type_id', $siswa->user_type_id)
-                                                            ->sum('points') ?? 0;
-                                                    $jumlahCaseStudy = $siswa->user_tasks
-                                                        ->where('task_type', 'case_study')
-                                                        ->count();
-                                                    $maxPointCaseStudy = 100 * $jumlahCaseStudy;
-                                                    $pointCaseStudy =
-                                                        $siswa->user_tasks
+                                                            ->count();
+                                                        $maxPointSubMateri = 50 * $jumlahSubmateri;
+                                                        $maxPointSoal = 100 * $jumlahSoal;
+                                                        $pointSubMateri =
+                                                            $siswa->user_tasks
+                                                                ->where('materi_id', $materi->id)
+                                                                ->where('task_type', 'sub_materi')
+                                                                ->where('user_type_id', $siswa->user_type_id)
+                                                                ->sum('points') ?? 0;
+                                                        $pointSoal =
+                                                            $siswa->user_tasks
+                                                                ->where('materi_id', $materi->id)
+                                                                ->where('task_type', 'soal')
+                                                                ->where('user_type_id', $siswa->user_type_id)
+                                                                ->sum('points') ?? 0;
+                                                        $jumlahCaseStudy = $siswa->user_tasks
                                                             ->where('task_type', 'case_study')
-                                                            ->where('kelas_id', $kelas->id)
-                                                            ->where('user_type_id', $siswa->user_type_id)
-                                                            ->sum('points') ?? 0;
-                                                    $rataCaseStudy =
-                                                        $maxPointCaseStudy > 0
-                                                            ? ($pointCaseStudy / $maxPointCaseStudy) * 100
-                                                            : 0;
+                                                            ->count();
+                                                        $maxPointCaseStudy = 100 * $jumlahCaseStudy;
+                                                        $pointCaseStudy =
+                                                            $siswa->user_tasks
+                                                                ->where('task_type', 'case_study')
+                                                                ->where('kelas_id', $kelas->id)
+                                                                ->where('user_type_id', $siswa->user_type_id)
+                                                                ->sum('points') ?? 0;
+                                                        $rataCaseStudy =
+                                                            $maxPointCaseStudy > 0
+                                                                ? ($pointCaseStudy / $maxPointCaseStudy) * 100
+                                                                : 0;
 
-                                                    $pointMateri = $pointSubMateri + $pointSoal;
+                                                        $pointMateri = $pointSubMateri + $pointSoal;
 
-                                                    $rataSubmateri =
-                                                        $maxPointSubMateri > 0
-                                                            ? ($pointSubMateri / $maxPointSubMateri) * 100
-                                                            : 0;
-                                                    $rataSoal =
-                                                        $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
+                                                        $rataSubmateri =
+                                                            $maxPointSubMateri > 0
+                                                                ? ($pointSubMateri / $maxPointSubMateri) * 100
+                                                                : 0;
+                                                        $rataSoal =
+                                                            $maxPointSoal > 0 ? ($pointSoal / $maxPointSoal) * 100 : 0;
 
-                                                    $average = ($rataSubmateri + $rataSoal) / 2;
-                                                    $averageTotal = ($average + $rataCaseStudy) / 2;
+                                                        $average = ($rataSubmateri + $rataSoal) / 2;
+                                                        $averageTotal = ($average + $rataCaseStudy) / 2;
 
-                                                @endphp
+                                                    @endphp
 
-                                                <td scope="row">
-                                                    @if ($siswa->user_tasks->where('materi_id', $materi->id)->sum('points') > 0)
-                                                        <span
-                                                            class="badge bg-success">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
-                                                    @else
-                                                        <span
-                                                            class="badge bg-danger">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
-                                                    @endif
-                                                </td>
-                                            @endforeach
-                                            @foreach ($case_studies as $caseStudy)
-                                                <td scope="row">
-                                                    @if ($siswa->user_tasks->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('student_id', $siswa->id)->where('kelas_id', $kelas->id)->sum('points') > 0)
-                                                        <span
-                                                            class="badge bg-success">{{ $siswa->user_tasks->where('student_id', $siswa->id)->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
-                                                    @else
-                                                        <span
-                                                            class="badge bg-danger">{{ $siswa->user_tasks->where('student_id', $siswa->id)->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0 }}</span>
-                                                    @endif
-                                                </td>
-                                            @endforeach
+                                                    <td scope="row">
+                                                        @if ($siswa->user_tasks->where('materi_id', $materi->id)->sum('points') > 0)
+                                                            <span
+                                                                class="badge bg-success">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
+                                                        @else
+                                                            <span
+                                                                class="badge bg-danger">{{ $siswa->user_tasks->where('materi_id', $materi->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                                @foreach ($case_studies as $caseStudy)
+                                                    <td scope="row">
+                                                        @if ($siswa->user_tasks->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('student_id', $siswa->id)->where('kelas_id', $kelas->id)->sum('points') > 0)
+                                                            <span
+                                                                class="badge bg-success">{{ $siswa->user_tasks->where('student_id', $siswa->id)->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') }}</span>
+                                                        @else
+                                                            <span
+                                                                class="badge bg-danger">{{ $siswa->user_tasks->where('student_id', $siswa->id)->where('task_type', 'case_study')->where('task_id', $caseStudy->id)->where('kelas_id', $kelas->id)->where('user_type_id', $siswa->user_type_id)->sum('points') ?? 0 }}</span>
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                            @else
+                                                <td scope="row">-</td>
+                                            @endif
                                             <td scope="row">{{ $siswa->user_tasks->sum('points') }}</td>
                                             <td scope="row">{{ $averageTotal ?? 0 }}</td>
                                         </tr>
@@ -850,7 +859,7 @@
         }
 
         #tabel-leader tbody tr:nth-child(even) {
-            background-color: #e6ffe6;
+            background-color: #9ea0bc;
             /* Light green */
         }
 
@@ -861,7 +870,7 @@
         }
 
         #anggota-kelas tbody tr:nth-child(even) {
-            background-color: #ffe6e6;
+            background-color: #9ea0bc;
             /* Light pink */
         }
 

@@ -676,7 +676,7 @@
                                 <h5 class="footer-head">Contact</h5>
                                 <ul class="list-unstyled footer-list mt-4">
                                     <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-envelope me-1"></i>edmon@gmail.com</a></li>
-                                    <li><a href="javascript:void(0)" class="text-foot"><i class="uil uil-whatsapp me-1"></i> +62 81217560338</a></li>
+                                    <li><a href="https://wa.me/6281217560338" class="text-foot" target="_blank"><i class="uil uil-whatsapp me-1"></i> +62 81217560338</a></li>
                                 </ul>
                             </div><!--end col-->
 
