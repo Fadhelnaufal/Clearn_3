@@ -26,7 +26,7 @@
                         <div class="modal-body">
                             <div class="form-body">
                                 <form class="row g-3" id="addUserForm" method="POST"
-                                    action="{{ route('setting-role.store') }}">
+                                    action="{{ route('admin.setting-role.store') }}">
                                     @csrf
                                     <div class="col-md-12">
                                         <label for="name" class="form-label">Nama</label>
@@ -43,7 +43,6 @@
                                             <input type="password" class="form-control" id="password" name="password"
                                                 required>
                                         </div>
-
                                         <label for="password_confirmation" class="form-label">Confirm Password</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -60,9 +59,7 @@
                                             <div class="input-group">
                                                 <select class="form-control" id="role" name="role" required>
                                                     @foreach ($roles as $role)
-                                                        <option value="{{ $role->id }}"
-                                                            {{ $user->hasRole($role->id) ? 'selected' : '' }}>
-                                                            {{ ucfirst($role->name) }}
+                                                        <option value="{{ $role->id }}">{{ ucfirst($role->name) }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -95,7 +92,7 @@
         <div class="row">
             <div class="col">
                 <div class="card px-3 py-2">
-                    <table class="table" id="roleuser" >
+                    <table class="table" id="roleuser">
                         <thead>
                             <tr>
                                 <th scope="col" style="width: 5%; text-align:center;">No</th>
@@ -117,7 +114,7 @@
                                             data-bs-target="#EditUserModal{{ $user->id }}">
                                             <i class="bi bi-pencil-square"></i> Edit
                                         </button>
-                                        <form action="{{ route('setting-role.destroy', $user->id) }}" method="POST"
+                                        <form action="{{ route('admin.setting-role.destroy', $user->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
@@ -137,7 +134,7 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="{{ route('setting-role.update', $user->id) }}"
+                                                <form action="{{ route('admin.setting-role.update', $user->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('PUT')
@@ -158,10 +155,8 @@
                                                                 <select class="form-control" id="role"
                                                                     name="role" required>
                                                                     @foreach ($roles as $role)
-                                                                        <option value="{{ $role->name }}"
-                                                                            {{ $user->hasRole($role->name) ? 'selected' : '' }}>
-                                                                            {{ ucfirst($role->name) }}
-                                                                        </option>
+                                                                        <option value="{{ $role->id }}">
+                                                                            {{ ucfirst($role->name) }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 <span class="input-group-text">

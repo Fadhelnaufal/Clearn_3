@@ -164,7 +164,11 @@ Route::prefix('admin')->middleware(['role:admin', 'auth', 'check_session'])->gro
     Route::resource('/dashboard', AdminController::class)->names([
         'index' => 'admin.dashboard',
     ]);
-    Route::resource('/setting-role', SettingRoleController::class);
+
+    Route::get('/setting-role', [SettingRoleController::class, 'index'])->name('admin.setting-role.index');
+    Route::post('/setting-role/store', [SettingRoleController::class, 'store'])->name('admin.setting-role.store');
+    Route::put('/setting-role/update', [SettingRoleController::class, 'update'])->name('admin.setting-role.update');
+    Route::delete('setting-role/delete', [SettingRoleController::class, 'destroy'])->name('admin.setting-role.destroy');
 });
 
 // Logout Route

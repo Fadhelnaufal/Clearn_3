@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Log;
 
 class SettingRoleController extends Controller
 {
@@ -32,12 +33,26 @@ class SettingRoleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // Validate the request
+        $this$request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string'
+            'role' => 'required|integer'
         ]);
+
+        // Map the role id to role name
+        $roles = [
+            1 => 'admin',
+            2 => 'guru',
+            3 => 'siswa',
+            4 => 'guest'
+        ];
+
+        // Check if the role exists in the roles array
+        if (!array_key_exists($request->role, $roles)) {
+            return redirect()->back()->withErrors(['role' => 'Invalid role selected']);
+        }
 
         // Create a new user
         $user = User::create([
@@ -46,11 +61,14 @@ class SettingRoleController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        // Assign role to the new user
-        $user->assignRole($request->role);
-        dd($user, $user->roles);
+        // Assign the role to the new user
+        $user->assignRole($roles[$request->role]);
 
-        return redirect()->route('setting-role.index')->with('success', 'User created successfully');
+        // Log any errors (if needed)
+        \Illuminate\Support\Facades\Log::error('An error occurred', ['error' => $exception ?? null]);
+
+        // Redirect with success message
+        return redirect()->route('admin.setting-role.index')->with('success', 'User created successfully');
     }
 
     /**
